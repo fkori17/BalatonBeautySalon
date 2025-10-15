@@ -1,2 +1,2 @@
-# BalatonBeautySalon
-A Balaton Beauty Salon meglévő one-pager weboldala helyett egy vendégkezelő rendszer kerül kialakításra. A rendszer lehetőséget fog biztosít az ügyfelek, valamint az általuk igénybe vett kezelések és azok részleteinek nyilvántartására
+# Balaton Beauty Salon ügyfél kezelő rendszer
+A Balaton Beauty Salon meglévő one-pager weboldala helyett egy vendégkezelő rendszer kerül kialakításra. A rendszer lehetőséget fog biztosít az ügyfelek, valamint az általuk igénybe vett kezelések és azok részleteinek nyilvántartására. Az ügyfelek számára elérhetővé válnak saját kezelési adataik, míg az üzletvezető részére statisztikai kimutatások és egyéb üzleti információk állnak rendelkezésre. A projekt megvalósítása során modern frontend és backend keretrendszerek, valamint MySQL adatbázis kerül alkalmazásra az adatok strukturált tárolására és kezelésére. 
