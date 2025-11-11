@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('treatments', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string("customer_id");
+            $table->foreignId("customer_id")->constrained('customers', 'id');
             $table->string("description");
-            $table->integer("discount");
+            $table->integer("realprice");
         });
     }
 
