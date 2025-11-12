@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ServiceController extends Controller
 {
@@ -28,7 +29,24 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'price' => 'required|integer|min:0'
+        ], [
+            'name.required' => 'A szolgáltatás nevének megadása kötelező',
+            'price.required' => 'A szolgáltatás árának megadása kötelező',
+            'price.min' => 'A szolgáltatás ára nem lehet negatív'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validációs hiba',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $service = service::create($request->all());
+        return response()->json($service, 201);
     }
 
     /**

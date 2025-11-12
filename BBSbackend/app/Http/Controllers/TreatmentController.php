@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\treatment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class TreatmentController extends Controller
 {
@@ -28,7 +29,26 @@ class TreatmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'customer_id' => 'required|integer|min:1',
+            'description' => 'string',
+            'realprice' => 'required|integer|min:0'
+        ], [
+            'customer_id.required' => 'A vevő azonosítójának megadása kötelező',
+            'customer_id' => 'A vevő azonosítója nem lehet 1-nél kisebb',
+            'customer_id.min' => 'A vevő azonosítója nem lehet 1-nél kisebb',
+            'realprice.min' => 'A kezelés ára nem lehet negatív'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validációs hiba',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $treatment = treatment::create($request->all());
+        return response()->json($treatment, 201);
     }
 
     /**
