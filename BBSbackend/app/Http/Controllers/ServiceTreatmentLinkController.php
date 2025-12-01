@@ -42,6 +42,13 @@ class ServiceTreatmentLinkController extends Controller
             'piece.min' => 'A kezelés darabszáma nem lehet 1-nél kisebb'
         ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message'=> $validator->errors()->toArray(),
+            ], 400);
+        };
+
         $newRecord = new service_treatment_link();
         $newRecord -> treatment_id = $request->treatment_id;
         $newRecord -> service_id = $request->service_id;

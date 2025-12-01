@@ -39,6 +39,13 @@ class ServiceController extends Controller
             'price.min' => 'A szolgáltatás ára nem lehet negatív'
         ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message'=> $validator->errors()->toArray(),
+            ], 400);
+        };
+
         $newRecord = new service();
         $newRecord -> name = $request->name;
         $newRecord -> price = $request->price;

@@ -40,6 +40,13 @@ class TreatmentController extends Controller
             'realprice.min' => 'A kezelés ára nem lehet negatív'
         ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message'=> $validator->errors()->toArray(),
+            ], 400);
+        };
+
         $newRecord = new treatment();
         $newRecord -> customer_id = $request->customer_id;
         $newRecord -> description = $request->description;
