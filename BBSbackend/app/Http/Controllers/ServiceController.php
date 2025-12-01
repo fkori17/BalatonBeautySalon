@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\customer;
 use App\Models\service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -38,15 +39,11 @@ class ServiceController extends Controller
             'price.min' => 'A szolgáltatás ára nem lehet negatív'
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Validációs hiba',
-                'errors' => $validator->errors()
-            ], 422);
-        }
+        $newRecord = new service();
+        $newRecord -> name = $request->name;
+        $newRecord -> price = $request->price;
 
-        $service = service::create($request->all());
-        return response()->json($service, 201);
+        return response()->json(['success' => true, 'message' => 'Sikeres mentés'], 201);
     }
 
     /**

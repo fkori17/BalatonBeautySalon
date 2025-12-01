@@ -30,15 +30,12 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id' => 'required|integer|min:1',
             'user' => 'required|string',
             'password' => 'required|string|min:6',
             'name' => 'required|string',
             'phone' => 'required|regex:/^[\+]?[0-9]+$/',
             'loyal' => 'required|boolean',
         ], [
-            'id.required' => 'Az azonosító megadása kötelező',
-            'id.min' => 'Az azonosító nem lehet 1-nél kisebb',
             'user.required' => 'A felhasználónév megadása kötelező',
             'password.required' => 'A jelszó megadása kötelező',
             'password.min' => 'A jelszónak legalább 6 karakter hosszúnak kell lennie',
@@ -50,13 +47,19 @@ class CustomerController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Validációs hiba',
-                'errors' => $validator->errors()
-            ], 422);
-        }
+                'success' => false,
+                'message'=> $validator->errors()->toArray(),
+            ], 400);
+        };
 
-        $customer = customer::create($request->all());
-        return response()->json($customer, 201);
+        $newRecord = new customer();
+        $newRecord -> user = $request->user;
+        $newRecord -> password = $request->password;
+        $newRecord -> name = $request->name;
+        $newRecord -> phone = $request->phone;
+        $newRecord -> loyal = $request->loyal;
+
+        return response()->json(['success' => true, 'message' => 'Sikeres mentés'], 201);
     }
 
     /**

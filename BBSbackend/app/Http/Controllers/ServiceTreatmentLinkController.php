@@ -42,15 +42,12 @@ class ServiceTreatmentLinkController extends Controller
             'piece.min' => 'A kezelés darabszáma nem lehet 1-nél kisebb'
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Validációs hiba',
-                'errors' => $validator->errors()
-            ], 422);
-        }
+        $newRecord = new service_treatment_link();
+        $newRecord -> treatment_id = $request->treatment_id;
+        $newRecord -> service_id = $request->service_id;
+        $newRecord -> piece = $request->piece;
 
-        $stl = service_treatment_link::create($request->all());
-        return response()->json($stl, 201);
+        return response()->json(['success' => true, 'message' => 'Sikeres mentés'], 201);
     }
 
     /**

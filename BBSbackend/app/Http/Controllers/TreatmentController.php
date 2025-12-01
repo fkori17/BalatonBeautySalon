@@ -40,15 +40,12 @@ class TreatmentController extends Controller
             'realprice.min' => 'A kezelés ára nem lehet negatív'
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Validációs hiba',
-                'errors' => $validator->errors()
-            ], 422);
-        }
+        $newRecord = new treatment();
+        $newRecord -> customer_id = $request->customer_id;
+        $newRecord -> description = $request->description;
+        $newRecord -> realprice = $request->realprice;
 
-        $treatment = treatment::create($request->all());
-        return response()->json($treatment, 201);
+        return response()->json(['success' => true, 'message' => 'Sikeres mentés'], 201);
     }
 
     /**
