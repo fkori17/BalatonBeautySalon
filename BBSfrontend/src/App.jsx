@@ -1,13 +1,15 @@
 import UserLayout from "./components/UserLayout";
 import AdminLayout from "./components/AdminLayout";
 import "./App.css";
-import { Col, Row } from "react-bootstrap";
+import HomePageComps from "./components/HomePageComps";
+import { Person } from "react-bootstrap-icons";
 function App() {
   return (
     <>
       <UserLayout name="Példáné Kovács Marika">
-        {/* <h1>Üdvözlünk, Marika!</h1> */}
+        <HomePageComps key={1} icon={Person} value="teszt" title="valami"></HomePageComps>
       </UserLayout>
+      
     </>
   );
 }
