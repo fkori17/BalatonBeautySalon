@@ -1,42 +1,32 @@
+@font-face {
+  font-family: Orienta;
+  src: url(./assets/Orienta-Regular.ttf); 
+}
+@font-face {
+  font-family: Oxygen;
+  src: url(./assets/Oxygen-Regular.ttf); 
+}
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100vw;
+  margin: 0;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+@media (min-width: 992px) {
+  .ms-lg-260 {
+    margin-left: 260px;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+main {
+  background: #FFFFFF;
+  background: linear-gradient(45deg, rgba(255, 255, 255, 1) 0%, rgba(255, 250, 241, 1) 100%);
 }
 
-.card {
-  padding: 2em;
+.fw-bold, .nav-link {
+  font-family: Orienta;
 }
 
-.read-the-docs {
-  color: #888;
+h1, h2 { 
+  font-family: Oxygen;
 }
