@@ -1,0 +1,171 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+   overflow: hidden;
+}
+
+.login-page {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #9b6a52, #6f4634);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 1100px;
+  min-height: 560px;
+  background: #f4f3f1;
+  border-radius: 36px;
+  display: flex;
+  padding: 60px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+}
+
+.login-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-left h1 {
+  font-family: "Playfair Display", serif;
+  font-size: 42px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  margin-bottom: 50px;
+  color: #000;
+}
+
+.login-left input {
+  width: 100%;
+  height: 52px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  padding: 0 16px;
+  font-size: 15px;
+  margin-bottom: 16px;
+  background: #ffffff;
+  color: #333;
+}
+
+.login-left input::placeholder {
+  color: #b8b8b8;
+}
+
+.forgot {
+  font-size: 12px;
+  color: #b0b0b0;
+  text-align: right;
+  margin-bottom: 36px;
+  cursor: pointer;
+}
+
+.login-left button {
+  height: 52px;
+  border-radius: 10px;
+  border: none;
+  background: #9b5a3a;
+  color: #ffffff;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.login-left button:hover {
+  background: #84482d;
+}
+
+.divider {
+  width: 1px;
+  background: #9a9a9a;
+  margin: 0 50px;
+}
+
+.login-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  max-width: 360px;
+  margin-bottom: 40px;
+}
+
+.socials {
+  display: flex;
+  gap: 16px;
+}
+
+.socials svg {
+  width: 44px;
+  height: 44px;
+  background: #9b5a3a;
+  border-radius: 12px;
+  padding: 8px;
+  cursor: pointer;
+  color: #fff;
+  transition: background 0.2s ease;
+}
+
+.socials svg:hover {
+  background: #84482d;
+}
+
+@media (max-width: 768px) {
+  .login-card {
+    flex-direction: column;
+    padding: 30px;
+  }
+
+  .divider {
+    display: none;
+  }
+
+  .login-left,
+  .login-right {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .login-left h1 {
+    font-size: 32px;
+    margin-bottom: 30px;
+  }
+
+  .login-left input,
+  .login-left button {
+    height: 48px;
+    font-size: 14px;
+  }
+
+  .socials svg {
+    width: 40px;
+    height: 40px;
+    padding: 6px;
+  }
+}
+.logo {
+  width: 300px; 
+  width: 100%;
+  height: auto; 
+  margin-bottom: 40px;
+}
+@media (max-width: 768px) {
+  .logo {
+    max-width: 150px;
+  }
+}

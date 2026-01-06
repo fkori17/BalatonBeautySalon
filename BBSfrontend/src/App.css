@@ -1,10 +1,10 @@
 @font-face {
   font-family: Orienta;
-  src: url(./assets/Orienta-Regular.ttf); 
+  src: url(/Orienta-Regular.ttf); 
 }
 @font-face {
   font-family: Oxygen;
-  src: url(./assets/Oxygen-Regular.ttf); 
+  src: url(/Oxygen-Regular.ttf); 
 }
 
 #root {
