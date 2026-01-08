@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\treatment;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class TreatmentController extends Controller
+class AdminController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -30,20 +30,15 @@ class TreatmentController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'customer_id' => 'required|integer|min:1',
-            'description' => 'string',
-            'realprice' => 'required|integer|min:0'
+            'user' => 'required|string',
+            'password' => 'required|string|min:6'
         ], [
-            'customer_id' => [
-                'required' => 'A vevő azonosítójának megadása kötelező',
-                'min' => 'A vevő azonosítója nem lehet 1-nél kisebb',
+            'user' => [
+                'required' => 'A felhasználónév megadása kötelező',
             ],
-            'description' => [
-                'string' => 'A kezelés leírásának szöveges formátumban kell lennie',
-            ],
-            'realprice' => [
-                'required' => 'A kezelés árának megadása kötelező',
-                'min' => 'A kezelés ára nem lehet negatív',
+            'password' => [
+                'required' => 'A jelszó megadása kötelező',
+                'min' => 'A jelszónak legalább 6 karakter hosszúnak kell lennie',
             ]
         ]);
 
@@ -54,10 +49,9 @@ class TreatmentController extends Controller
             ], 400);
         };
 
-        $newRecord = new treatment();
-        $newRecord -> customer_id = $request->customer_id;
-        $newRecord -> description = $request->description;
-        $newRecord -> realprice = $request->realprice;
+        $newRecord = new admin();
+        $newRecord -> user = $request->user;
+        $newRecord -> password = $request->password;
         $newRecord -> save();
         return response()->json(['success' => true, 'message' => 'Sikeres mentés'], 201);
     }
@@ -65,7 +59,7 @@ class TreatmentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(treatment $treatment)
+    public function show(Admin $admin)
     {
         //
     }
@@ -73,7 +67,7 @@ class TreatmentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(treatment $treatment)
+    public function edit(Admin $admin)
     {
         //
     }
@@ -81,7 +75,7 @@ class TreatmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, treatment $treatment)
+    public function update(Request $request, Admin $admin)
     {
         //
     }
@@ -89,7 +83,7 @@ class TreatmentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(treatment $treatment)
+    public function destroy(Admin $admin)
     {
         //
     }

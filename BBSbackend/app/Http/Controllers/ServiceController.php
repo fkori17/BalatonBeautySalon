@@ -34,9 +34,13 @@ class ServiceController extends Controller
             'name' => 'required|string',
             'price' => 'required|integer|min:0'
         ], [
-            'name.required' => 'A szolgáltatás nevének megadása kötelező',
-            'price.required' => 'A szolgáltatás árának megadása kötelező',
-            'price.min' => 'A szolgáltatás ára nem lehet negatív'
+            'name' => [
+                'required' => 'A szolgáltatás nevének megadása kötelező',
+            ],
+            'price' => [
+                'required' => 'A szolgáltatás árának megadása kötelező',
+                'min' => 'A szolgáltatás ára nem lehet negatív',
+            ]
         ]);
 
         if ($validator->fails()) {
@@ -49,7 +53,7 @@ class ServiceController extends Controller
         $newRecord = new service();
         $newRecord -> name = $request->name;
         $newRecord -> price = $request->price;
-
+        $newRecord -> save();
         return response()->json(['success' => true, 'message' => 'Sikeres mentés'], 201);
     }
 

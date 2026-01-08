@@ -36,13 +36,23 @@ class CustomerController extends Controller
             'phone' => 'required|regex:/^[\+]?[0-9]+$/',
             'loyal' => 'required|boolean',
         ], [
-            'user.required' => 'A felhasználónév megadása kötelező',
-            'password.required' => 'A jelszó megadása kötelező',
-            'password.min' => 'A jelszónak legalább 6 karakter hosszúnak kell lennie',
-            'name.required' => 'A név megadása kötelező',
-            'phone.required' => 'A telefonszám megadása kötelező',
-            'phone.regex' => 'A telefonszám csak számokat és opcionális + jelet tartalmazhat az elején',
-            'loyal.required' => 'A lojalitás megadása kötelező'
+            'user' => [
+                'required' => 'A felhasználónév megadása kötelező',
+            ],
+            'password' => [
+                'required' => 'A jelszó megadása kötelező',
+                'min' => 'A jelszónak legalább 6 karakter hosszúnak kell lennie',
+            ],
+            'name' => [
+                'required' => 'A név megadása kötelező',
+            ],
+            'phone' => [
+                'required' => 'A telefonszám megadása kötelező',
+                'regex' => 'A telefonszám csak számokat és opcionális + jelet tartalmazhat az elején',
+            ],
+            'loyal' => [
+                'required' => 'A lojalitás megadása kötelező',
+            ]
         ]);
 
         if ($validator->fails()) {

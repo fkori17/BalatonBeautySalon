@@ -34,12 +34,18 @@ class ServiceTreatmentLinkController extends Controller
             'service_id' => 'required|integer|min:1',
             'piece' => 'required|integer|min:1'
         ], [
-            'treatment_id.required' => 'Az kezelés azonosítójának megadása kötelező',
-            'treatment_id.min' => 'A kezelés azonosítója nem lehet 1-nél kisebb',
-            'service_id.required' => 'A szolgáltatás azonosítójának megadása kötelező',
-            'service_id.min' => 'A szolgáltatás azonosítója nem lehet 1-nél kisebb',
-            'piece.required' => 'A kezelés darabszámának megadása kötelező',
-            'piece.min' => 'A kezelés darabszáma nem lehet 1-nél kisebb'
+            'treatment_id' => [
+                'required' => 'Az kezelés azonosítójának megadása kötelező',
+                'min' => 'A kezelés azonosítója nem lehet 1-nél kisebb',
+            ],
+            'service_id' => [
+                'required' => 'A szolgáltatás azonosítójának megadása kötelező',
+                'min' => 'A szolgáltatás azonosítója nem lehet 1-nél kisebb',
+            ],
+            'piece' => [
+                'required' => 'A kezelés darabszámának megadása kötelező',
+                'min' => 'A kezelés darabszáma nem lehet 1-nél kisebb',
+            ]
         ]);
 
         if ($validator->fails()) {
@@ -53,7 +59,7 @@ class ServiceTreatmentLinkController extends Controller
         $newRecord -> treatment_id = $request->treatment_id;
         $newRecord -> service_id = $request->service_id;
         $newRecord -> piece = $request->piece;
-
+        $newRecord -> save();
         return response()->json(['success' => true, 'message' => 'Sikeres mentés'], 201);
     }
 

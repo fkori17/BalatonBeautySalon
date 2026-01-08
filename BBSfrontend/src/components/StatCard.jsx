@@ -1,18 +1,17 @@
 import { Card } from "react-bootstrap";
-import "../style/AdminHomePageCards.css";
+import "./style/StatCard.css";
 
-function AdminHomePageCards({ icon: Icon, value, title }) {
+function StatCard({ title, value }) {
     return (
         <Card className="shadow-sm h-100">
             <Card.Body className="cards">
-                <Icon size={30} color="black" className="icon" />
+                <h2 className="text-muted fs-5">{title}</h2>
                 <div className="value-inline">
                     <h2 className="fw-bold fs-2 mb-0">{value}</h2>
                 </div>
-                <h2 className="text-muted fs-5">{title}</h2>
             </Card.Body>
         </Card>
     );
 }
 
-export default AdminHomePageCards;
+export default StatCard;
