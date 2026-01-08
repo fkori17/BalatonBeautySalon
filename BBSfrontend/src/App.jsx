@@ -4,6 +4,7 @@ import LoginComponent from "./components/LoginComponent.jsx";
 import "./App.css";
 import AdminHomePageCards from "./components/AdminHomePageCards.jsx";
 import AdminStatCards from "./components/AdminStatCards.jsx";
+import AdminLogin from "./components/AdminLogin.jsx";
 import { Row, Col } from "react-bootstrap";
 import { PeopleFill, PersonLinesFill, CashStack, CalendarCheck } from "react-bootstrap-icons";
 
@@ -11,6 +12,7 @@ import { PeopleFill, PersonLinesFill, CashStack, CalendarCheck } from "react-boo
 function App() {
   return (
     <>
+    {/*
       <UserLayout name="Példáné Kovács Marika">
         <p>Admin kezdőlap kártyák</p>
         <Row className="g-4">
@@ -59,7 +61,9 @@ function App() {
           </Col>
         </Row>
       </UserLayout>
-      <LoginComponent />
+      
+       <LoginComponent  />*/}
+       <AdminLogin />
     </>
   );
 }
