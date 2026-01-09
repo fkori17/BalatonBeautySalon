@@ -1,8 +1,8 @@
-import "./ResponsiveSidebar.css";
+import "./style/ResponsiveSidebar.css";
 import { useState } from "react";
 import { Navbar, Nav, Offcanvas, Button } from "react-bootstrap";
 
-const UserLayout = ({ children, name }) => {
+const AdminSidebar = ({ children }) => {
   const [show, setShow] = useState(false);
 
   return (
@@ -11,12 +11,12 @@ const UserLayout = ({ children, name }) => {
         <Button variant="outline-secondary" onClick={() => setShow(true)}>
           ☰
         </Button>
-        <Navbar.Brand className="ms-3">{name}</Navbar.Brand>
+        <Navbar.Brand className="ms-3">Admin felület</Navbar.Brand>
       </Navbar>
 
       <Offcanvas show={show} onHide={() => setShow(false)} placement="start">
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title>{name}</Offcanvas.Title>
+          <Offcanvas.Title>Admin felület</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <SidebarContent />
@@ -25,7 +25,7 @@ const UserLayout = ({ children, name }) => {
 
       <div className="user-layout">
         <aside className="sidebar d-none d-lg-flex flex-column">
-          <div className="p-3 fw-bold">{name}</div>
+          <div className="p-3 fw-bold">Admin felület</div>
           <SidebarContent />
         </aside>
 
@@ -45,15 +45,19 @@ function SidebarContent() {
       </Nav.Link>
 
       <Nav.Link href="#">
-        <ListIcon /> Kezeléseim
+        <ListIcon /> Kezelések
       </Nav.Link>
 
       <Nav.Link href="#">
-        <UserIcon /> Profilom
+        <UserIcon /> Ügyfelek
       </Nav.Link>
 
       <Nav.Link href="#">
-        <PhoneIcon className="phoneIcon" /> Kapcsolat
+        <ClipboardIcon /> Szolgáltatások
+      </Nav.Link>
+
+      <Nav.Link href="#">
+        <ChartIcon /> Statisztikák
       </Nav.Link>
 
       {/* alsó szekció */}
@@ -145,4 +149,34 @@ const LogoutIcon = () => (
   </svg>
 );
 
-export default UserLayout;
+const ClipboardIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="28"
+    height="28"
+    fill="currentColor"
+    class="bi bi-clipboard-minus-fill"
+    viewBox="0 0 16 16"
+  >
+    <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5z" />
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5zM6 9h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1 0-1" />
+  </svg>
+);
+
+const ChartIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="28"
+    height="28"
+    fill="currentColor"
+    class="bi bi-graph-up"
+    viewBox="0 0 16 16"
+  >
+    <path
+      fill-rule="evenodd"
+      d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07"
+    />
+  </svg>
+);
+
+export default AdminSidebar;

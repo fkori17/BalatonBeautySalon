@@ -1,34 +1,29 @@
-import "./Login.css";
+import { useNavigate } from "react-router-dom";
+import "../components/style/Login.css";
 
-function LoginComponent() {
-  const handleSubmit = (e) => {
+function Login() {
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("Form elküldve");
+
+    // post
+
+    localStorage.setItem("token", response.token);
+    localStorage.setItem("authType", "user");
+  navigate("/user");
+
   };
 
   return (
     <div className="login-page">
       <div className="login-card">
 
- 
-        <form className="login-left" onSubmit={handleSubmit}>
-          <h1>
-            Balaton Beauty <br /> Salon
-          </h1>
+        <form className="login-left" onSubmit={handleLogin}>
+          <h1>Balaton Beauty <br /> Salon</h1>
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            required
-          />
-
-          <input
-            type="password"
-            name="password"
-            placeholder="Jelszó"
-            required
-          />
+          <input type="email" placeholder="Email" required />
+          <input type="password" placeholder="Jelszó" required />
 
           <div className="forgot">Elfelejtett jelszó?</div>
 
@@ -58,5 +53,5 @@ function LoginComponent() {
   );
 }
 
-export default LoginComponent;
+export default Login;
 
