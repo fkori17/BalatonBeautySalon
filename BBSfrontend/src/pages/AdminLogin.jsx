@@ -1,4 +1,4 @@
-import "../components/style/AdminLoginCss.css";
+import "../components/style/Login.css";
 import { useNavigate } from "react-router-dom";
 
 
@@ -19,7 +19,7 @@ function AdminLogin() {
 
   return (
     <div className="login-page">
-      <div className="login-card">
+      <div className="login-card compact">
         <form className="login-left" onSubmit={handleSubmit}>
           <h1>Balaton Beauty<br /> Salon</h1>
 

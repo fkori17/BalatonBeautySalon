@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\service_treatment_link;
+use App\Models\Service_treatment_link;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 

@@ -17,8 +17,7 @@ function Login() {
 
   return (
     <div className="login-page">
-      <div className="login-card">
-
+      <div className="login-card wide">
         <form className="login-left" onSubmit={handleLogin}>
           <h1>Balaton Beauty <br /> Salon</h1>
 

@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class treatment extends Model
+class Treatment extends Model
 {
     function customer() {
-        return $this->belongsTo(customer::class, 'customer_id');
+        return $this->belongsTo(Customer::class, 'customer_id');
     }
 
     function service_treatment_link() {
-        return $this->hasMany(service_treatment_link::class, 'treatment_id', 'id');
+        return $this->hasMany(Service_treatment_link::class, 'treatment_id', 'id');
     }
 }

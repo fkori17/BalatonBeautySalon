@@ -4,11 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Sanctum\HasApiTokens;
 
-class customer extends Model
+
+class Customer extends Model
 {
+    use HasApiTokens;
+    protected $hidden = ['password'];
+
     function treatment() {
-        return $this->hasMany(treatment::class, 'customer_id', 'id');
+        return $this->hasMany(Treatment::class, 'customer_id', 'id');
     }
     //
 }

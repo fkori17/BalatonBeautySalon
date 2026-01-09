@@ -1,3 +1,4 @@
+/* RESET */
 * {
   box-sizing: border-box;
 }
@@ -5,7 +6,7 @@
 body {
   margin: 0;
   font-family: "Segoe UI", sans-serif;
-   overflow: hidden;
+  overflow: hidden;
 }
 
 .login-page {
@@ -19,14 +20,21 @@ body {
 }
 
 .login-card {
-  width: 100%;
-  max-width: 1100px;
-  min-height: 560px;
   background: #f4f3f1;
   border-radius: 36px;
-  display: flex;
-  padding: 60px;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+  padding: 60px;
+  display: flex;
+}
+
+.login-card.wide {
+  width: 1200px;
+}
+
+.login-card.compact {
+  max-width: 500px;
+  width: 100%;
+  justify-content: center;
 }
 
 .login-left {
@@ -38,11 +46,15 @@ body {
 
 .login-left h1 {
   font-family: "Playfair Display", serif;
-  font-size: 42px;
+  font-size: 40px;
   font-weight: 400;
   letter-spacing: 1px;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
   color: #000;
+}
+
+.login-card.compact .login-left h1 {
+  text-align: center;
 }
 
 .login-left input {
@@ -102,6 +114,8 @@ body {
 
 .logo {
   max-width: 360px;
+  width: 100%;
+  height: auto;
   margin-bottom: 40px;
 }
 
@@ -131,14 +145,12 @@ body {
     padding: 30px;
   }
 
-  .divider {
-    display: none;
+  .login-card.wide {
+    width: 100%;
   }
 
-  .login-left,
-  .login-right {
-    width: 100%;
-    margin-bottom: 20px;
+  .divider {
+    display: none;
   }
 
   .login-left h1 {
@@ -152,19 +164,6 @@ body {
     font-size: 14px;
   }
 
-  .socials svg {
-    width: 40px;
-    height: 40px;
-    padding: 6px;
-  }
-}
-.logo {
-  width: 300px; 
-  width: 100%;
-  height: auto; 
-  margin-bottom: 40px;
-}
-@media (max-width: 768px) {
   .logo {
     max-width: 150px;
   }
