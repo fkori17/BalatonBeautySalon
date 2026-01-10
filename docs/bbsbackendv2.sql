@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2026. Jan 09. 14:05
+-- Létrehozás ideje: 2026. Jan 10. 14:26
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -40,7 +40,7 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `user`, `password`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'admin', '2026-01-09 12:31:03', '2026-01-09 12:31:03');
+(1, 'admin@mail.com', '$2y$12$W9dLc1OVYQVBkVHBO81S/ObF.V5.w.SmcDxTHYlck8UmHKySCsS7O', '2026-01-09 12:31:03', '2026-01-09 21:59:42');
 
 -- --------------------------------------------------------
 
@@ -88,56 +88,56 @@ CREATE TABLE `customers` (
 --
 
 INSERT INTO `customers` (`id`, `created_at`, `updated_at`, `user`, `password`, `name`, `phone`, `loyal`) VALUES
-(1, '2024-01-11 23:00:00', '2024-01-11 23:00:00', 'kiss.anna@example.com', 'pass123', 'Kiss Anna', 2147483647, 1),
-(2, '2024-02-02 23:00:00', '2024-02-02 23:00:00', 'szabo.balazs@example.com', 'balazs321', 'Szabó Balázs', 2147483647, 0),
-(3, '2024-02-17 23:00:00', '2024-02-17 23:00:00', 'toth.julia@example.com', 'julia2024', 'Tóth Júlia', 2147483647, 1),
-(4, '2024-02-29 23:00:00', '2024-02-29 23:00:00', 'nagy.zsolt@example.com', 'zsoltpass', 'Nagy Zsolt', 2147483647, 0),
-(5, '2024-03-14 23:00:00', '2024-03-14 23:00:00', 'kovacs.petra@example.com', 'petra111', 'Kovács Petra', 2147483647, 1),
-(6, '2024-03-21 23:00:00', '2024-03-21 23:00:00', 'horvath.lili@example.com', 'lili555', 'Horváth Lili', 2147483647, 1),
-(7, '2024-04-04 22:00:00', '2024-04-04 22:00:00', 'farkas.gergo@example.com', 'gergo777', 'Farkas Gergő', 2147483647, 0),
-(8, '2024-04-11 22:00:00', '2024-04-11 22:00:00', 'molnar.eva@example.com', 'eva123', 'Molnár Éva', 2147483647, 1),
-(9, '2024-04-19 22:00:00', '2024-04-19 22:00:00', 'balogh.tamas@example.com', 'tamaspass', 'Balogh Tamás', 2147483647, 0),
-(10, '2024-04-27 22:00:00', '2024-04-27 22:00:00', 'varga.dorina@example.com', 'dori2024', 'Varga Dorina', 2147483647, 1),
-(11, '2024-05-01 22:00:00', '2024-05-01 22:00:00', 'kiss.mariann@example.com', 'mari123', 'Kiss Mariann', 2147483647, 1),
-(12, '2024-05-05 22:00:00', '2024-05-05 22:00:00', 'szilagyi.zita@example.com', 'zita555', 'Szilágyi Zita', 2147483647, 0),
-(13, '2024-05-09 22:00:00', '2024-05-09 22:00:00', 'varga.tamas@example.com', 'tomi444', 'Varga Tamás', 2147483647, 0),
-(14, '2024-05-13 22:00:00', '2024-05-13 22:00:00', 'kovacs.zsofi@example.com', 'zsofi222', 'Kovács Zsófi', 2147483647, 1),
-(15, '2024-05-17 22:00:00', '2024-05-17 22:00:00', 'toth.andrea@example.com', 'andi333', 'Tóth Andrea', 2147483647, 1),
-(16, '2024-05-21 22:00:00', '2024-05-21 22:00:00', 'horvath.noemi@example.com', 'noemi777', 'Horváth Noémi', 2147483647, 0),
-(17, '2024-05-25 22:00:00', '2024-05-25 22:00:00', 'farkas.bea@example.com', 'bea888', 'Farkas Bea', 2147483647, 1),
-(18, '2024-05-29 22:00:00', '2024-05-29 22:00:00', 'molnar.vivi@example.com', 'vivi999', 'Molnár Vivi', 2147483647, 1),
-(19, '2024-06-02 22:00:00', '2024-06-02 22:00:00', 'balogh.anna@example.com', 'anna111', 'Balogh Anna', 2147483647, 0),
-(20, '2024-06-06 22:00:00', '2024-06-06 22:00:00', 'varga.szandra@example.com', 'szandi222', 'Varga Szandra', 2147483647, 1),
-(21, '2024-06-10 22:00:00', '2024-06-10 22:00:00', 'kiss.eszter@example.com', 'eszti333', 'Kiss Eszter', 2147483647, 1),
-(22, '2024-06-14 22:00:00', '2024-06-14 22:00:00', 'szabo.klaudia@example.com', 'klaudia444', 'Szabó Klaudia', 2147483647, 0),
-(23, '2024-06-18 22:00:00', '2024-06-18 22:00:00', 'toth.bea@example.com', 'bea555', 'Tóth Bea', 2147483647, 1),
-(24, '2024-06-22 22:00:00', '2024-06-22 22:00:00', 'nagy.david@example.com', 'david666', 'Nagy Dávid', 2147483647, 0),
-(25, '2024-06-26 22:00:00', '2024-06-26 22:00:00', 'kovacs.luca@example.com', 'luca777', 'Kovács Luca', 2147483647, 1),
-(26, '2024-06-30 22:00:00', '2024-06-30 22:00:00', 'horvath.gergo@example.com', 'gergo888', 'Horváth Gergő', 2147483647, 0),
-(27, '2024-07-04 22:00:00', '2024-07-04 22:00:00', 'farkas.noemi@example.com', 'noemi999', 'Farkas Noémi', 2147483647, 1),
-(28, '2024-07-08 22:00:00', '2024-07-08 22:00:00', 'molnar.peter@example.com', 'peter111', 'Molnár Péter', 2147483647, 0),
-(29, '2024-07-12 22:00:00', '2024-07-12 22:00:00', 'balogh.edina@example.com', 'edina222', 'Balogh Edina', 2147483647, 1),
-(30, '2024-07-16 22:00:00', '2024-07-16 22:00:00', 'varga.lili@example.com', 'lili333', 'Varga Lili', 2147483647, 1),
-(31, '2024-07-20 22:00:00', '2024-07-20 22:00:00', 'kiss.viktoria@example.com', 'viki444', 'Kiss Viktória', 2147483647, 0),
-(32, '2024-07-24 22:00:00', '2024-07-24 22:00:00', 'szabo.dora@example.com', 'dori555', 'Szabó Dóra', 2147483647, 1),
-(33, '2024-07-28 22:00:00', '2024-07-28 22:00:00', 'toth.gergely@example.com', 'gergo666', 'Tóth Gergely', 2147483647, 0),
-(34, '2024-08-01 22:00:00', '2024-08-01 22:00:00', 'nagy.klaudia@example.com', 'klaudia777', 'Nagy Klaudia', 2147483647, 1),
-(35, '2024-08-05 22:00:00', '2024-08-05 22:00:00', 'kovacs.edina@example.com', 'edina888', 'Kovács Edina', 2147483647, 1),
-(36, '2024-08-09 22:00:00', '2024-08-09 22:00:00', 'horvath.peter@example.com', 'peter999', 'Horváth Péter', 2147483647, 0),
-(37, '2024-08-13 22:00:00', '2024-08-13 22:00:00', 'farkas.andrea@example.com', 'andi111', 'Farkas Andrea', 2147483647, 1),
-(38, '2024-08-17 22:00:00', '2024-08-17 22:00:00', 'molnar.lili@example.com', 'lili222', 'Molnár Lili', 2147483647, 1),
-(39, '2024-08-21 22:00:00', '2024-08-21 22:00:00', 'balogh.timea@example.com', 'timi333', 'Balogh Tímea', 2147483647, 0),
-(40, '2024-08-25 22:00:00', '2024-08-25 22:00:00', 'varga.petra@example.com', 'petra444', 'Varga Petra', 2147483647, 1),
-(41, '2024-08-29 22:00:00', '2024-08-29 22:00:00', 'kiss.noemi@example.com', 'noemi555', 'Kiss Noémi', 2147483647, 1),
-(42, '2024-09-02 22:00:00', '2024-09-02 22:00:00', 'szabo.vivien@example.com', 'vivi666', 'Szabó Vivien', 2147483647, 0),
-(43, '2024-09-06 22:00:00', '2024-09-06 22:00:00', 'toth.lilla@example.com', 'lilla777', 'Tóth Lilla', 2147483647, 1),
-(44, '2024-09-10 22:00:00', '2024-09-10 22:00:00', 'nagy.zita@example.com', 'zita888', 'Nagy Zita', 2147483647, 0),
-(45, '2024-09-14 22:00:00', '2024-09-14 22:00:00', 'kovacs.tamas@example.com', 'tamas999', 'Kovács Tamás', 2147483647, 1),
-(46, '2024-09-18 22:00:00', '2024-09-18 22:00:00', 'horvath.anna@example.com', 'anna111', 'Horváth Anna', 2147483647, 1),
-(47, '2024-09-22 22:00:00', '2024-09-22 22:00:00', 'farkas.vivien@example.com', 'vivi222', 'Farkas Vivien', 2147483647, 0),
-(48, '2024-09-26 22:00:00', '2024-09-26 22:00:00', 'molnar.noemi@example.com', 'noemi333', 'Molnár Noémi', 2147483647, 1),
-(49, '2024-08-21 22:00:00', '2024-08-21 22:00:00', 'balogh.timi@example.com', 'timi333', 'Balogh Tímea', 2147483647, 0),
-(50, '2024-08-25 22:00:00', '2024-08-25 22:00:00', 'varga.petra@example.com', 'petra444', 'Varga Petra', 2147483647, 1);
+(1, '2024-01-11 23:00:00', '2026-01-09 21:57:57', 'kiss.anna@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Kiss Anna', 2147483647, 1),
+(2, '2024-02-02 23:00:00', '2026-01-09 21:57:57', 'szabo.balazs@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Szabó Balázs', 2147483647, 0),
+(3, '2024-02-17 23:00:00', '2026-01-09 21:57:57', 'toth.julia@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Tóth Júlia', 2147483647, 1),
+(4, '2024-02-29 23:00:00', '2026-01-09 21:57:57', 'nagy.zsolt@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Nagy Zsolt', 2147483647, 0),
+(5, '2024-03-14 23:00:00', '2026-01-09 21:57:57', 'kovacs.petra@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Kovács Petra', 2147483647, 1),
+(6, '2024-03-21 23:00:00', '2026-01-09 21:57:57', 'horvath.lili@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Horváth Lili', 2147483647, 1),
+(7, '2024-04-04 22:00:00', '2026-01-09 21:57:57', 'farkas.gergo@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Farkas Gergő', 2147483647, 0),
+(8, '2024-04-11 22:00:00', '2026-01-09 21:57:57', 'molnar.eva@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Molnár Éva', 2147483647, 1),
+(9, '2024-04-19 22:00:00', '2026-01-09 21:57:57', 'balogh.tamas@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Balogh Tamás', 2147483647, 0),
+(10, '2024-04-27 22:00:00', '2026-01-09 21:57:57', 'varga.dorina@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Varga Dorina', 2147483647, 1),
+(11, '2024-05-01 22:00:00', '2026-01-09 21:57:57', 'kiss.mariann@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Kiss Mariann', 2147483647, 1),
+(12, '2024-05-05 22:00:00', '2026-01-09 21:57:57', 'szilagyi.zita@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Szilágyi Zita', 2147483647, 0),
+(13, '2024-05-09 22:00:00', '2026-01-09 21:57:57', 'varga.tamas@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Varga Tamás', 2147483647, 0),
+(14, '2024-05-13 22:00:00', '2026-01-09 21:57:57', 'kovacs.zsofi@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Kovács Zsófi', 2147483647, 1),
+(15, '2024-05-17 22:00:00', '2026-01-09 21:57:57', 'toth.andrea@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Tóth Andrea', 2147483647, 1),
+(16, '2024-05-21 22:00:00', '2026-01-09 21:57:57', 'horvath.noemi@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Horváth Noémi', 2147483647, 0),
+(17, '2024-05-25 22:00:00', '2026-01-09 21:57:57', 'farkas.bea@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Farkas Bea', 2147483647, 1),
+(18, '2024-05-29 22:00:00', '2026-01-09 21:57:57', 'molnar.vivi@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Molnár Vivi', 2147483647, 1),
+(19, '2024-06-02 22:00:00', '2026-01-09 21:57:57', 'balogh.anna@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Balogh Anna', 2147483647, 0),
+(20, '2024-06-06 22:00:00', '2026-01-09 21:57:57', 'varga.szandra@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Varga Szandra', 2147483647, 1),
+(21, '2024-06-10 22:00:00', '2026-01-09 21:57:57', 'kiss.eszter@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Kiss Eszter', 2147483647, 1),
+(22, '2024-06-14 22:00:00', '2026-01-09 21:57:57', 'szabo.klaudia@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Szabó Klaudia', 2147483647, 0),
+(23, '2024-06-18 22:00:00', '2026-01-09 21:57:57', 'toth.bea@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Tóth Bea', 2147483647, 1),
+(24, '2024-06-22 22:00:00', '2026-01-09 21:57:57', 'nagy.david@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Nagy Dávid', 2147483647, 0),
+(25, '2024-06-26 22:00:00', '2026-01-09 21:57:57', 'kovacs.luca@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Kovács Luca', 2147483647, 1),
+(26, '2024-06-30 22:00:00', '2026-01-09 21:57:57', 'horvath.gergo@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Horváth Gergő', 2147483647, 0),
+(27, '2024-07-04 22:00:00', '2026-01-09 21:57:57', 'farkas.noemi@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Farkas Noémi', 2147483647, 1),
+(28, '2024-07-08 22:00:00', '2026-01-09 21:57:57', 'molnar.peter@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Molnár Péter', 2147483647, 0),
+(29, '2024-07-12 22:00:00', '2026-01-09 21:57:57', 'balogh.edina@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Balogh Edina', 2147483647, 1),
+(30, '2024-07-16 22:00:00', '2026-01-09 21:57:57', 'varga.lili@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Varga Lili', 2147483647, 1),
+(31, '2024-07-20 22:00:00', '2026-01-09 21:57:57', 'kiss.viktoria@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Kiss Viktória', 2147483647, 0),
+(32, '2024-07-24 22:00:00', '2026-01-09 21:57:57', 'szabo.dora@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Szabó Dóra', 2147483647, 1),
+(33, '2024-07-28 22:00:00', '2026-01-09 21:57:57', 'toth.gergely@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Tóth Gergely', 2147483647, 0),
+(34, '2024-08-01 22:00:00', '2026-01-09 21:57:57', 'nagy.klaudia@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Nagy Klaudia', 2147483647, 1),
+(35, '2024-08-05 22:00:00', '2026-01-09 21:57:57', 'kovacs.edina@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Kovács Edina', 2147483647, 1),
+(36, '2024-08-09 22:00:00', '2026-01-09 21:57:57', 'horvath.peter@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Horváth Péter', 2147483647, 0),
+(37, '2024-08-13 22:00:00', '2026-01-09 21:57:57', 'farkas.andrea@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Farkas Andrea', 2147483647, 1),
+(38, '2024-08-17 22:00:00', '2026-01-09 21:57:57', 'molnar.lili@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Molnár Lili', 2147483647, 1),
+(39, '2024-08-21 22:00:00', '2026-01-09 21:57:57', 'balogh.timea@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Balogh Tímea', 2147483647, 0),
+(40, '2024-08-25 22:00:00', '2026-01-09 21:57:57', 'varga.petra@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Varga Petra', 2147483647, 1),
+(41, '2024-08-29 22:00:00', '2026-01-09 21:57:57', 'kiss.noemi@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Kiss Noémi', 2147483647, 1),
+(42, '2024-09-02 22:00:00', '2026-01-09 21:57:57', 'szabo.vivien@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Szabó Vivien', 2147483647, 0),
+(43, '2024-09-06 22:00:00', '2026-01-09 21:57:57', 'toth.lilla@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Tóth Lilla', 2147483647, 1),
+(44, '2024-09-10 22:00:00', '2026-01-09 21:57:57', 'nagy.zita@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Nagy Zita', 2147483647, 0),
+(45, '2024-09-14 22:00:00', '2026-01-09 21:57:57', 'kovacs.tamas@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Kovács Tamás', 2147483647, 1),
+(46, '2024-09-18 22:00:00', '2026-01-09 21:57:57', 'horvath.anna@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Horváth Anna', 2147483647, 1),
+(47, '2024-09-22 22:00:00', '2026-01-09 21:57:57', 'farkas.vivien@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Farkas Vivien', 2147483647, 0),
+(48, '2024-09-26 22:00:00', '2026-01-09 21:57:57', 'molnar.noemi@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Molnár Noémi', 2147483647, 1),
+(49, '2024-08-21 22:00:00', '2026-01-09 21:57:57', 'balogh.timi@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Balogh Tímea', 2147483647, 0),
+(50, '2024-08-25 22:00:00', '2026-01-09 21:57:57', 'varga.petra@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Varga Petra', 2147483647, 1);
 
 -- --------------------------------------------------------
 
@@ -215,7 +215,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (6, '2025_11_11_101934_create_treatments_table', 1),
 (7, '2025_11_11_101942_create_services_table', 1),
 (8, '2025_11_11_102147_create_service_treatment_links_table', 1),
-(9, '2026_01_08_111635_create_admins_table', 1);
+(9, '2026_01_08_111635_create_admins_table', 1),
+(10, '2026_01_09_223140_create_personal_access_tokens_table', 1);
 
 -- --------------------------------------------------------
 
@@ -247,6 +248,28 @@ CREATE TABLE `personal_access_tokens` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- A tábla adatainak kiíratása `personal_access_tokens`
+--
+
+INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `name`, `token`, `abilities`, `last_used_at`, `expires_at`, `created_at`, `updated_at`) VALUES
+(2, 'App\\Models\\Customer', 1, 'customer-token', 'de2a21b09ceedb25d814f2245e54d6eaea6954568835ca84c7543ebf685a6432', '[\"*\"]', NULL, NULL, '2026-01-10 10:21:36', '2026-01-10 10:21:36'),
+(3, 'App\\Models\\Customer', 1, 'customer-token', 'dcb3fa13553eca23b1774946bded8ec2571478be2ef021eaf864e4a77b232c7f', '[\"*\"]', NULL, NULL, '2026-01-10 10:21:38', '2026-01-10 10:21:38'),
+(4, 'App\\Models\\Customer', 1, 'customer-token', '63b095ef5492d77c5b6047ceda8ef81f22432a4b072dad2564013d49e16d69f9', '[\"*\"]', NULL, NULL, '2026-01-10 10:21:52', '2026-01-10 10:21:52'),
+(5, 'App\\Models\\Customer', 1, 'customer-token', '3270bd4124063d26f68ea3ba3971b351ddd945e33b710842821792cdab1486dc', '[\"*\"]', NULL, NULL, '2026-01-10 10:22:07', '2026-01-10 10:22:07'),
+(6, 'App\\Models\\Admin', 1, 'admin-token', 'ae14495af2386d107b0dc1c5602897be18fe32fc5cea7429849f1ffb4da34c4b', '[\"*\"]', NULL, NULL, '2026-01-10 10:23:53', '2026-01-10 10:23:53'),
+(8, 'App\\Models\\Customer', 1, 'customer-token', '1038ef31d32ccb56eaadc6db725e6342107984315cf55412b0c3127fb4a0e547', '[\"*\"]', NULL, NULL, '2026-01-10 11:10:46', '2026-01-10 11:10:46'),
+(9, 'App\\Models\\Customer', 1, 'customer-token', '1489e88bf4ca47bfb0ec0dcf56b0439896621c52480f669a01e79630df5f7997', '[\"*\"]', NULL, NULL, '2026-01-10 11:21:17', '2026-01-10 11:21:17'),
+(10, 'App\\Models\\Customer', 1, 'customer-token', 'fa50bde3d732dcc737e0e99301f219f2f8ce278372b1029883a179cd136a7991', '[\"*\"]', NULL, NULL, '2026-01-10 11:21:47', '2026-01-10 11:21:47'),
+(11, 'App\\Models\\Customer', 1, 'customer-token', '6acdaad49cb51f4eb3c472a7e78d20e50cbe50e0a7dff93f38494fb191c86a46', '[\"*\"]', NULL, NULL, '2026-01-10 11:21:54', '2026-01-10 11:21:54'),
+(12, 'App\\Models\\Customer', 1, 'customer-token', 'f22f2deba3eabfe17bbf28ba7296141ff1a71937c4f25aaa2df8e8b4735de071', '[\"*\"]', NULL, NULL, '2026-01-10 11:21:55', '2026-01-10 11:21:55'),
+(13, 'App\\Models\\Customer', 1, 'customer-token', '352f490938d7cf183b539480f664b4792188c36925c350777a8d235f94083b8f', '[\"*\"]', NULL, NULL, '2026-01-10 11:22:35', '2026-01-10 11:22:35'),
+(14, 'App\\Models\\Customer', 1, 'customer-token', '99634bbe72220d229ba9fdf4036cc0f7ad32d6ce34bc604cddddb10718bae7c4', '[\"*\"]', NULL, NULL, '2026-01-10 11:22:44', '2026-01-10 11:22:44'),
+(15, 'App\\Models\\Customer', 1, 'customer-token', '5c7ffef120ac0ea8cd10fcf794c8b24f3709858186f858b13d9fa08583e353b8', '[\"*\"]', NULL, NULL, '2026-01-10 11:24:05', '2026-01-10 11:24:05'),
+(17, 'App\\Models\\Customer', 1, 'customer-token', 'daf28b077f0a9334acabbcf9e8f5d9b1bdc9bc20d9c4d12da81b7105282aad85', '[\"*\"]', NULL, NULL, '2026-01-10 11:28:43', '2026-01-10 11:28:43'),
+(18, 'App\\Models\\Admin', 1, 'admin-token', '5b3b9ac91a92c6817486797523aa9f7c5a54f1745be6f0d62987dd9a3396f113', '[\"*\"]', NULL, NULL, '2026-01-10 11:29:11', '2026-01-10 11:29:11'),
+(21, 'App\\Models\\Customer', 1, 'customer-token', '204a80fc784fd21f24aaab083ceca59c100b3d3f5b0d7e8541727a56183a2369', '[\"*\"]', NULL, NULL, '2026-01-10 12:06:48', '2026-01-10 12:06:48');
 
 -- --------------------------------------------------------
 
@@ -1076,13 +1099,13 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT a táblához `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT a táblához `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT a táblához `services`
