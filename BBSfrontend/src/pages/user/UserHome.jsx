@@ -1,7 +1,7 @@
 function UserHome() {
     return (
         <>
-            <h1>Teszt</h1>
+            <h1>TesztUser</h1>
         </>
     )
 }

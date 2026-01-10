@@ -2,18 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-
-class Customer extends Model
+class Customer extends Authenticatable
 {
     use HasApiTokens;
+
+    protected $table = 'customers';
     protected $hidden = ['password'];
 
-    function treatment() {
+    public function treatment(): HasMany
+    {
         return $this->hasMany(Treatment::class, 'customer_id', 'id');
     }
-    //
 }
