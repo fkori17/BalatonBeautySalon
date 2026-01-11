@@ -1,0 +1,50 @@
+.treatments-page {
+  padding: 40px 60px;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 48px;
+  margin-bottom: 40px;
+}
+
+.treatments-table {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.table-header,
+.table-row {
+  display: grid;
+  grid-template-columns: 160px 1.5fr 2fr 60px;
+  align-items: center;
+  font-size: 18px;
+}
+
+.table-header {
+  font-weight: 600;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #ccc;
+}
+
+.table-row {
+  padding: 10px 0;
+}
+
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.icon {
+  text-align: center;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.icon:hover {
+  transform: scale(1.2);
+}
