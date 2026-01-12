@@ -71,6 +71,18 @@ body {
   color: #333;
 }
 
+/* ========================== */
+/* Autofill háttér eltüntetése */
+/* ========================== */
+.login-left input:-webkit-autofill,
+.login-left input:-webkit-autofill:hover,
+.login-left input:-webkit-autofill:focus,
+.login-left input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important; /* háttér fehér */
+  -webkit-text-fill-color: #333 !important; /* szöveg színe */
+  transition: background-color 5000s ease-in-out 0s; /* workaround autofill-re */
+}
+
 .login-left input::placeholder {
   color: #b8b8b8;
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
-import "../../styles/pages/user/Treatments.css";
+import "../../components/style/Treatments.css";
 function Treatments() {
   const [treatments, setTreatments] = useState(null);
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
-import "../../styles/pages/user/UserProfile.css";
+import "../../components/style/UserProfile.css";
 
 function Profile() {
   const [user, setUser] = useState(null);
@@ -41,7 +41,7 @@ function Profile() {
   return (
     <div className="profile-page">
       <h1>Profilom</h1>
-
+       <br />
       <div className="card">
         <h2>Profil adatok</h2>
         <div className="row">
@@ -50,7 +50,7 @@ function Profile() {
         </div>
         <div className="row">
           <label>Email cím</label>
-          <input value={user.email} disabled />
+          <input value={user.user} disabled />
         </div>
         <div className="row">
           <label>Telefonszám</label>
@@ -62,15 +62,15 @@ function Profile() {
         <h2>Jelszó módosítása</h2>
         <div className="row">
           <label>Jelenlegi jelszó</label>
-          <input type="password" value={oldPass} onChange={e=>setOldPass(e.target.value)} />
+          <input type="password" autoComplete="old-password" value={oldPass} onChange={e=>setOldPass(e.target.value)} />
         </div>
         <div className="row">
           <label>Új jelszó</label>
-          <input type="password" value={newPass} onChange={e=>setNewPass(e.target.value)} />
+          <input type="password" autoComplete="new-password" value={newPass} onChange={e=>setNewPass(e.target.value)} />
         </div>
         <div className="row">
           <label>Új jelszó újra</label>
-          <input type="password" value={newPass2} onChange={e=>setNewPass2(e.target.value)} />
+          <input type="password" autoComplete="new-password" value={newPass2} onChange={e=>setNewPass2(e.target.value)} />
         </div>
         <button onClick={changePassword}>Jelszó mentése</button>
       </div>

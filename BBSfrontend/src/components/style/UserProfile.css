@@ -11,40 +11,56 @@
 .card {
   max-width: 700px;
   margin: 0 auto 40px;
-  padding: 30px;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.4);
+  padding: 30px 40px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
 .card h2 {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  font-weight: 500;
 }
 
 .row {
   display: grid;
   grid-template-columns: 200px 1fr;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 16px;
+  gap: 15px;
 }
 
-.row input {
-  padding: 8px 12px;
+.row input,.row input:active {
+
+  padding: 10px 14px;
   border-radius: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.85);
+  font-size: 14px;
+  color: black;
 }
 
+.row input:focus {
+  outline: none;
+  border-color: #e2b889;
+}
 button {
-  margin-top: 10px;
-  padding: 10px 20px;
+  margin: 15px auto 0;
+  padding: 10px 24px;
   border-radius: 20px;
   border: none;
   background: #f6c28b;
   cursor: pointer;
+  font-size: 14px;
+  width: 350px;
+  display: block;
+  color: black;
 }
-
 button:hover {
-  opacity: 0.9;
+  background: #eab97f;
 }
 
 .toast {
@@ -52,16 +68,32 @@ button:hover {
   right: 20px;
   bottom: 20px;
   padding: 15px 25px;
-  border-radius: 12px;
+  border-radius: 14px;
   font-weight: 600;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .toast.error {
-  background: #f8c7c7;
+  background: rgba(248, 199, 199, 0.9);
   color: #900;
 }
 
 .toast.success {
-  background: #c7f0c7;
+  background: rgba(199, 240, 199, 0.9);
   color: #070;
+}
+
+@media (max-width: 768px) {
+  .profile-page {
+    padding: 30px 20px;
+  }
+
+  .profile-page h1 {
+    font-size: 32px;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+  }
 }
