@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Service_treatment_link;
+use App\Models\ServiceTreatmentLink;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -55,7 +55,7 @@ class ServiceTreatmentLinkController extends Controller
             ], 400);
         };
 
-        $newRecord = new service_treatment_link();
+        $newRecord = new ServiceTreatmentLink();
         $newRecord -> treatment_id = $request->treatment_id;
         $newRecord -> service_id = $request->service_id;
         $newRecord -> piece = $request->piece;
@@ -66,7 +66,7 @@ class ServiceTreatmentLinkController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(service_treatment_link $service_treatment_link)
+    public function show(ServiceTreatmentLink $serviceTreatmentLink)
     {
         //
     }
@@ -74,7 +74,7 @@ class ServiceTreatmentLinkController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(service_treatment_link $service_treatment_link)
+    public function edit(ServiceTreatmentLink $serviceTreatmentLink)
     {
         //
     }
@@ -82,7 +82,7 @@ class ServiceTreatmentLinkController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, service_treatment_link $service_treatment_link)
+    public function update(Request $request, ServiceTreatmentLink $serviceTreatmentLink)
     {
         //
     }
@@ -90,7 +90,7 @@ class ServiceTreatmentLinkController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(service_treatment_link $service_treatment_link)
+    public function destroy(ServiceTreatmentLink $serviceTreatmentLink)
     {
         //
     }

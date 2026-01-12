@@ -4,14 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Service_treatment_link extends Model
+class ServiceTreatmentLink extends Model
 {
-    function treatment() {
+    protected $table = 'service_treatment_links';
+
+    public function treatment()
+    {
         return $this->belongsTo(Treatment::class, 'treatment_id');
     }
 
-    function service() {
+    public function service()
+    {
         return $this->belongsTo(Service::class, 'service_id');
     }
-    //
 }

@@ -62,6 +62,30 @@ class TreatmentController extends Controller
         return response()->json(['success' => true, 'message' => 'Sikeres mentés'], 201);
     }
 
+    public function myTreatments(Request $request)
+    {
+        $customerId = $request->user()->id;
+
+        $treatments = Treatment::where('customer_id', $customerId)
+            ->with(['serviceLinks.service'])
+            ->orderByDesc('created_at')
+            ->get()
+            ->map(function ($treatment) {
+                return [
+                    'id' => $treatment->id,
+                    'created_at' => $treatment->created_at,
+                    'description' => $treatment->description,
+                    'services' => $treatment->serviceLinks
+                        ->filter(fn ($link) => $link->service)
+                        ->map(fn ($link) => [
+                            'name' => $link->service->name,
+                            'piece' => $link->piece
+                        ])
+                ];
+            });
+
+        return response()->json($treatments);
+    }
     /**
      * Display the specified resource.
      */

@@ -1,11 +1,19 @@
 import "./style/ResponsiveSidebar.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navbar, Nav, Offcanvas, Button } from "react-bootstrap";
 import useLogout from "../hooks/useLogout";
 import { NavLink } from "react-router-dom";
+import api from "../api/axios";
 
-const UserSidebar = ({ children, name }) => {
+const UserSidebar = ({ children }) => {
   const [show, setShow] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    api.get("/me")
+      .then(res => setUser(res.data))
+      .catch(() => setUser(null));
+  }, []);
 
   return (
     <>
@@ -13,12 +21,12 @@ const UserSidebar = ({ children, name }) => {
         <Button variant="outline-secondary" onClick={() => setShow(true)}>
           ☰
         </Button>
-        <Navbar.Brand className="ms-3">{name}</Navbar.Brand>
+        <Navbar.Brand className="ms-3">  {user ? user.name : "Betöltés..."}</Navbar.Brand>
       </Navbar>
 
       <Offcanvas show={show} onHide={() => setShow(false)} placement="start">
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title>{name}</Offcanvas.Title>
+        <Offcanvas.Header closeButton>  
+          <Offcanvas.Title>{user ? user.name : "Betöltés..."}</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <SidebarContent />
@@ -27,7 +35,7 @@ const UserSidebar = ({ children, name }) => {
 
       <div className="user-layout">
         <aside className="sidebar d-none d-lg-flex flex-column">
-          <div className="p-3 fw-bold">{name}</div>
+          <div className="p-3 fw-bold">{user ? user.name : "Betöltés..."}</div>
           <SidebarContent />
         </aside>
 

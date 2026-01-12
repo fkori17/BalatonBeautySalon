@@ -59,6 +59,10 @@
     padding-top: 20px;
     gap: 18px;
 }
+nav button {
+    width: auto;
+    margin: 0;
+}
 
 .one-word-per-line {
     word-spacing: 227px; 

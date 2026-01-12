@@ -3,7 +3,7 @@ import UserSidebar from "../components/UserSidebar";
 
 function UserLayout() {
   return (
-    <UserSidebar name="Felhasználói felület">
+    <UserSidebar>
       <Outlet />
     </UserSidebar>
   );
