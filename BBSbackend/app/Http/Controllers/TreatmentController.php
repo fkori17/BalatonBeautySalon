@@ -16,6 +16,33 @@ class TreatmentController extends Controller
         //
     }
 
+    public function last(Request $request)
+    {
+        $treatment = Treatment::where('customer_id', $request->user()->id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        if (!$treatment) {
+            return response()->json(null, 200);
+        }
+
+        return $treatment;
+    }
+
+    public function stats(Request $request)
+    {
+        $user = $request->user();
+
+        $treatments = Treatment::where('customer_id', $user->id)->get();
+
+        return [
+            'username' => $user->name,
+            'total_treatments' => $treatments->count(),
+            'member_since' => $user->created_at->format('Y-m-d'),
+            'next_visit' => '4 hét múlva'
+        ];
+    }
+
     /**
      * Show the form for creating a new resource.
      */
