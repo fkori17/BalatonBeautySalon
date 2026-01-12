@@ -25,7 +25,6 @@ function UserHome() {
             {/* Utolsó kezelés */}
             <div className="card last-treatment">
             <h2>Utolsó kezelés</h2>
-
             {lastTreatment ? (
                 <>
                 <p><strong>Dátum:</strong> {lastTreatment.created_at.split("T")[0]}</p>
