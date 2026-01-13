@@ -10,8 +10,9 @@ const UserSidebar = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    api.get("/me")
-      .then(res => setUser(res.data))
+    api
+      .get("/me")
+      .then((res) => setUser(res.data))
       .catch(() => setUser(null));
   }, []);
 
@@ -21,11 +22,14 @@ const UserSidebar = ({ children }) => {
         <Button variant="outline-secondary" onClick={() => setShow(true)}>
           ☰
         </Button>
-        <Navbar.Brand className="ms-3">  {user ? user.name : "Betöltés..."}</Navbar.Brand>
+        <Navbar.Brand className="ms-3">
+          {" "}
+          {user ? user.name : "Betöltés..."}
+        </Navbar.Brand>
       </Navbar>
 
       <Offcanvas show={show} onHide={() => setShow(false)} placement="start">
-        <Offcanvas.Header closeButton>  
+        <Offcanvas.Header closeButton>
           <Offcanvas.Title>{user ? user.name : "Betöltés..."}</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
@@ -52,7 +56,7 @@ function SidebarContent() {
 
   return (
     <Nav className="flex-column h-100 px-3">
-      <Nav.Link as={NavLink} to="/user">
+      <Nav.Link as={NavLink} to="/user" end>
         <HomeIcon /> Kezdőlap
       </Nav.Link>
 

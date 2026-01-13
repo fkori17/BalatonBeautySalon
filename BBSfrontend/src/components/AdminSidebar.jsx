@@ -40,11 +40,11 @@ const AdminSidebar = ({ children }) => {
 };
 
 function SidebarContent() {
-    const logout = useLogout();
-  
+  const logout = useLogout();
+
   return (
     <Nav className="flex-column h-100 px-3">
-      <Nav.Link as={NavLink} to="/admin">
+      <Nav.Link as={NavLink} to="/admin" end>
         <HomeIcon /> Kezdőlap
       </Nav.Link>
 
