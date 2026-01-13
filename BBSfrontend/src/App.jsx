@@ -14,15 +14,15 @@ import UserLayout from "./layouts/UserLayout";
 import AdminLayout from "./layouts/AdminLayout";
 
 import UserHome from "./pages/user/UserHome";
-import UserTreatments from "./pages/user/Treatments"
-import UserProfile from "./pages/user/Profile"
-import UserContact from "./pages/user/Contact"
+import UserTreatments from "./pages/user/Treatments";
+import UserProfile from "./pages/user/Profile";
+import UserContact from "./pages/user/Contact";
 
-import AdminHome from "./pages/admin/AdminHome"
-import AdminTreatments from "./pages/admin/Treatments"
-import AdminCustomers from "./pages/admin/Customers"
-import AdminServices from "./pages/admin/Services"
-import AdminStats from "./pages/admin/Stats"
+import AdminHome from "./pages/admin/AdminHome";
+import AdminTreatments from "./pages/admin/Treatments";
+import AdminCustomers from "./pages/admin/Customers";
+import AdminServices from "./pages/admin/Services";
+import AdminStats from "./pages/admin/Stats";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -30,7 +30,6 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-
         {/* Login oldalak */}
         <Route path="/login" element={<Login />} />
         <Route path="/admin/login" element={<AdminLogin />} />
@@ -48,7 +47,6 @@ function App() {
           <Route path="treatments" element={<UserTreatments />} />
           <Route path="profile" element={<UserProfile />} />
           <Route path="contact" element={<UserContact />} />
-
         </Route>
 
         {/* ADMIN dashboard */}
@@ -69,7 +67,6 @@ function App() {
 
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/login" />} />
-
       </Routes>
     </BrowserRouter>
   );
