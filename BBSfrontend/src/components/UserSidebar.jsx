@@ -65,7 +65,7 @@ function SidebarContent() {
       </Nav.Link>
 
       <Nav.Link as={NavLink} to="/user/Contact">
-        <PhoneIcon className="phoneIcon" /> Profilom
+        <PhoneIcon className="phoneIcon" /> Kapcsolat
       </Nav.Link>
 
       {/* alsó szekció */}

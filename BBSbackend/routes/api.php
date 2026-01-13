@@ -19,4 +19,10 @@ Route::middleware('auth:sanctum')->post('/logout', function (Request $request) {
 Route::middleware('auth:sanctum')->get('/me', function (Request $request) {
     return $request->user();
 });
+
 Route::middleware('auth:sanctum')->get('/treatments/me', [TreatmentController::class, 'myTreatments']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/treatments/me/last', [TreatmentController::class, 'last']);
+    Route::get('/treatments/me/stats', [TreatmentController::class, 'stats']);
+});
