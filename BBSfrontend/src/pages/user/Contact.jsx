@@ -7,9 +7,6 @@ function Contact() {
         <hr className="hrTop"/>
         <div className="contact-sections-wrapper">
             <div className="contact-details">
-                <h2>Elérhetőségek</h2>
-                <hr className="hrMiddle"/>
-
                 <h3><i className="bi bi-geo-alt-fill icon"></i> Cím</h3>
                 <p>
                     <a 
@@ -21,9 +18,9 @@ function Contact() {
                         8648 Balatonkeresztúr, Kossuth Lajos u. 79.
                     </a>
                 </p>
+            </div>
 
-                <hr />
-
+            <div className="contact-details">
                 <h3><i className="bi bi-telephone-fill icon"></i> Telefonszám</h3>
                 <p>
                     <a href="tel:+36123456789 https://wa.me/36123456789" 
@@ -31,23 +28,9 @@ function Contact() {
                         +36 12 345 6789
                     </a>
                 </p>
+            </div>
 
-                <div className="phone-links">
-                    <a href="tel:+36123456789" className="contact-link">
-                        Telefon
-                    </a>
-
-                    <a 
-                        href="https://wa.me/36123456789"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="contact-link"
-                    >
-                        WhatsApp
-                    </a>
-                </div>
-                <hr />
-
+            <div className="contact-details">
                 <h3><i className="bi bi-envelope-fill icon"></i> Email cím</h3>
                 <p>
                     <a href="https://mail.google.com/mail/?view=cm&fs=1&to=salon@gmail.com" 
@@ -57,12 +40,11 @@ function Contact() {
                     </a>
                 </p>
             </div>
-
             <div className="contact-openingHours">
-            <h2>Nyitvatartás</h2>
-            <hr className="hrMiddle"/>
-            <p><strong>Hétfő - Szombat:</strong> 06:00 – 20:00</p>
-            <p><strong>Vasárnap:</strong> <span className="closed">Zárva</span></p>
+                <h2>Nyitvatartás</h2>
+                <hr />
+                <p><strong>Hétfő - Szombat:</strong> 06:00 – 20:00</p>
+                <p><strong>Vasárnap:</strong> <span className="closed">Zárva</span></p>
             </div>
         </div>
     </div>
