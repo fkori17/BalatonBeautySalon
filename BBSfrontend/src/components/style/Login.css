@@ -71,16 +71,14 @@ body {
   color: #333;
 }
 
-/* ========================== */
-/* Autofill háttér eltüntetése */
-/* ========================== */
+
 .login-left input:-webkit-autofill,
 .login-left input:-webkit-autofill:hover,
 .login-left input:-webkit-autofill:focus,
 .login-left input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important; /* háttér fehér */
-  -webkit-text-fill-color: #333 !important; /* szöveg színe */
-  transition: background-color 5000s ease-in-out 0s; /* workaround autofill-re */
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+  -webkit-text-fill-color: #333 !important;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 .login-left input::placeholder {
@@ -180,4 +178,32 @@ body {
   .logo {
     max-width: 150px;
   }
+}
+
+
+
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon input {
+  width: 100%;
+  padding-right: 40px; 
+}
+
+.input-with-icon .icon { 
+  position: absolute; 
+  top: 50%; 
+  right: 18px;
+  transform: translateY(-50%); 
+  cursor: pointer; 
+  color: #666; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+}
+
+
+.input-with-icon .icon:hover {
+  color: #000;
 }

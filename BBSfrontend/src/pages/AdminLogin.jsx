@@ -7,6 +7,8 @@ import "../components/style/Login.css";
 function AdminLogin() {
   const [user, setUser] = useState(""); 
   const [password, setPassword] = useState("");
+  const [showPass, setShowPass] = useState(false); // 👁️ új state
+
   const navigate = useNavigate();
 
   const adminLogin = async (e) => {
@@ -17,16 +19,14 @@ function AdminLogin() {
         user, password
       });
 
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("authType", "admin");
 
-    localStorage.setItem("token", response.data.token);
-    localStorage.setItem("authType", "admin");
-
-    navigate("/admin");
+      navigate("/admin");
 
     } catch {
       alert("Hibás admin belépési adatok");
     }
-
   };
 
   return (
@@ -35,8 +35,26 @@ function AdminLogin() {
         <form className="login-left" onSubmit={adminLogin}>
           <h1>Balaton Beauty<br /> Salon</h1>
 
-          <input placeholder="Email" value={user} onChange={(e) => setUser(e.target.value)} />
-          <input placeholder="Jelszó" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <input 
+            placeholder="Email" 
+            value={user} 
+            onChange={(e) => setUser(e.target.value)} 
+          />
+
+          <div className="input-with-icon">
+            <input 
+              placeholder="Jelszó" 
+              type={showPass ? "text" : "password"} 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+            />
+            <span className="icon" onClick={() => setShowPass(prev => !prev)}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
+                <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
+              </svg>
+            </span>
+          </div>
 
           <button type="submit">Bejelentkezés</button>
         </form>
