@@ -33,14 +33,15 @@
   gap: 15px;
 }
 
-.row input,
-.row input:active {
+.row input {
   padding: 10px 14px;
   border-radius: 20px;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 2px solid transparent;
   background: rgba(255, 255, 255, 0.85);
   font-size: 14px;
   color: black;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
 }
 
 .row input:focus {
@@ -64,28 +65,6 @@ button {
 button:hover {
   background: #eab97f;
 }
-
-.toast {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  padding: 15px 25px;
-  border-radius: 14px;
-  font-weight: 600;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-
-.toast.error {
-  background: rgba(248, 199, 199, 0.9);
-  color: #900;
-}
-
-.toast.success {
-  background: rgba(199, 240, 199, 0.9);
-  color: #070;
-}
-
 @media (max-width: 768px) {
   .profile-page {
     padding: 30px 20px;
@@ -107,16 +86,31 @@ button:hover {
 
 .input-with-icon input {
   width: 100%;
-  padding-right: 40px; 
+  padding-right: 48px; 
 }
 
-.input-with-icon .icon { position: absolute; top: 50%; right: 18px;
-  transform: translateY(-50%); 
-  cursor: pointer; color: #666; 
-  display: flex; align-items: center; 
-  justify-content: center; 
+
+.input-with-icon .icon {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 25px;
+  display: flex;
+  align-items: center;   
+  justify-content: center;
+  cursor: pointer;
 }
 
-.input-with-icon .icon:hover {
-  color: #000;
+.input-with-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: #666;
+  fill: none;
+  stroke-width: 1.5; 
+  transition: stroke 0.2s ease, opacity 0.2s ease;
+}
+
+
+.input-with-icon .icon:hover svg {
+  stroke: #000;
 }
