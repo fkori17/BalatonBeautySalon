@@ -17,6 +17,7 @@
 .content {
     flex: 1;
     overflow-x: hidden;
+    height: calc(100vh - 56px); /* 56px = felső navbar */
 }
 
 .sidebar .nav {

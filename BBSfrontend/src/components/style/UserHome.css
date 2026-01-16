@@ -8,6 +8,7 @@
 }
 
 .welcome-card {
+    border: 1px solid rgba(0, 0, 0, 0.15);
     text-align: center;
     width: 95%;
     margin-bottom: 2rem;
@@ -23,6 +24,9 @@
     gap: 2rem;
     flex-wrap: wrap;
     width: 100%;
+    div {
+        border: 1px solid rgba(0, 0, 0, 0.15);
+    }
 }
 
 .card {
@@ -36,7 +40,7 @@
 }
 
 .view-button {
-    background-color: #fff8f0;
+    background-color: #f6c28b;
     border-radius: 12px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     margin-top: 1rem;
@@ -45,8 +49,7 @@
 }
 
 .view-button:hover {
-    background-color: #898989;
-    color: white;
+    background-color: #eab97f;
 }
 
 p, li {

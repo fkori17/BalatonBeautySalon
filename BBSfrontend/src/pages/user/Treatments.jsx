@@ -2,15 +2,21 @@ import { useEffect, useState } from "react";
 import api from "../../api/axios";
 import "../../components/style/Treatments.css";
 import { Search } from "react-bootstrap-icons";
+import { Modal, Button } from "react-bootstrap";
+import { useLoading } from "../../context/LoadingContext";
 
 function Treatments() {
-  const [treatments, setTreatments] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [treatments, setTreatments] = useState([]);
+  const { setLoading } = useLoading();
+  const [selectedTreatment, setSelectedTreatment] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
+
     api
       .get("/treatments/me")
-      .then(res => setTreatments(res.data))
+      .then((res) => setTreatments(res.data))
       .finally(() => setLoading(false));
   }, []);
 
@@ -22,17 +28,9 @@ function Treatments() {
     if (!services || services.length === 0) return "-";
 
     return services
-      .map(s => (s.piece > 1 ? `${s.name} (${s.piece}x)` : s.name))
+      .map((s) => (s.piece > 1 ? `${s.name} (${s.piece}x)` : s.name))
       .join(", ");
   };
-
-   if (loading) {
-    return (
-      <div className="treatments-page">
-        <p>Betöltés...</p>
-      </div>
-    );
-  }
 
   return (
     <div className="treatments-page">
@@ -46,30 +44,71 @@ function Treatments() {
           <span></span>
         </div>
 
-        {treatments.map(treatment => (
+        {treatments.map((treatment) => (
           <div className="table-row" key={treatment.id}>
-            <span className="date">
-              {formatDate(treatment.created_at)}
-            </span>
+            <span className="date">{formatDate(treatment.created_at)}</span>
 
             <span className="services ellipsis">
               {formatServices(treatment.services)}
             </span>
 
             <span className="details ellipsis">
-              {treatment.description}
+              {treatment.description || "-"}
             </span>
 
             <button
               className="icon-btn"
-              title="Részletek"
-              onClick={() => console.log("Treatment ID:", treatment.id)}
+              title="Részletek megtekintése"
+              onClick={() => {
+                setSelectedTreatment(treatment);
+                setShowModal(true);
+              }}
             >
-              <Search size={18} />
+              <Search />
             </button>
           </div>
         ))}
       </div>
+
+      <Modal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        centered
+        size="lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Kezelés részletei</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          {selectedTreatment && (
+            <>
+              <p>
+                <strong>Dátum:</strong>{" "}
+                {formatDate(selectedTreatment.created_at)}
+              </p>
+
+              <p>
+                <strong>Szolgáltatások:</strong>
+                <br />
+                {formatServices(selectedTreatment.services)}
+              </p>
+
+              {selectedTreatment.description && (
+                <p>
+                  <strong>Megjegyzés:</strong>
+                  <br />
+                  {selectedTreatment.description}
+                </p>
+              )}
+            </>
+          )}
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button onClick={() => setShowModal(false)}>Bezárás</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

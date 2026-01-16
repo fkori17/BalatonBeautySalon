@@ -1,10 +1,4 @@
-// import LoginComponent from "./pages/Login.jsx";
 import "./App.css";
-// import StatCard from "./components/StatCard.jsx";
-// import IconStatCard from "./components/IconStatCard.jsx";
-// import { Row, Col } from "react-bootstrap";
-// import { PeopleFill, PersonCheckFill, CashStack, CalendarCheck, PersonHearts, PersonFillUp  } from "react-bootstrap-icons";
-
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "./pages/Login";
@@ -25,10 +19,16 @@ import AdminServices from "./pages/admin/Services";
 import AdminStats from "./pages/admin/Stats";
 
 import ProtectedRoute from "./components/ProtectedRoute";
+import { LoadingProvider, useLoading } from "./context/LoadingContext";
+import Loader from "./components/Loader";
 
-function App() {
+function AppRoutes() {
+  const { loading } = useLoading();
+
   return (
-    <BrowserRouter>
+    <>
+      {loading && <Loader />}
+
       <Routes>
         {/* Login oldalak */}
         <Route path="/login" element={<Login />} />
@@ -68,7 +68,17 @@ function App() {
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
-    </BrowserRouter>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <LoadingProvider>
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+    </LoadingProvider>
   );
 }
 
