@@ -104,9 +104,9 @@ button:hover {
 .input-with-icon svg {
   width: 20px;
   height: 20px;
-  stroke: #666;
+  stroke: 0;
   fill: none;
-  stroke-width: 1.5; 
+  stroke-width: 0.75; 
   transition: stroke 0.2s ease, opacity 0.2s ease;
 }
 
