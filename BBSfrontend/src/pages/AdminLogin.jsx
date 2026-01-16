@@ -1,63 +1,99 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-
 import api from "../api/axios.js";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 import "../components/style/Login.css";
 
 function AdminLogin() {
-  const [user, setUser] = useState(""); 
+  const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
-  const [showPass, setShowPass] = useState(false); // 👁️ új state
-
+  const [showPass, setShowPass] = useState(false);
+  const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
 
-  const adminLogin = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    
-    try {
-      const response = await api.post("/admin/login", { 
-        user, password
-      });
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+      setValidated(true);
+      return;
+    }
 
+    try {
+      const response = await api.post("/admin/login", { user, password });
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("authType", "admin");
-
       navigate("/admin");
-
     } catch {
-      alert("Hibás admin belépési adatok");
+      alert("Hibás belépési adatok");
     }
   };
 
+  const EyeIcon = ({ active }) => (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" />
+      <circle cx="12" cy="12" r="3" />
+      {!active && <line x1="4" y1="20" x2="20" y2="4" strokeLinecap="round" />}
+    </svg>
+  );
+
   return (
     <div className="login-page">
-      <div className="login-card compact">
-        <form className="login-left" onSubmit={adminLogin}>
-          <h1>Balaton Beauty<br /> Salon</h1>
+      <div className="login-card admin">
+        <Form
+          className="login-left"
+          onSubmit={handleLogin}
+          noValidate
+          validated={validated}
+        >
+          <h1>Balaton Beauty Salon</h1>
 
-          <input 
-            placeholder="Email" 
-            value={user} 
-            onChange={(e) => setUser(e.target.value)} 
-          />
-
-          <div className="input-with-icon">
-            <input 
-              placeholder="Jelszó" 
-              type={showPass ? "text" : "password"} 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
+          <Form.Group className="mb-3" controlId="adminEmail">
+            <Form.Control
+              required
+              type="email"
+              placeholder="Email"
+              value={user}
+              onChange={(e) => setUser(e.target.value)}
+              className="custom-input"
             />
-            <span className="icon" onClick={() => setShowPass(prev => !prev)}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
-                <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
-              </svg>
-            </span>
-          </div>
+            <Form.Control.Feedback type="invalid">
+              Kérlek, add meg az email címed!
+            </Form.Control.Feedback>
+          </Form.Group>
 
-          <button type="submit">Bejelentkezés</button>
-        </form>
+          <Form.Group className="mb-3" controlId="adminPassword">
+            <div className="input-wrapper">
+              <Form.Control
+                required
+                type={showPass ? "text" : "password"}
+                placeholder="Jelszó"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="custom-input"
+              />
+              <span className="icon" onClick={() => setShowPass((v) => !v)}>
+                <EyeIcon active={showPass} />
+              </span>
+              <Form.Control.Feedback type="invalid">
+                Kérlek, add meg a jelszavad!
+              </Form.Control.Feedback>
+            </div>
+          </Form.Group>
+
+          <Button type="submit" className="login-btn">
+            Bejelentkezés
+          </Button>
+        </Form>
       </div>
     </div>
   );
