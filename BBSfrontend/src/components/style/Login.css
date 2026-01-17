@@ -2,11 +2,6 @@
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  font-family: "Segoe UI", sans-serif;
-  overflow: hidden;
-}
 
 .login-page {
   min-height: 100vh;
@@ -16,6 +11,7 @@ body {
   justify-content: center;
   padding: 20px;
   background: linear-gradient(135deg, #9b6a52, #6f4634);
+  font-family: "Segoe UI", sans-serif;
 }
 
 .login-card {
@@ -41,9 +37,7 @@ body {
   font-family: "Playfair Display", serif;
   font-size: 40px;
   font-weight: 400;
-  letter-spacing: 1px;
   margin-bottom: 40px;
-  color: #000;
   text-align: center;
 }
 
@@ -52,54 +46,50 @@ body {
   height: 52px;
   border-radius: 8px !important;
   border: none !important;
-  outline: none !important;
   padding: 0 16px;
   padding-right: 48px;
   font-size: 15px;
-  margin-bottom: 16px;
-  background: #ffffff !important;
-  color: #333 !important;
-  display: flex;
-  align-items: center;
-  box-shadow: none !important;
+  background: #fff !important;
+}
+/* Chrome autofill javítás */
+.login-page input:-webkit-autofill,
+.login-page input:-webkit-autofill:hover,
+.login-page input:-webkit-autofill:focus,
+.login-page input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+  box-shadow: 0 0 0 1000px #ffffff inset !important;
+  -webkit-text-fill-color: #333 !important;
+  caret-color: #333;
+  transition: background-color 9999s ease-in-out 0s;
+  color: black;
 }
 
-.custom-input::placeholder {
-  color: #b8b8b8;
-}
 
 .input-wrapper {
-  width: 100%;
   position: relative;
 }
 
-.icon {
+.login-icon {
   position: absolute;
   right: 16px;
-  top: 0;
-  height: 100%;
+  top: 26px;               
+  transform: translateY(-50%);
   display: flex;
   align-items: center;
   cursor: pointer;
   color: #666;
+  pointer-events: auto;
 }
 
-.icon svg {
-  width: 20px;
-  height: 20px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 1.5;
-  transition: stroke 0.2s ease;
-}
-
-.icon:hover svg {
-  stroke: #000;
+.login-icon svg {
+  width: 20px !important;
+  height: 20px !important;
+  stroke-width: 1.5 !important;
 }
 
 .forgot {
   font-size: 12px;
-  color: #b0b0b0;
+  color: #999;
   text-align: right;
   margin-bottom: 36px;
   cursor: pointer;
@@ -110,11 +100,9 @@ body {
   border-radius: 10px;
   border: none;
   background: #9b5a3a !important;
-  color: #ffffff;
+  color: white;
   font-size: 16px;
-  letter-spacing: 0.5px;
   cursor: pointer;
-  transition: background 0.2s ease;
 }
 
 .login-btn:hover {
@@ -123,7 +111,7 @@ body {
 
 .divider {
   width: 1px;
-  background: #9a9a9a;
+  background: #999;
   margin: 0 50px;
 }
 
@@ -137,8 +125,6 @@ body {
 
 .logo {
   max-width: 360px;
-  width: 100%;
-  height: auto;
   margin-bottom: 40px;
 }
 
@@ -147,87 +133,34 @@ body {
   gap: 16px;
 }
 
-.socials svg {
-  width: 44px;
-  height: 44px;
+.socials a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
+  color: white;
   background: #9b5a3a;
+  padding: 12px;
   border-radius: 12px;
-  padding: 8px;
-  cursor: pointer;
-  color: #fff;
-  fill: #fff;
-  stroke: none;
-  transition: background 0.2s ease;
+  width: 60px;
+  height: 60px;
 }
 
-.socials svg:hover {
+.socials a:hover {
   background: #84482d;
 }
 
 @media (max-width: 768px) {
   .login-card.wide {
-    width: 100%;
     flex-direction: column;
+    width: 100%;
     padding: 40px 20px;
   }
 
   .divider {
     display: none;
   }
-
-  .login-left h1 {
-    font-size: 32px;
-    margin-bottom: 30px;
-  }
-
-  .login-left {
-    margin-bottom: 30px;
-  }
-}
-
-.login-card.admin {
-  width: 400px;       
-  padding: 40px;     
-  flex-direction: column; 
-}
-
-.login-card.admin .login-left h1 {
-  font-size: 28px;    
-  margin-bottom: 30px;
-}
-
-.login-card.admin .custom-input {
-  height: 48px;       
-  font-size: 14px;
-}
-
-.login-card.admin .login-btn {
-  height: 48px;
-  font-size: 14px;
-}
-
-@media (max-width: 768px) {
-  .login-card.admin {
-    width: 90%;
-    padding: 30px 20px;
-  }
-
-  .login-card.admin .login-left h1 {
-    font-size: 24px;
-  }
-}
-@media (max-width: 768px) {
-  .login-btn {
-    width: 100%;       
-    height: 44px;       
-    font-size: 14px;    
-  }
-}
-@media (max-width: 320px) {
-  .login-btn {
-    width: 100%;      
-    height: 40px;      
-    font-size: 13px;  
-    padding: 0 12px;  
+  .logo {
+    margin-top: 20px;
   }
 }

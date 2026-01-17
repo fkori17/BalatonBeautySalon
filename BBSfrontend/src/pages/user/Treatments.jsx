@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
-import "../../components/style/Treatments.css";
+import "../../components/style/UserTreatments.css";
 import { Search } from "react-bootstrap-icons";
 import { Modal, Button } from "react-bootstrap";
 import { useLoading } from "../../context/LoadingContext";

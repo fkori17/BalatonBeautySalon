@@ -3,6 +3,7 @@ body {
   overflow-x: hidden;
 }
 
+
 .treatments-page {
   padding: 32px;
   max-width: 100%;
@@ -104,7 +105,7 @@ body {
 
 @media (max-width: 768px) {
   .treatments-table {
-    -webkit-overflow-scrolling: touch; /* 🔑 smooth scroll iOS */
+    -webkit-overflow-scrolling: touch; 
   }
 }
 

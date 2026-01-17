@@ -55,6 +55,11 @@
 p, li {
     font-size: large;
 }
+.service-piece {
+  margin-left: 6px;
+  color: #aaa;
+  font-size: 0.9em;
+}
 
 @media (max-width: 1000px) {
     .content-sections {

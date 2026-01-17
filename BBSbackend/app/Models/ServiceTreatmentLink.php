@@ -7,14 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class ServiceTreatmentLink extends Model
 {
     protected $table = 'service_treatment_links';
-
-    public function treatment()
-    {
-        return $this->belongsTo(Treatment::class, 'treatment_id');
-    }
-
-    public function service()
-    {
-        return $this->belongsTo(Service::class, 'service_id');
-    }
+    public $timestamps = false;
+    protected $fillable = [
+        'treatment_id',
+        'service_id',
+        'piece'
+    ];
 }

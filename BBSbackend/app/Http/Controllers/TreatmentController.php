@@ -18,9 +18,12 @@ class TreatmentController extends Controller
 
     public function last(Request $request)
     {
-        $treatment = Treatment::where('customer_id', $request->user()->id)
-            ->orderBy('created_at', 'desc')
-            ->first();
+        $treatment = Treatment::with([
+            'services:id,name'
+        ])
+        ->where('customer_id', $request->user()->id)
+        ->orderByDesc('created_at')
+        ->first();
 
         if (!$treatment) {
             return response()->json(null, 200);
@@ -93,23 +96,25 @@ class TreatmentController extends Controller
     {
         $customerId = $request->user()->id;
 
-        $treatments = Treatment::where('customer_id', $customerId)
-            ->with(['serviceLinks.service'])
-            ->orderByDesc('created_at')
-            ->get()
-            ->map(function ($treatment) {
-                return [
-                    'id' => $treatment->id,
-                    'created_at' => $treatment->created_at,
-                    'description' => $treatment->description,
-                    'services' => $treatment->serviceLinks
-                        ->filter(fn ($link) => $link->service)
-                        ->map(fn ($link) => [
-                            'name' => $link->service->name,
-                            'piece' => $link->piece
-                        ])
-                ];
-            });
+        $treatments = Treatment::with([
+            'services:id,name'
+        ])
+        ->where('customer_id', $customerId)
+        ->orderByDesc('created_at')
+        ->get()
+        ->map(function ($treatment) {
+            return [
+                'id' => $treatment->id,
+                'created_at' => $treatment->created_at,
+                'description' => $treatment->description,
+                'services' => $treatment->services->map(function ($service) {
+                    return [
+                        'name' => $service->name,
+                        'piece' => $service->pivot->piece
+                    ];
+                })
+            ];
+        });
 
         return response()->json($treatments);
     }

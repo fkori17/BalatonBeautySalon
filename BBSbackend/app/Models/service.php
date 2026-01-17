@@ -6,8 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Service extends Model
 {
-    function service_treatment_link() {
-        return $this->hasMany(Service_treatment_link::class, 'service_id', 'id');
+    public function treatments()
+    {
+        return $this->belongsToMany(
+            Treatment::class,
+            'service_treatment_links',
+            'service_id',
+            'treatment_id'
+        )->withPivot('piece');
     }
     //
 }

@@ -1,99 +1,138 @@
 .contact-container {
-    padding: 2rem;
-    font-family: 'Segoe UI', sans-serif;
-    color: #333;
-    max-width: 95%;
-    margin: 0 auto;
+  padding: 40px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: #333;
 }
 
 .contact-title {
-    margin-bottom: 2rem;
-    text-align: center;
+  text-align: center;
+  font-size: 48px;
+  margin-bottom: 10px;
 }
 
 .hrTop {
-    color:#333;
-    size: 1px;
-    width: 50%;
-    margin: 1rem auto;  
-    margin-bottom: 5rem;
+  width: 50%;
+  margin: 0 auto 40px;
 }
 
-hr {
-    color:#333;
-    size: 1px;
-    width: 50%;
-    margin: 1rem auto; 
-}
-
-.icon {
-    margin: auto;
-    font-size: 1.75rem;
+.contact-cta {
+  text-align: center;
+  font-size: 1.1rem;
+  margin-bottom: 40px;
+  color: #555;
 }
 
 .contact-sections-wrapper {
-    display: flex;
-    gap: 2rem;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: stretch;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
 }
 
-.contact-details, .contact-openingHours {
-    background-color: #fff8f0;
-    border-radius: 12px;
-    padding: 1rem;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    width: 45%;
-    min-width: 280px;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    display: flex;
-    flex-direction: column;
+.contact-details {
     justify-content: center;
     align-items: center;
-    text-align: center;  
+    display: flex;
+    flex-direction: column;
 }
 
-a {
-    color: black;
-    transition: 200ms;
+.contact-details,
+.contact-openingHours {
+  background: rgba(255, 248, 240, 0.85);
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+  padding: 25px 30px;
+  width: 45%;
+  min-width: 280px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transition: 200ms ease;
+  border: 1px solid transparent;
 }
-a:hover {
-    color: #eab97f ;
+
+.contact-details:hover,
+.contact-openingHours:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.15);
+}
+
+.contact-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.icon {
+  font-size: 1.5rem;
+  color: #eab97f;
+}
+
+.contact-link {
+  color: black;
+  text-decoration: none;
+  font-size: 1.05rem;
+  transition: 200ms;
+}
+
+.contact-link:hover {
+  color: #eab97f;
 }
 
 .phone-links {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
 }
 
-.contact-section h2 {
-    margin-bottom: 1rem;
-    font-weight: bold;
+.phone-links a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.contact-section p {
-    margin: 0.5rem 0;
+.contact-openingHours h2 {
+  margin-bottom: 10px;
 }
 
 .closed {
-    color: red;
-    font-weight: bold;
+  background: #ffe3e3;
+  color: #b00000;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-weight: bold;
 }
 
-p {
-    font-size: large;
+.map-wrapper {
+  margin-top: 50px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
-@media (max-width: 1000px) {
-  .contact-sections-wrapper {
-        flex-direction: column;
-        align-items: center;
+.map-wrapper iframe {
+  width: 100%;
+  height: 350px;
+  border: none;
+}
+
+@media (max-width: 768px) {
+  .contact-container {
+    padding: 30px 20px;
+  }
+
+  .contact-title {
+    font-size: 34px;
   }
 
   .contact-details,
   .contact-openingHours {
-        width: 90%;
+    width: 100%;
+  }
+
+  .phone-links {
+    flex-direction: column;
   }
 }

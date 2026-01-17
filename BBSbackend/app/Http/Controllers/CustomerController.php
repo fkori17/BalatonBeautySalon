@@ -5,28 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
+
 
 class CustomerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -64,7 +58,7 @@ class CustomerController extends Controller
 
         $newRecord = new customer();
         $newRecord -> user = $request->user;
-        $newRecord -> password = $request->password;
+        $newRecord->password = Hash::make($request->password);
         $newRecord -> name = $request->name;
         $newRecord -> phone = $request->phone;
         $newRecord -> loyal = $request->loyal;
@@ -72,33 +66,43 @@ class CustomerController extends Controller
         return response()->json(['success' => true, 'message' => 'Sikeres mentés'], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(customer $customer)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(customer $customer)
-    {
-        //
+    public function changePassword(Request $request)
+        {
+            $request->validate([
+                'oldPassword' => ['required'],
+                'newPassword' => ['required', 'string', 'min:6'],
+            ]);
+
+            /** @var \App\Models\Customer $customer */
+            $customer = $request->user();
+
+            if (!Hash::check($request->oldPassword, $customer->password)) {
+                return response()->json([
+                    'message' => 'Hibás jelenlegi jelszó'
+                ], 422);
+            }
+
+        $customer->password = Hash::make($request->newPassword);
+        $customer->save();
+    
+        $customer->tokens()->delete();
+
+        return response()->json([
+            'message' => 'Jelszó sikeresen módosítva. Kérlek jelentkezz be újra.'
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, customer $customer)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(customer $customer)
     {
         //

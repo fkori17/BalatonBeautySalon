@@ -43,6 +43,16 @@
   box-sizing: border-box;
   transition: border-color 0.2s ease;
 }
+.profile-page input:-webkit-autofill,
+.profile-page input:-webkit-autofill:hover,
+.profile-page input:-webkit-autofill:focus,
+.profile-page input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.85) inset !important;
+  box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.85) inset !important;
+  -webkit-text-fill-color: #000 !important;
+  caret-color: #000;
+  transition: background-color 9999s ease-in-out 0s;
+}
 
 .row input:focus {
   outline: none;
@@ -99,12 +109,17 @@ button:hover {
   align-items: center;   
   justify-content: center;
   cursor: pointer;
+  opacity: 0.6;
+}
+
+.input-with-icon .icon:hover {
+  opacity: 1;
 }
 
 .input-with-icon svg {
   width: 20px;
   height: 20px;
-  stroke: 0;
+  stroke: #1a1a1a;
   fill: none;
   stroke-width: 0.75; 
   transition: stroke 0.2s ease, opacity 0.2s ease;

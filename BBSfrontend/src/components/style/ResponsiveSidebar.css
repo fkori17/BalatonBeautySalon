@@ -17,7 +17,7 @@
 .content {
     flex: 1;
     overflow-x: hidden;
-    height: calc(100vh - 56px); /* 56px = felső navbar */
+    height: calc(100vh - 56px); 
 }
 
 .sidebar .nav {
@@ -44,7 +44,7 @@
     left: 0;
     width: 100%;
     height: 130%;
-    /* backdrop-filter: blur(4px); */
+    
     background-color: rgba(255, 255, 255, 0.2);
     border-radius: 20px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -96,7 +96,7 @@ nav button {
     margin-left: 20px;
     font-family: Calibri;
 }
-/* 
+
 .fw-bold {
     font-size: 30px;
     break-after: always;
