@@ -18,7 +18,7 @@ function Contact() {
             <span>Cím</span>
           </h3>
           <a
-            href="https://www.google.com/maps?q=8648+Balatonkeresztúr,+Kossuth+Lajos+u.+79"
+            href="https://www.google.com/maps/dir//Balatonkereszt%C3%BAr,+Balaton+Beauty+Salon,+Kossuth+Lajos+u.+79,+8648/@46.6923898,17.3719449,18.75z/data=!4m17!1m7!3m6!1s0x4768ff50bd34212f:0x60aec0da3bc4268!2sBalaton+Beauty+Salon!8m2!3d46.692272!4d17.3724761!16s%2Fg%2F11frc36v1b!4m8!1m0!1m5!1m1!1s0x4768ff50bd34212f:0x60aec0da3bc4268!2m2!1d17.3724761!2d46.692272!3e0?entry=ttu&g_ep=EgoyMDI2MDExMy4wIKXMDSoASAFQAw%3D%3D"
             target="_blank"
             rel="noopener noreferrer"
             className="contact-link"

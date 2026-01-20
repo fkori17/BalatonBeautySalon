@@ -34,3 +34,9 @@ Route::middleware('auth:sanctum')->post(
     '/change-password',
     [CustomerController::class, 'changePassword']
 );
+
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/admin/dashboard/stats', [TreatmentController::class, 'adminStats']);
+    Route::get('/admin/dashboard/recent-treatments', [TreatmentController::class, 'adminRecentTreatments']);
+});

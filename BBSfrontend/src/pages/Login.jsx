@@ -4,6 +4,7 @@ import api from "../api/axios.js";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import "../components/style/Login.css";
+import { Toast, ToastContainer } from "react-bootstrap";
 
 function Login() {
   const [user, setUser] = useState("");
@@ -11,6 +12,15 @@ function Login() {
   const [showPass, setShowPass] = useState(false);
   const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
+  const [toast, setToast] = useState({
+    show: false,
+    message: "",
+    variant: "danger",
+  });
+
+  const showToast = (message, variant = "danger") => {
+    setToast({ show: true, message, variant });
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -28,7 +38,7 @@ function Login() {
       localStorage.setItem("authType", "user");
       navigate("/user");
     } catch {
-      alert("Hibás belépési adatok");
+      showToast("Hibás email cím vagy jelszó!", "danger");
     }
   };
 
@@ -137,6 +147,17 @@ function Login() {
           </div>
         </div>
       </div>
+      <ToastContainer position="bottom-end" className="p-3">
+        <Toast
+          bg={toast.variant}
+          show={toast.show}
+          delay={3000}
+          autohide
+          onClose={() => setToast((t) => ({ ...t, show: false }))}
+        >
+          <Toast.Body className="text-white">{toast.message}</Toast.Body>
+        </Toast>
+      </ToastContainer>
     </div>
   );
 }

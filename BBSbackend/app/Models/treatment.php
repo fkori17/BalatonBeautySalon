@@ -20,7 +20,7 @@ class Treatment extends Model
         )->withPivot('piece');
     }
 
-    // function serviceLinks() {
-    //     return $this->hasMany(ServiceTreatmentLink::class, 'treatment_id', 'id');
-    // }
+    function serviceLinks() {
+        return $this->hasMany(ServiceTreatmentLink::class, 'treatment_id', 'id');
+    }
 }   

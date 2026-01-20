@@ -1,14 +1,20 @@
+/* ===== Alap layout ===== */
+
 .dash-main-only {
   padding: 40px;
   min-height: 100vh;
   font-family: "Inter", sans-serif;
+  width: 100%;
+  box-sizing: border-box;
 }
+
+/* ===== Welcome ===== */
 
 .welcome-box {
   background: #fffdf8;
   border-radius: 20px;
   height: 160px;
-  width: 100%;                
+  width: 100%;
   margin-bottom: 40px;
 
   display: flex;
@@ -17,38 +23,52 @@
 
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
+
 .welcome-box h1 {
   font-size: 36px;
   font-weight: 700;
+  text-align: center;
 }
 
+/* ===== Stats grid ===== */
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 24px;
   margin-bottom: 40px;
 }
 
+/* ===== Bottom layout ===== */
 
 .bottom-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 32px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
+@media (max-width: 1200px) {
+  .bottom-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ===== Recent box ===== */
 
 .recent-box {
-  background: #fffdf8;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;   /* EZ FONTOS */
 }
+
 
 .recent-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: end;
   margin-bottom: 16px;
 }
 
@@ -63,39 +83,99 @@
   cursor: pointer;
 }
 
-.recent-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+/* ===== Table wrapper ===== */
+
+.recent-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 4px; /* scrollbar ne vágjon */
 }
 
-.recent-row {
-  display: grid;
-  grid-template-columns: 120px 1fr 1fr;
-  padding: 12px;
-  border-radius: 10px;
+/* ===== Table ===== */
+
+.recent-table {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: separate;
+  border-spacing: 0 12px; /* sorok közti tér */
+}
+
+/* ===== Header ===== */
+
+.recent-table thead {
+  background: linear-gradient(135deg, #f6c28b, #eab97f);
+}
+
+.recent-table thead th {
+  padding: 14px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #2f2f2f;
+  border: none;
+}
+
+.recent-table thead th:first-child {
+  border-top-left-radius: 12px;
+}
+
+.recent-table thead th:last-child {
+  border-top-right-radius: 12px;
+}
+
+/* ===== Body rows ===== */
+
+.recent-table tbody tr {
   background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: background 0.2s ease, box-shadow 0.2s ease;
 }
 
-.recent-date {
-  font-weight: 600;
+/* Mivel separate a table, kell ez */
+.recent-table tbody td:first-child {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
 }
 
-.recent-name {
-  font-weight: 500;
+.recent-table tbody td:last-child {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
 }
 
-.recent-service {
+/* Cellák */
+
+.recent-table tbody td {
+  padding: 12px 14px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Hover */
+
+.recent-table tbody tr:hover {
+  background: #fff4e6;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* Jobbra igazított oszlop (ár) */
+
+.recent-table .right {
   text-align: right;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
+
+/* ===== Quick box ===== */
 
 .quick-box {
-  background: #fffdf8;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
+
 
 .quick-box h2 {
   font-size: 22px;
@@ -106,7 +186,7 @@
   width: 100%;
   padding: 14px;
   border-radius: 10px;
-  border: none;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   background: #ecffe9;
   font-size: 16px;
   font-weight: 600;
@@ -117,4 +197,48 @@
 
 .quick-btn:hover {
   background: #d6f5d2;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+
+/* ===== Responsive ===== */
+
+@media (max-width: 1024px) {
+  .bottom-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .dash-main-only {
+    padding: 24px;
+  }
+.recent-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .welcome-box {
+    height: auto;
+    padding: 24px;
+  }
+
+  .welcome-box h1 {
+    font-size: 28px;
+  }
+
+  .recent-table th:nth-child(3),
+  .recent-table td:nth-child(3) {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .dash-main-only {
+    padding: 16px;
+  }
+
+  .welcome-box h1 {
+    font-size: 24px;
+  }
 }

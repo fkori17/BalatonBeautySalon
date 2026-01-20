@@ -3,14 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Treatment;
+use App\Models\Customer;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class TreatmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         //
@@ -45,18 +44,50 @@ class TreatmentController extends Controller
             'next_visit' => '4 hét múlva'
         ];
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    
+    public function adminStats()
     {
-        //
-    }
+        $now = Carbon::now();
 
-    /**
-     * Store a newly created resource in storage.
-     */
+        return response()->json([
+            'totalClients' => Customer::count(),
+
+            'activeClients' => Treatment::where('created_at', '>=', $now->subMonths(3))
+                ->select('customer_id')
+                ->distinct()
+                ->count(),
+
+            'monthlyTreatments' => Treatment::whereMonth('created_at', now()->month)
+                ->whereYear('created_at', now()->year)
+                ->count(),
+
+            'monthlyRevenue' => Treatment::whereMonth('created_at', now()->month)
+                ->whereYear('created_at', now()->year)
+                ->sum('realprice'),
+        ]);
+}
+
+    public function adminRecentTreatments()
+{
+    $treatments = Treatment::with(['customer', 'serviceLinks.service'])
+        ->orderByDesc('created_at')
+        ->limit(5)
+        ->get()
+        ->map(function ($t) {
+            return [
+                'id' => $t->id,
+                'date' => $t->created_at,
+                'client' => $t->customer->name ?? '-',
+                'service' => $t->serviceLinks
+                    ->filter(fn ($l) => $l->service)
+                    ->map(fn ($l) => $l->service->name)
+                    ->implode(', '),
+                'price' => $t->realprice,
+            ];
+        });
+
+    return response()->json($treatments);
+}
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -118,33 +149,20 @@ class TreatmentController extends Controller
 
         return response()->json($treatments);
     }
-    /**
-     * Display the specified resource.
-     */
     public function show(treatment $treatment)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(treatment $treatment)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, treatment $treatment)
     {
         //
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(treatment $treatment)
     {
         //
