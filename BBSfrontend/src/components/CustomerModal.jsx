@@ -48,8 +48,8 @@ function CustomerModal({ show, onHide }) {
       show={show}
       onHide={onHide}
       centered
-      backdrop={false}     // <<< NINCS háttér
-      animation={false}    // <<< NINCS fade animáció
+      backdrop={true}     
+      animation={true}    
     >
       <Modal.Header closeButton>
         <Modal.Title>Új ügyfél hozzáadása</Modal.Title>

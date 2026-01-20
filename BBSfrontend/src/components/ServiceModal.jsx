@@ -42,8 +42,8 @@ function ServiceModal({ show, onHide }) {
       show={show}
       onHide={onHide}
       centered
-      backdrop={false}
-      animation={false}
+      backdrop={true}
+      animation={true}
     >
       <Modal.Header closeButton>
         <Modal.Title>Új szolgáltatás hozzáadása</Modal.Title>
