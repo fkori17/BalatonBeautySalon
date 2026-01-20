@@ -6,6 +6,10 @@ import "../../components/style/IconStatCard.css";
 import IconStatCard from "../../components/IconStatCard";
 import { useNavigate } from "react-router-dom";
 
+import TreatmentModal from "../../components/TreatmentModal";
+import CustomerModal from "../../components/CustomerModal";
+import ServiceModal from "../../components/ServiceModal";
+
 import {
   BsPeopleFill,
   BsPersonCheckFill,
@@ -25,6 +29,10 @@ function AdminHome() {
 
   const [recent, setRecent] = useState([]);
 
+  const [showTreatment, setShowTreatment] = useState(false);
+  const [showCustomer, setShowCustomer] = useState(false);
+  const [showService, setShowService] = useState(false);
+
   useEffect(() => {
     setLoading(true);
 
@@ -35,7 +43,6 @@ function AdminHome() {
       .then(([statsRes, recentRes]) => {
         setStats(statsRes.data);
         setRecent(recentRes.data);
-        console.log(statsRes.data);
       })
       .finally(() => setLoading(false));
   }, [setLoading]);
@@ -102,20 +109,16 @@ function AdminHome() {
                 </tr>
               </thead>
               <tbody>
-                {recent.slice(0, 4).map((item) => {
-                  console.log("RECENT ITEM:", item, typeof item.price);
-
-                  return (
-                    <tr key={item.id}>
-                      <td>{formatDate(item.date)}</td>
-                      <td>{item.client}</td>
-                      <td>{item.service}</td>
-                      <td className="right">
-                        {new Intl.NumberFormat("hu-HU").format(item.price)} Ft
-                      </td>
-                    </tr>
-                  );
-                })}
+                {recent.slice(0, 4).map((item) => (
+                  <tr key={item.id}>
+                    <td>{formatDate(item.date)}</td>
+                    <td>{item.client}</td>
+                    <td>{item.service}</td>
+                    <td className="right">
+                      {new Intl.NumberFormat("hu-HU").format(item.price)} Ft
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -123,11 +126,24 @@ function AdminHome() {
 
         <div className="quick-box">
           <h2>Gyors műveletek</h2>
-          <button className="quick-btn">+ Új kezelés</button>
-          <button className="quick-btn">+ Új ügyfél</button>
-          <button className="quick-btn">+ Új szolgáltatás</button>
+
+          <button className="quick-btn" onClick={() => setShowTreatment(true)}>
+            + Új kezelés
+          </button>
+
+          <button className="quick-btn" onClick={() => setShowCustomer(true)}>
+            + Új ügyfél
+          </button>
+
+          <button className="quick-btn" onClick={() => setShowService(true)}>
+            + Új szolgáltatás
+          </button>
         </div>
       </div>
+
+      <TreatmentModal show={showTreatment} onHide={() => setShowTreatment(false)} />
+      <CustomerModal show={showCustomer} onHide={() => setShowCustomer(false)} />
+      <ServiceModal show={showService} onHide={() => setShowService(false)} />
     </div>
   );
 }
