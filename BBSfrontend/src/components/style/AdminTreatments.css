@@ -1,0 +1,252 @@
+html,
+body {
+  overflow-x: hidden;
+}
+
+/* ===== OLDAL ===== */
+
+.treatments-page {
+  padding: 32px;
+  max-width: 100%;
+  box-sizing: border-box;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== FEJLÉC ===== */
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.page-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.search-input {
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.2);
+  background-color: #fff;
+  font-size: 14px;
+  min-width: 240px;
+}
+
+.search-input:hover {
+  background-color: #f3f3f3;
+}
+
+.search-input:focus {
+  outline: none;
+}
+
+/* ===== TÁBLÁZAT ===== */
+
+.treatments-table {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-x: auto;
+  flex: 1;
+  padding-right: 4px;
+}
+
+.treatments-table::-webkit-scrollbar {
+  width: 6px;
+}
+
+.treatments-table::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 4px;
+}
+
+/* ===== FEJLÉC + SOROK ===== */
+
+.table-header,
+.table-row {
+  display: grid;
+  grid-template-columns:
+    120px   /* Dátum */
+    180px   /* Ügyfél */
+    1fr   /* Szolgáltatás */
+    100px   /* Ár */
+    1.8fr     /* Részletek */
+    50px;   /* 🔍 */
+  align-items: center;
+  column-gap: 16px;
+  min-width: 1000px;
+}
+
+.table-header {
+  font-weight: 600;
+  padding: 12px 10px;
+  border-bottom: 2px solid #ccc;
+  color: #333;
+}
+
+.table-row {
+  padding: 12px 10px;
+  background-color: #fff;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  transition: background-color 0.2s ease;
+}
+
+.table-row:hover {
+  background-color: #f3f3f3;
+}
+
+.table-header > *,
+.table-row > * {
+  min-width: 0;
+}
+
+.table-header span,
+.table-row span {
+  display: block;
+}
+
+
+/* ===== SZÖVEG KEZELÉS ===== */
+
+/* ===== RÉSZLETEK GOMB ===== */
+
+.details-btn {
+  background-color: #e9b174;
+  margin: auto;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.details-btn:hover {
+  transform: scale(1.1);
+}
+
+/* ===== MODAL ===== */
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .page-actions {
+    width: 100%;
+  }
+
+  .search-input,
+  .add-btn {
+    width: 100%;
+  }
+}
+/* ===== SZŰRŐSÁV ===== */
+
+.filters-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+/* Egy mező */
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-group label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Input + ikon */
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon input {
+  height: 38px;
+  padding: 0 36px 0 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.2);
+  font-size: 14px;
+  background-color: #fff;
+}
+
+.input-with-icon svg {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.6;
+}
+
+/* Select */
+.filter-group select {
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.2);
+  font-size: 14px;
+  background-color: #fff;
+  min-width: 160px;
+}
+
+/* Dátum */
+.filter-group input[type="date"] {
+  min-width: 180px;
+}
+
+/* Keresés gomb */
+.search-btn {
+  height: 38px;
+  padding: 0 18px;
+  border-radius: 10px;
+  border: none;
+  background-color: #e9b174;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.search-btn:hover {
+  transform: scale(1.03);
+}
+
+.add-btn {
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 8px;
+  border: none;
+  background-color: #e9b174;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+  margin: auto;
+}
+
+.add-btn:hover {
+  background-color: #d39d63;
+  transform: scale(1.03);
+}
