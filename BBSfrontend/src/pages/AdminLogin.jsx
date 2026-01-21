@@ -81,7 +81,7 @@ function AdminLogin() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="custom-input"
               />
-              <span className="icon" onClick={() => setShowPass((v) => !v)}>
+              <span className="login-icon" onClick={() => setShowPass((v) => !v)}>
                 <EyeIcon active={showPass} />
               </span>
               <Form.Control.Feedback type="invalid">
