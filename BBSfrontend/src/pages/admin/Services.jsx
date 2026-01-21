@@ -29,7 +29,7 @@ function Services() {
           </button>
         </div>
       </div>
-
+      <hr className="header-divider" />
       <div className="services-table-wrapper">
         <table className="services-table">
           <thead>
