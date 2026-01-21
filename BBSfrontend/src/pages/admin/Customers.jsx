@@ -1,98 +1,67 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import api from "../../api/axios";
+import CustomerModal from "../../components/CustomerModal";
+import EditCustomerModal from "../../components/EditCustomerModal";
+import DeleteCustomerModal from "../../components/DeleteCustomerModal";
 import "../../components/style/AdminCustomers.css";
 import { PencilSquare, Trash } from "react-bootstrap-icons";
-import { Modal, Button, Form } from "react-bootstrap";
-
-const mockClients = [
-  {
-    id: 1,
-    name: "Példa Kovács János",
-    email: "pelda.kovacs.janos@gmail.com",
-    time: "2026.01.10",
-    phone: "+36 30 123 4567",
-  },
-  {
-    id: 2,
-    name: "Példa Szabó Anna",
-    email: "pelda.szabo.anna@gmail.com",
-    time: "2026.01.12",
-    phone: "+36 20 456 7812",
-  },
-  {
-    id: 3,
-    name: "Példa Nagy Péter",
-    email: "pelda.nagy.peter@hotmail.com",
-    time: "2026.01.14",
-    phone: "+36 70 332 9981",
-  },
-  {
-    id: 4,
-    name: "Példa Tóth Eszter",
-    email: "pelda.toth.eszter@yahoo.com",
-    time: "2026.01.16",
-    phone: "+36 30 987 1122",
-  },
-  {
-    id: 5,
-    name: "Példa Varga László",
-    email: "pelda.varga.laszlo@gmail.com",
-    time: "2026.01.18",
-    phone: "+36 20 654 8899",
-  },
-  {
-    id: 6,
-    name: "Példa Horváth Réka",
-    email: "pelda.horvath.reka@gmail.com",
-    time: "2026.01.20",
-    phone: "+36 70 445 6677",
-  },
-  {
-    id: 7,
-    name: "Példa Kiss Bence",
-    email: "pelda.kiss.bence@outlook.com",
-    time: "2026.01.22",
-    phone: "+36 30 221 3344",
-  },
-  {
-    id: 8,
-    name: "Példa Molnár Zsófia",
-    email: "pelda.molnar.zsofia@gmail.com",
-    time: "2026.01.23",
-    phone: "+36 20 778 9900",
-  },
-  {
-    id: 9,
-    name: "Példa Farkas Gergő",
-    email: "pelda.farkas.gergo@gmail.com",
-    time: "2026.01.25",
-    phone: "+36 70 556 1122",
-  },
-  {
-    id: 10,
-    name: "Példa Balogh Dóra",
-    email: "pelda.balogh.dora@hotmail.com",
-    time: "2026.01.27",
-    phone: "+36 30 889 7766",
-  },
-];
+import { Toast, ToastContainer } from "react-bootstrap";
 
 function Customers() {
   const [showAddModal, setShowAddModal] = useState(false);
-  const [validated, setValidated] = useState(false);
+  const [editCustomer, setEditCustomer] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [customers, setCustomers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
 
-  const handleSubmit = (event) => {
-    const form = event.currentTarget;
-
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    } else {
-      event.preventDefault();
-      setShowAddModal(false);
-    }
-
-    setValidated(true);
+  const fetchCustomers = () => {
+    setLoading(true);
+    api
+      .get("/admin/customers")
+      .then((res) => setCustomers(res.data))
+      .finally(() => setLoading(false));
   };
+
+  const [toast, setToast] = useState({
+    show: false,
+    message: "",
+    variant: "success",
+  });
+
+  const showToast = (message, variant = "success") => {
+    setToast({ show: true, message, variant });
+  };
+
+  useEffect(() => {
+    fetchCustomers();
+  }, []);
+
+  const handleDelete = async () => {
+    try {
+      await api.delete(`/admin/customers/${selectedCustomer.id}`);
+
+      setCustomers((prev) => prev.filter((c) => c.id !== selectedCustomer.id));
+
+      showToast("Ügyfél sikeresen törölve");
+    } catch {
+      showToast("Hiba történt a törlés során", "danger");
+    } finally {
+      setShowDeleteModal(false);
+      setSelectedCustomer(null);
+    }
+  };
+
+  const formatDate = (date) =>
+    date ? date.split("T")[0].replaceAll("-", ". ") + "." : "-";
+
+  const filteredCustomers = customers.filter(
+    (c) =>
+      c.name.toLowerCase().includes(search.toLowerCase()) ||
+      c.email.toLowerCase().includes(search.toLowerCase()),
+  );
 
   return (
     <div className="treatments-page">
@@ -104,6 +73,8 @@ function Customers() {
             type="text"
             className="search-input"
             placeholder="Keresés név vagy email alapján…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
 
           <button className="add-btn" onClick={() => setShowAddModal(true)}>
@@ -117,108 +88,85 @@ function Customers() {
           <span>ID</span>
           <span>Név</span>
           <span>Email</span>
+          <span>Visszatérő</span>
           <span>Regisztráció</span>
           <span>Telefonszám</span>
           <span>Művelet</span>
         </div>
 
-        {mockClients.map((c) => (
-          <div className="table-row" key={c.id}>
-            <span>{c.id}</span>
-            <span className="ellipsis">{c.name}</span>
-            <span className="ellipsis">{c.email}</span>
-            <span className="ellipsis">{c.time}</span>
-            <span className="ellipsis">{c.phone}</span>
+        {loading && <p>Betöltés...</p>}
 
-            <div className="actions">
-              <button className="icon-btn edit-btn">
-                <PencilSquare size={18} />
-              </button>
-              <button className="icon-btn delete-btn">
-                <Trash size={18} />
-              </button>
+        {!loading &&
+          filteredCustomers.map((c) => (
+            <div className="table-row" key={c.id}>
+              <span>{c.id}</span>
+              <span className="ellipsis">{c.name}</span>
+              <span className="ellipsis">{c.email}</span>
+
+              <span>
+                {c.loyal ? (
+                  <span className="badge badge-success">Igen</span>
+                ) : (
+                  <span className="badge badge-muted">Nem</span>
+                )}
+              </span>
+
+              <span className="ellipsis">{formatDate(c.created_at)}</span>
+              <span className="ellipsis">{c.phone}</span>
+
+              <div className="actions">
+                <button
+                  className="icon-btn edit-btn"
+                  onClick={() => {
+                    setEditCustomer(c);
+                    setShowEditModal(true);
+                  }}
+                >
+                  <PencilSquare size={18} />
+                </button>
+
+                <button
+                  className="icon-btn delete-btn"
+                  onClick={() => {
+                    setSelectedCustomer(c);
+                    setShowDeleteModal(true);
+                  }}
+                >
+                  <Trash size={18} />
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
 
-      <Modal
+      <CustomerModal
         show={showAddModal}
         onHide={() => setShowAddModal(false)}
-        centered
-        size="md"
-        backdrop="static"
-      >
-        <Modal.Header>
-          <Modal.Title>Új ügyfél hozzáadása</Modal.Title>
-        </Modal.Header>
-
-        <Form noValidate validated={validated} onSubmit={handleSubmit}>
-          <Modal.Body>
-            <Form.Group className="mb-3">
-              <Form.Label>Név <span className="requiredSpan">*</span></Form.Label>
-              <Form.Control required type="text" />
-              <Form.Control.Feedback type="invalid">
-                A név megadása kötelező.
-              </Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Email <span className="requiredSpan">*</span></Form.Label>
-              <Form.Control required type="email" />
-              <Form.Control.Feedback type="invalid">
-                Érvényes email cím szükséges.
-              </Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Telefonszám <span className="requiredSpan">*</span></Form.Label>
-              <Form.Control required type="tel" placeholder="+36 70 123 4567" />
-              <Form.Control.Feedback type="invalid">
-                Telefonszám megadása kötelező.
-              </Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Születési hely <span className="requiredSpan">*</span></Form.Label>
-              <Form.Control required type="text" />
-              <Form.Control.Feedback type="invalid">
-                Születési hely megadása kötelező.
-              </Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label>Születési dátum <span className="requiredSpan">*</span></Form.Label>
-              <div className="d-flex gap-2">
-                <Form.Control required placeholder="ÉÉÉÉ" />
-                <Form.Control required placeholder="HH" />
-                <Form.Control required placeholder="NN" />
-              </div>
-              <Form.Control.Feedback type="invalid">
-                Teljes dátum szükséges.
-              </Form.Control.Feedback>
-            </Form.Group>
-          </Modal.Body>
-
-          <Modal.Footer className="modal-actions">
-            <Button
-                className="cancel-btn"
-                variant="secondary"
-                onClick={() => setShowAddModal(false)}
-            >
-                Mégse
-            </Button>
-
-            <Button
-                type="submit"
-                className="save-btn"
-            >
-                Ügyfél mentése
-            </Button>
-          </Modal.Footer>
-
-        </Form>
-      </Modal>
+        onSuccess={fetchCustomers}
+      />
+      <EditCustomerModal
+        show={showEditModal}
+        onHide={() => setShowEditModal(false)}
+        customer={editCustomer}
+        onSuccess={fetchCustomers}
+      />
+      <DeleteCustomerModal
+        show={showDeleteModal}
+        onHide={() => setShowDeleteModal(false)}
+        onConfirm={handleDelete}
+        customer={selectedCustomer}
+      />
+      <ToastContainer position="bottom-end" className="p-3">
+        <Toast
+          bg={toast.variant}
+          show={toast.show}
+          delay={3000}
+          autohide
+          onClose={() => setToast((t) => ({ ...t, show: false }))}
+        >
+          <Toast.Body className="text-white">{toast.message}</Toast.Body>
+        </Toast>
+      </ToastContainer>
     </div>
   );
 }

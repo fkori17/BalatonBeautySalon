@@ -1,70 +1,97 @@
+/* ===== Modal body ===== */
+
 .new-client-modal {
-  padding: 25px;
+  padding: 24px;
   background-color: #fff;
-  border-radius: 12px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 14px;
 }
 
+/* ===== Inputs ===== */
 
-.new-client-modal input.form-control {
+.new-client-modal .form-control {
   height: 45px;
-  line-height: 1.5;
   font-size: 14px;
   border-radius: 10px;
   padding: 0 12px;
-  box-sizing: border-box;
 }
 
-
-.new-client-modal input.form-control::placeholder {
+.new-client-modal .form-control::placeholder {
   color: #999;
-  opacity: 1;
 }
 
+/* ===== Checkbox ===== */
 
 .uniform-checkbox {
-  margin-top: 10px;
-  font-size: 15px;
   display: flex;
   align-items: center;
-  height: auto; 
+  gap: 8px;
+  margin-top: 6px;
 }
 
 .uniform-checkbox .form-check-input {
-  margin-right: 8px; 
+  margin-top: 0;
 }
 
+/* ===== Modal footer ===== */
 
-.new-client-modal .modal-footer {
+.modal-footer-uniform {
   border-top: none;
-  display: flex !important;
+  display: flex;
+  flex-direction: row;          /* EZ A KULCS */
   justify-content: flex-end;
-  gap: 10px; 
-  flex-wrap: nowrap; 
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px;
 }
 
+/* ===== Buttons ===== */
 
 .uniform-btn {
+  height: 44px;
+  padding: 0 22px;
   border-radius: 10px;
-  padding: 10px 20px;
   font-weight: 600;
   border: none;
-  color: #fff;
   cursor: pointer;
-  box-shadow: none;
-  height: 45px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  white-space: nowrap; 
+  white-space: nowrap;
 }
-.modal-footer-uniform { 
-    border-top: none; 
-    display: flex; 
-    justify-content: flex-end; 
-    gap: 10px; 
-    flex-wrap: nowrap; 
+
+/* Bootstrap secondary felülírás finoman */
+.uniform-btn.btn-secondary {
+  background: #dee2e6;
+  color: #333;
+}
+
+.uniform-btn.btn-secondary:hover {
+  background: #ced4da;
+}
+
+/* Primary (Mentés) */
+.uniform-btn.btn-primary {
+  background: #f6c28b;
+  color: #000;
+}
+
+.uniform-btn.btn-primary:hover {
+  background: #eab97f;
+}
+
+.modal-footer-uniform {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  border-top: none;
+}
+
+.modal-footer-uniform .btn {
+  min-width: 120px;
+  height: 45px;
+  border-radius: 10px;
+  font-weight: 600;
 }

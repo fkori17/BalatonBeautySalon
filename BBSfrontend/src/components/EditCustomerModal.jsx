@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { Modal, Button, Form, Toast, ToastContainer } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Modal, Button, Form } from "react-bootstrap";
 import api from "../api/axios";
+import { Toast, ToastContainer } from "react-bootstrap";
 import "./style/CustomerModal.css";
 
-function CustomerModal({ show, onHide, onSuccess }) {
+function EditCustomerModal({ show, onHide, customer, onSuccess }) {
   const [formData, setFormData] = useState({
     email: "",
-    password: "",
     name: "",
     phone: "",
     loyal: false,
@@ -19,14 +19,21 @@ function CustomerModal({ show, onHide, onSuccess }) {
     variant: "success",
   });
 
-  const showToast = (message, variant = "success") => {
-    setToast({ show: true, message, variant });
-  };
+  useEffect(() => {
+    if (customer) {
+      setFormData({
+        email: customer.email,
+        name: customer.name,
+        phone: customer.phone,
+        loyal: customer.loyal,
+      });
+    }
+  }, [customer]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
+    setFormData((p) => ({
+      ...p,
       [name]: type === "checkbox" ? checked : value,
     }));
   };
@@ -35,46 +42,37 @@ function CustomerModal({ show, onHide, onSuccess }) {
     e.preventDefault();
     const form = e.currentTarget;
 
-    if (form.checkValidity() === false) {
+    if (!form.checkValidity()) {
       e.stopPropagation();
       setValidated(true);
       return;
     }
 
     try {
-      await api.post("/admin/customers", formData);
-
-      showToast("Ügyfél sikeresen létrehozva!", "success");
-      onSuccess(); // lista frissítése
-      setTimeout(onHide, 800); // modal zárása
-
-      setFormData({
-        email: "",
-        password: "",
-        name: "",
-        phone: "",
-        loyal: false,
-      });
-      setValidated(false);
+      await api.put(`/admin/customers/${customer.id}`, formData);
+      setToast({ show: true, message: "Ügyfél frissítve", variant: "success" });
+      onSuccess();
+      onHide();
     } catch (err) {
-      showToast(
-        err.response?.data?.message || "Hiba történt mentés közben!",
-        "danger",
-      );
+      setToast({
+        show: true,
+        message: "Hiba történt a mentés során",
+        variant: "danger",
+      });
     }
   };
 
   return (
     <>
-      <Modal show={show} onHide={onHide} centered backdrop="static">
+      <Modal show={show} onHide={onHide} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Új ügyfél hozzáadása</Modal.Title>
+          <Modal.Title>Ügyfél szerkesztése</Modal.Title>
         </Modal.Header>
 
         <Form noValidate validated={validated} onSubmit={handleSubmit}>
           <Modal.Body className="new-client-modal">
             <Form.Group>
-              <Form.Label>Email *</Form.Label>
+              <Form.Label>Email</Form.Label>
               <Form.Control
                 required
                 type="email"
@@ -82,28 +80,12 @@ function CustomerModal({ show, onHide, onSuccess }) {
                 value={formData.email}
                 onChange={handleChange}
               />
-              <Form.Control.Feedback type="invalid">
-                Érvényes email kötelező.
-              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group>
-              <Form.Label>Jelszó *</Form.Label>
+              <Form.Label>Név</Form.Label>
               <Form.Control
                 required
-                type="password"
-                name="password"
-                minLength={6}
-                value={formData.password}
-                onChange={handleChange}
-              />
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label>Teljes név *</Form.Label>
-              <Form.Control
-                required
-                type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
@@ -111,10 +93,9 @@ function CustomerModal({ show, onHide, onSuccess }) {
             </Form.Group>
 
             <Form.Group>
-              <Form.Label>Telefonszám *</Form.Label>
+              <Form.Label>Telefonszám</Form.Label>
               <Form.Control
                 required
-                type="tel"
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
@@ -139,7 +120,6 @@ function CustomerModal({ show, onHide, onSuccess }) {
         </Form>
       </Modal>
 
-      {/* Toast */}
       <ToastContainer position="bottom-end" className="p-3">
         <Toast
           bg={toast.variant}
@@ -155,4 +135,4 @@ function CustomerModal({ show, onHide, onSuccess }) {
   );
 }
 
-export default CustomerModal;
+export default EditCustomerModal;

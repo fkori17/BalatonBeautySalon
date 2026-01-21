@@ -44,3 +44,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/admin/dashboard/stats', [TreatmentController::class, 'adminStats']);
     Route::get('/admin/dashboard/recent-treatments', [TreatmentController::class, 'adminRecentTreatments']);
 });
+
+Route::middleware('auth:admin')->group(function () {
+    Route::get('/admin/customers', [CustomerController::class, 'index']);
+});
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/admin/customers', [CustomerController::class, 'store']);
+});
+Route::middleware('auth:sanctum')->group(function () {
+    Route::put('/admin/customers/{customer}', [CustomerController::class, 'update']);
+});
+Route::middleware('auth:sanctum')->group(function () {
+    Route::delete('/admin/customers/{id}', [CustomerController::class, 'destroy']);
+});

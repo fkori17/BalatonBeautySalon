@@ -141,8 +141,14 @@ function AdminHome() {
         </div>
       </div>
 
-      <TreatmentModal show={showTreatment} onHide={() => setShowTreatment(false)} />
-      <CustomerModal show={showCustomer} onHide={() => setShowCustomer(false)} />
+      <TreatmentModal
+        show={showTreatment}
+        onHide={() => setShowTreatment(false)}
+      />
+      <CustomerModal
+        show={showCustomer}
+        onHide={() => setShowCustomer(false)}
+      />
       <ServiceModal show={showService} onHide={() => setShowService(false)} />
     </div>
   );

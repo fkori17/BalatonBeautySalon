@@ -90,11 +90,6 @@ body {
   line-height: 1.4;
 }
 
-.actions {
-  display: flex;
-  gap: 8px;
-}
-
 .edit-btn {
   background-color: #c8e6c9;
   margin: auto;
@@ -151,7 +146,9 @@ body {
   border: 1px solid rgba(0,0,0,0.2);
   background-color: #fff;
   font-size: 14px;
-  min-width: 240px;
+  min-width: 220px;
+  flex: 1;
+  color: black;
 }
 
 .search-input:focus {
@@ -174,7 +171,9 @@ body {
   cursor: pointer;
   transition: background-color 0.15s ease, transform 0.15s ease;
   margin: auto;
+  white-space: nowrap;
 }
+
 
 .add-btn:hover {
   background-color: #d39d63;
@@ -189,10 +188,15 @@ body {
 
   .page-actions {
     width: 100%;
+    flex-direction: column;
+    align-items: stretch; 
+    gap: 10px;
+    height: 100px !important;
   }
 
   .search-input {
     flex: 1;
+    width: 100%;
   }
 
   .add-btn {
@@ -347,4 +351,42 @@ body {
 
 .save-btn:hover {
   background-color: #7fd989 !important;
+}
+.badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-success {
+  background: #e6f7ec;
+  color: #1e7f43;
+}
+
+.badge-muted {
+  background: #f1f1f1;
+  color: #777;
+}
+
+.table-header,
+.table-row {
+  display: grid;
+  grid-template-columns:
+    60px      
+    1.5fr     
+    2fr       
+    120px     
+    140px     
+    160px     
+    120px;    
+  align-items: center;
+  column-gap: 16px;
+}
+.actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start;
+  align-items: center;
+  white-space: nowrap;
 }

@@ -47,15 +47,16 @@ class TreatmentController extends Controller
     
     public function adminStats()
     {
-        $now = Carbon::now();
-
         return response()->json([
             'totalClients' => Customer::count(),
 
-            'activeClients' => Treatment::where('created_at', '>=', $now->subMonths(3))
-                ->select('customer_id')
-                ->distinct()
-                ->count(),
+            'activeClients' => Treatment::where(
+                'created_at',
+                '>=',
+                Carbon::now()->subMonths(3)
+            )
+            ->distinct('customer_id')
+            ->count('customer_id'),
 
             'monthlyTreatments' => Treatment::whereMonth('created_at', now()->month)
                 ->whereYear('created_at', now()->year)
@@ -65,7 +66,8 @@ class TreatmentController extends Controller
                 ->whereYear('created_at', now()->year)
                 ->sum('realprice'),
         ]);
-}
+    }
+
 
     public function adminRecentTreatments()
 {

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string("email");
             $table->string("password");
             $table->string("name");
-            $table->integer("phone");
+            $table->string('phone', 20);
             $table->boolean("loyal");
         });
     }

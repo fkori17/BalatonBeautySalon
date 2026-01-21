@@ -7,14 +7,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Rule;
 
 
 class CustomerController extends Controller
 {
     public function index()
-    {
-        //
-    }
+{
+    return Customer::orderBy('created_at', 'desc')->get();
+}
+
 
     public function create()
     {
@@ -23,47 +25,39 @@ class CustomerController extends Controller
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|string',
-            'password' => 'required|string|min:6',
-            'name' => 'required|string',
-            'phone' => 'required|regex:/^[\+]?[0-9]+$/',
-            'loyal' => 'required|boolean',
-        ], [
-            'email' => [
-                'required' => 'Az email megadása kötelező',
-            ],
-            'password' => [
-                'required' => 'A jelszó megadása kötelező',
-                'min' => 'A jelszónak legalább 6 karakter hosszúnak kell lennie',
-            ],
-            'name' => [
-                'required' => 'A név megadása kötelező',
-            ],
-            'phone' => [
-                'required' => 'A telefonszám megadása kötelező',
-                'regex' => 'A telefonszám csak számokat és opcionális + jelet tartalmazhat az elején',
-            ],
-            'loyal' => [
-                'required' => 'A lojalitás megadása kötelező',
-            ]
-        ]);
+        $validated = $request->validate([
+        'email' => [
+            'required',
+            'email',
+            'max:255',
+            Rule::unique('customers', 'email')
+        ],
+        'password' => 'required|min:6',
+        'name' => 'required|string|max:255',
+        'phone' => 'required|string|max:20',
+        'loyal' => 'boolean'
+    ], [
+        'email.required' => 'Az email megadása kötelező',
+        'email.email' => 'Érvényes email cím szükséges',
+        'email.unique' => 'Ezzel az email címmel már létezik vendég',
+        'password.required' => 'A jelszó megadása kötelező',
+        'password.min' => 'A jelszó legalább 6 karakter legyen',
+        'name.required' => 'A név megadása kötelező',
+        'phone.required' => 'A telefonszám megadása kötelező',
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message'=> $validator->errors()->toArray(),
-            ], 400);
-        };
+    $customer = Customer::create([
+        'email' => $validated['email'],
+        'password' => Hash::make($validated['password']), // 🔒 HASH!
+        'name' => $validated['name'],
+        'phone' => $validated['phone'],
+        'loyal' => $validated['loyal'] ?? false,
+    ]);
 
-        $newRecord = new customer();
-        $newRecord -> email = $request->email;
-        $newRecord->password = Hash::make($request->password);
-        $newRecord -> name = $request->name;
-        $newRecord -> phone = $request->phone;
-        $newRecord -> loyal = $request->loyal;
-
-        return response()->json(['success' => true, 'message' => 'Sikeres mentés'], 201);
+    return response()->json([
+        'message' => 'Vendég sikeresen létrehozva',
+        'customer' => $customer
+    ], 201);
     }
 
     public function show(customer $customer)
@@ -98,13 +92,44 @@ class CustomerController extends Controller
     }
 
 
-    public function update(Request $request, customer $customer)
-    {
-        //
+    public function update(Request $request, Customer $customer)
+{
+    $validator = Validator::make($request->all(), [
+        'email' => 'required|email|unique:customers,email,' . $customer->id,
+        'name'  => 'required|string|max:255',
+        'phone' => 'required|string|max:30',
+        'loyal' => 'boolean',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'errors' => $validator->errors()
+        ], 422);
     }
 
-    public function destroy(customer $customer)
+    $customer->update([
+        'email' => $request->email,
+        'name'  => $request->name,
+        'phone' => $request->phone,
+        'loyal' => $request->loyal ?? false,
+    ]);
+
+    return response()->json([
+        'message' => 'Ügyfél sikeresen frissítve',
+        'customer' => $customer
+    ]);
+}
+
+    public function destroy($id)
     {
-        //
+        $customer = Customer::findOrFail($id);
+
+        $customer->delete();
+
+        return response()->json([
+            'message' => 'Ügyfél sikeresen törölve'
+        ]);
     }
+
+
 }
