@@ -1,8 +1,7 @@
 import { useState } from "react";
 import "../../components/style/AdminTreatments.css";
-import { Search } from "react-bootstrap-icons";
-import { CalendarEvent } from "react-bootstrap-icons";
-
+import { Search, CalendarEvent } from "react-bootstrap-icons";
+import TreatmentModal from "../../components/TreatmentModal";
 
 const mockTreatments = [
   {
@@ -78,101 +77,119 @@ const mockTreatments = [
 ];
 
 function Treatments() {
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [validated, setValidated] = useState(false);
+  const [treatmentModal, setTreatmentModal] = useState(false);
 
-  const handleSubmit = (event) => {
-    const form = event.currentTarget;
+  const [search, setSearch] = useState("");
+  const [serviceFilter, setServiceFilter] = useState("Összes");
+  const [dateFilter, setDateFilter] = useState("");
 
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    } else {
-      event.preventDefault();
-      setShowAddModal(false);
-    }
+  const filteredTreatments = mockTreatments.filter((t) => {
+    const q = search.toLowerCase();
 
-    setValidated(true);
-  };    
+    const matchesSearch =
+      !q ||
+      t.name.toLowerCase().includes(q) ||
+      t.service.toLowerCase().includes(q);
+
+    const matchesService =
+      serviceFilter === "Összes" || t.service === serviceFilter;
+
+    const matchesDate =
+      !dateFilter || t.date.replaceAll(".", "-") === dateFilter;
+
+    return matchesSearch && matchesService && matchesDate;
+  });
 
   return (
     <div className="treatments-page">
       <div className="page-header">
         <h1 className="page-title">Kezelések</h1>
         <div className="page-actions">
-          <button className="add-btn" onClick={() => setShowAddModal(true)}>
+          <button className="add-btn" onClick={() => setTreatmentModal(true)}>
             Új kezelés rögzítése
           </button>
         </div>
       </div>
+
       <div className="filters-row">
         <div className="filter-group">
-            <label>Ügyfél</label>
-            <div className="input-with-icon">
+          <label>Ügyfél</label>
+          <div className="input-with-icon">
             <input
-                type="text"
-                placeholder="Keresés ügyfélre…"
+              type="text"
+              placeholder="Keresés név alapján…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
             <Search size={16} />
-            </div>
+          </div>
         </div>
 
         <div className="filter-group">
-            <label>Szolgáltatás</label>
-            <select>
+          <label>Szolgáltatás</label>
+          <select
+            value={serviceFilter}
+            onChange={(e) => setServiceFilter(e.target.value)}
+          >
             <option>Összes</option>
             <option>Manikűr</option>
             <option>Francia manikűr</option>
             <option>Pedikűr</option>
-            </select>
+            <option>Géllakkozás</option>
+            <option>Spa manikűr</option>
+          </select>
         </div>
 
         <div className="filter-group">
           <label>Dátum</label>
           <div className="input-with-icon calendar-input">
-            <input type="date" id="dateFilter" />
+            <input
+              type="date"
+              id="dateFilter"
+              value={dateFilter}
+              onChange={(e) => setDateFilter(e.target.value)}
+            />
             <CalendarEvent
               size={18}
               className="calendar-icon"
               onClick={() => {
                 const input = document.getElementById("dateFilter");
-                if (input.showPicker) {
-                  input.showPicker();
-                } else {
-                  input.focus();
-                }
+                input?.showPicker ? input.showPicker() : input.focus();
               }}
             />
           </div>
         </div>
-        <button className="search-btn">Keresés</button>
       </div>
 
-
       <div className="treatments-table">
-        <div className="table-header">
+        <div className="treatments-header">
           <span>Dátum</span>
           <span>Ügyfél</span>
-          <span>Szolgáltatások</span>
+          <span>Szolgáltatás</span>
           <span>Ár</span>
           <span>Részletek</span>
           <span></span>
         </div>
 
-        {mockTreatments.map((c) => (
-          <div className="table-row" key={c.id}>
+        {filteredTreatments.map((c, i) => (
+          <div className="treatments-row" key={i}>
             <span>{c.date}</span>
             <span>{c.name}</span>
-            <span className="ellipsis">{c.service}</span>
-            <span className="ellipsis">{c.price} Ft</span>
-            <span className="ellipsis">{c.details}</span>
+            <span>{c.service}</span>
+            <span>{c.price} Ft</span>
+            <span>{c.details}</span>
 
             <button className="icon-btn details-btn">
-                <Search size={18} />
+              <Search size={18} />
             </button>
           </div>
         ))}
       </div>
+      <TreatmentModal
+        show={treatmentModal}
+        onHide={() => setTreatmentModal(false)}
+      />
+
     </div>
   );
 }
