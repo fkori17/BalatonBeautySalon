@@ -1,7 +1,8 @@
 import { useState } from "react";
 import "../../components/style/AdminTreatments.css";
 import { Search } from "react-bootstrap-icons";
-import { Modal, Button, Form } from "react-bootstrap";
+import { CalendarEvent } from "react-bootstrap-icons";
+
 
 const mockTreatments = [
   {
@@ -127,12 +128,23 @@ function Treatments() {
         </div>
 
         <div className="filter-group">
-            <label>Dátum</label>
-            <div className="input-with-icon">
-            <input type="date" />
-            </div>
+          <label>Dátum</label>
+          <div className="input-with-icon calendar-input">
+            <input type="date" id="dateFilter" />
+            <CalendarEvent
+              size={18}
+              className="calendar-icon"
+              onClick={() => {
+                const input = document.getElementById("dateFilter");
+                if (input.showPicker) {
+                  input.showPicker();
+                } else {
+                  input.focus();
+                }
+              }}
+            />
+          </div>
         </div>
-
         <button className="search-btn">Keresés</button>
       </div>
 
@@ -144,6 +156,7 @@ function Treatments() {
           <span>Szolgáltatások</span>
           <span>Ár</span>
           <span>Részletek</span>
+          <span></span>
         </div>
 
         {mockTreatments.map((c) => (
