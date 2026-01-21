@@ -97,7 +97,15 @@ body {
   background-color: #eab97f;
   border: 1px solid rgba(0, 0, 0, 0.15);
 }
-
+.btn-primary:active { 
+  background-color: #cfa066 !important;
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
+}
+.btn-primary:disabled { 
+  background-color: #ebc8a2 !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  cursor: not-allowed;
+}
 .icon-btn:hover {
   transform: scale(1.1);
   border: 1px solid #ddd;

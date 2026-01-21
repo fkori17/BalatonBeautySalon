@@ -6,6 +6,8 @@ use App\Http\Controllers\api\AdminAuthController;
 use App\Http\Controllers\api\CustomerAuthController;
 use App\Http\Controllers\TreatmentController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\Api\PasswordResetController;
+
 
 Route::post('/login', [CustomerAuthController::class, 'login']);
 Route::post('/admin/login', [AdminAuthController::class, 'login']);
@@ -35,6 +37,8 @@ Route::middleware('auth:sanctum')->post(
     [CustomerController::class, 'changePassword']
 );
 
+Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink']);
+Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/admin/dashboard/stats', [TreatmentController::class, 'adminStats']);

@@ -13,6 +13,14 @@ class Customer extends Authenticatable
     protected $table = 'customers';
     protected $hidden = ['password'];
 
+     protected $fillable = [
+        'email',
+        'password',
+        'name',
+        'phone',
+        'loyal'
+    ];
+
     public function treatment(): HasMany
     {
         return $this->hasMany(Treatment::class, 'customer_id', 'id');

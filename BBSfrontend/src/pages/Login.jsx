@@ -4,13 +4,17 @@ import api from "../api/axios.js";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import "../components/style/Login.css";
-import { Toast, ToastContainer } from "react-bootstrap";
+import { Toast, ToastContainer, Modal } from "react-bootstrap";
 
 function Login() {
-  const [user, setUser] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [validated, setValidated] = useState(false);
+  const [showForgot, setShowForgot] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetLoading, setResetLoading] = useState(false);
+
   const navigate = useNavigate();
   const [toast, setToast] = useState({
     show: false,
@@ -33,7 +37,7 @@ function Login() {
     }
 
     try {
-      const response = await api.post("/login", { user, password });
+      const response = await api.post("/login", { email, password });
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("authType", "user");
       navigate("/user");
@@ -57,6 +61,29 @@ function Login() {
     </svg>
   );
 
+  const sendResetLink = async () => {
+    if (!resetEmail) {
+      showToast("Add meg az email címed!", "danger");
+      return;
+    }
+
+    setResetLoading(true);
+
+    try {
+      await api.post("/forgot-password", {
+        email: resetEmail,
+      });
+
+      showToast("Jelszó-visszaállító email elküldve!", "success");
+      setShowForgot(false);
+      setResetEmail("");
+    } catch {
+      showToast("Nincs ilyen email címmel regisztrált felhasználó", "danger");
+    } finally {
+      setResetLoading(false);
+    }
+  };
+
   return (
     <div className="login-page">
       <div className="login-card wide">
@@ -73,8 +100,8 @@ function Login() {
               required
               type="email"
               placeholder="Email"
-              value={user}
-              onChange={(e) => setUser(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="custom-input"
             />
             <Form.Control.Feedback type="invalid">
@@ -104,7 +131,9 @@ function Login() {
             </div>
           </Form.Group>
 
-          <div className="forgot">Elfelejtett jelszó?</div>
+          <div className="forgot" onClick={() => setShowForgot(true)}>
+            Elfelejtett jelszó?
+          </div>
 
           <Button type="submit" className="login-btn">
             Bejelentkezés
@@ -147,6 +176,39 @@ function Login() {
           </div>
         </div>
       </div>
+      <Modal show={showForgot} onHide={() => setShowForgot(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Elfelejtett jelszó</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <p style={{ fontSize: "14px", marginBottom: "12px" }}>
+            Add meg az email címed, és küldünk egy jelszó-visszaállító linket.
+          </p>
+
+          <Form.Control
+            type="email"
+            placeholder="Email cím"
+            value={resetEmail}
+            onChange={(e) => setResetEmail(e.target.value)}
+          />
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowForgot(false)}>
+            Mégse
+          </Button>
+
+          <Button
+            variant="primary"
+            onClick={sendResetLink}
+            disabled={resetLoading}
+          >
+            {resetLoading ? "Küldés..." : "Email küldése"}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       <ToastContainer position="bottom-end" className="p-3">
         <Toast
           bg={toast.variant}

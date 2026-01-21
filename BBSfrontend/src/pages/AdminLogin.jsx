@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button";
 import "../components/style/Login.css";
 
 function AdminLogin() {
-  const [user, setUser] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [validated, setValidated] = useState(false);
@@ -22,7 +22,7 @@ function AdminLogin() {
     }
 
     try {
-      const response = await api.post("/admin/login", { user, password });
+      const response = await api.post("/admin/login", { email, password });
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("authType", "admin");
       navigate("/admin");
@@ -62,8 +62,8 @@ function AdminLogin() {
               required
               type="email"
               placeholder="Email"
-              value={user}
-              onChange={(e) => setUser(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="custom-input"
             />
             <Form.Control.Feedback type="invalid">

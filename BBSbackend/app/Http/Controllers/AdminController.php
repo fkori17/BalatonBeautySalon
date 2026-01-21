@@ -30,10 +30,10 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user' => 'required|string',
+            'email' => 'required|string',
             'password' => 'required|string|min:6'
         ], [
-            'user' => [
+            'email' => [
                 'required' => 'A felhasználónév megadása kötelező',
             ],
             'password' => [
@@ -50,7 +50,7 @@ class AdminController extends Controller
         };
 
         $newRecord = new admin();
-        $newRecord -> user = $request->user;
+        $newRecord -> email = $request->email;
         $newRecord -> password = $request->password;
         $newRecord -> save();
         return response()->json(['success' => true, 'message' => 'Sikeres mentés'], 201);

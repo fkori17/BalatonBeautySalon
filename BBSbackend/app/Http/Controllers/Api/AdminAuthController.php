@@ -13,11 +13,11 @@ class AdminAuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'user' => 'required|email',
+            'email' => 'required|email',
             'password' => 'required'
         ]);
 
-        $admin = Admin::where('user', $request->user)->first();
+        $admin = Admin::where('email', $request->email)->first();
 
         if (!$admin || !Hash::check($request->password, $admin->password)) {
             return response()->json([

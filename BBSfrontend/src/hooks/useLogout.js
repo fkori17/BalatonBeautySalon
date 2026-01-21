@@ -8,7 +8,7 @@ export default function useLogout() {
     try {
       await api.post("/logout");
     } catch {
-      // token már lehet lejárt – nem gond
+      // 
     } finally {
       localStorage.removeItem("token");
       localStorage.removeItem("authType");

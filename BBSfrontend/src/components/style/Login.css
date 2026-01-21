@@ -50,6 +50,7 @@
   padding-right: 48px;
   font-size: 15px;
   background: #fff !important;
+  color: black;
 }
 /* Chrome autofill javítás */
 .login-page input:-webkit-autofill,
@@ -163,4 +164,16 @@
   .logo {
     margin-top: 20px;
   }
+}
+
+.modal-content {
+  border-radius: 16px;
+}
+
+.modal-title {
+  font-weight: 600;
+}
+
+.modal-footer button {
+  min-width: 120px;
 }

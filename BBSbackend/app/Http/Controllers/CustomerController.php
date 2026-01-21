@@ -24,14 +24,14 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user' => 'required|string',
+            'email' => 'required|string',
             'password' => 'required|string|min:6',
             'name' => 'required|string',
             'phone' => 'required|regex:/^[\+]?[0-9]+$/',
             'loyal' => 'required|boolean',
         ], [
-            'user' => [
-                'required' => 'A felhasználónév megadása kötelező',
+            'email' => [
+                'required' => 'Az email megadása kötelező',
             ],
             'password' => [
                 'required' => 'A jelszó megadása kötelező',
@@ -57,7 +57,7 @@ class CustomerController extends Controller
         };
 
         $newRecord = new customer();
-        $newRecord -> user = $request->user;
+        $newRecord -> email = $request->email;
         $newRecord->password = Hash::make($request->password);
         $newRecord -> name = $request->name;
         $newRecord -> phone = $request->phone;
@@ -79,7 +79,7 @@ class CustomerController extends Controller
             ]);
 
             /** @var \App\Models\Customer $customer */
-            $customer = $request->user();
+            $customer = $request->email();
 
             if (!Hash::check($request->oldPassword, $customer->password)) {
                 return response()->json([

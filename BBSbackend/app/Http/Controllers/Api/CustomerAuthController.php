@@ -12,11 +12,11 @@ class CustomerAuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'user' => 'required|email',
+            'email' => 'required|email',
             'password' => 'required'
         ]);
 
-        $customer = Customer::where('user', $request->user)->first();
+        $customer = Customer::where('email', $request->email)->first();
 
         if (!$customer || !Hash::check($request->password, $customer->password)) {
             return response()->json([
