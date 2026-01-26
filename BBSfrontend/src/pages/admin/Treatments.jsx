@@ -123,21 +123,18 @@ function Treatments() {
           </div>
           {filteredTreatments.map((t) => (
             <div className="treatments-row" key={t.id}>
-              <span>
+              <span data-label="Dátum">
                 {t.date ? new Date(t.date).toLocaleDateString("hu-HU") : "-"}
               </span>
-              <span>{t.customer}</span>
-              <span title={t.services?.map((s) => s.name).join(", ")}>
-                {t.services?.map((s) => `${s.name} (${s.piece}x)`).join(", ") ||
-                  "Nincs szolgáltatás"}
+              <span data-label="Ügyfél">{t.customer}</span>
+              <span data-label="Szolgáltatások" title={t.services?.map((s) => s.name).join(", ")}>
+                {t.services?.map((s) => `${s.name} (${s.piece}x)`).join(", ") || "Nincs szolgáltatás"}
               </span>
-
-              <span>{(Number(t.realprice) || 0).toLocaleString()} Ft</span>
-
-              <span className="text-muted small">{t.description || "-"}</span>
+              <span data-label="Ár">{(Number(t.realprice) || 0).toLocaleString()} Ft</span>
+              <span data-label="Megjegyzés" className="text-muted small">{t.description || "-"}</span>
               <div className="action-buttons">
                 <button
-                  className="btn btn-sm btn-outline-success border-0"
+                  className="icon-btn edit-btn"
                   onClick={() => {
                     setActiveTreatment(t);
                     setShowEditModal(true);
@@ -146,7 +143,7 @@ function Treatments() {
                   <PencilSquare size={18} />
                 </button>
                 <button
-                  className="btn btn-sm btn-outline-danger border-0"
+                  className="icon-btn delete-btn"
                   onClick={() => {
                     setActiveTreatment(t);
                     setShowDeleteModal(true);

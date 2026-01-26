@@ -43,8 +43,8 @@ body {
     2fr       
     120px     
     140px     
-    160px     
-    120px;    
+    160px
+    130px;
   align-items: center;
   column-gap: 16px;
 }
@@ -99,6 +99,7 @@ body {
 .edit-btn:hover {
   background-color: #2e7d32;
   transform: scale(1.1);
+  color: #fff !important;
 }
 
 .delete-btn {
@@ -110,6 +111,7 @@ body {
 .delete-btn:hover {
   background-color: #c62828;
   transform: scale(1.1);
+  color: #fff !important;
 }
 
 @media (max-width: 768px) {
