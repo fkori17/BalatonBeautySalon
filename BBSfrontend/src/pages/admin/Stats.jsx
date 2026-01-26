@@ -19,7 +19,7 @@ function Stats() {
   const [stats, setStats] = useState(null);
   const [treatmentVisits, setTreatmentVisits] = useState([]);
 
-  // MOCK ADATOK – API nélkül
+
   useEffect(() => {
     const mockStats = {
       monthlyNewUsers: 14,
@@ -56,10 +56,8 @@ function Stats() {
   return (
     <div className="stats-page">
 
-      {/* Oldal cím */}
       <h1 className="stats-title">Statisztikák</h1>
 
-      {/* Felső 3 kártya */}
       <div className="stats-cards">
         <IconStatCard
           icon={FaUserPlus}
@@ -79,8 +77,6 @@ function Stats() {
           title={stats.topTreatment.name}
         />
       </div>
-
-      {/* Bar chart */}
       <div className="chart-container">
         <h2>{stats.topTreatment.name}</h2>
 

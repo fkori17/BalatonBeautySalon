@@ -1,25 +1,14 @@
-html,
-body {
-  overflow-x: hidden;
-}
-
 .services-page {
   padding: 32px;
-  max-width: 100%;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
+  max-width: 1400px;
+  margin: 0 auto;
 }
-
-/* ====== HEADER (pont mint a Treatments oldalon) ====== */
 
 .page-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 30px;
 }
 
 .page-title {
@@ -28,58 +17,56 @@ body {
   margin: 0;
 }
 
-.page-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
 .add-btn {
-  height: 38px;
-  padding: 0 16px;
-  border-radius: 8px;
+  height: 45px;
+  padding: 0 24px;
+  border-radius: 10px;
   border: none;
   background-color: #e9b174;
   color: #fff;
-  font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.15s ease, transform 0.15s ease;
+  transition: all 0.2s ease;
 }
 
 .add-btn:hover {
   background-color: #d39d63;
-  transform: scale(1.03);
+  transform: translateY(-2px);
 }
 
-@media (max-width: 768px) {
-  .page-header {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .page-actions {
-    width: 100%;
-  }
-
-  .add-btn {
-    width: 100%;
-  }
+.tables-container {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
 }
 
-/* ====== TÁBLÁZAT ====== */
+.table-section {
+  flex: 1;
+  min-width: 0;
+  transition: opacity 0.3s ease;
+}
+
+.inactive-section {
+  opacity: 0.7;
+}
+
+.inactive-section:hover {
+  opacity: 1;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #444;
+  padding-left: 5px;
+}
 
 .services-table-wrapper {
   background: white;
-  padding: 14px;
+  padding: 12px;
   border-radius: 12px;
-  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.06);
-  width: 100%;
-  max-width: 1100px;
-  overflow-x: auto;
-
-  /* 👉 EZ TESZI KÖZÉPRE A TÁBLÁT */
-  margin: 0 auto;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
 }
 
 .services-table {
@@ -88,56 +75,56 @@ body {
 }
 
 .services-table th {
-  text-align: left;
-  padding: 10px 8px;
+  padding: 14px;
   font-weight: 600;
-  border-bottom: 2px solid #eee;
-  font-size: 14px;
+  border-bottom: 2px solid #f0f0f0;
+  text-align: left;
+  color: #666;
 }
 
 .services-table td {
-  padding: 10px 8px;
-  border-bottom: 1px solid #f0f0f0;
-  font-size: 14px;
-}
-
-.services-table tr:last-child td {
-  border-bottom: none;
-}
-
-.col-name {
-  width: 55%;
-}
-
-.col-price {
-  width: 25%;
+  padding: 14px;
+  border-bottom: 1px solid #f8f8f8;
+  color: #333;
 }
 
 .col-actions {
-  width: 20%;
-  text-align: right;
+  text-align: center !important;
+  width: 120px;
 }
 
-.edit-btn,
-.delete-btn {
-  background: none;
-  border: none;
+.action-buttons-container {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.edit-btn, .delete-btn, .restore-btn {
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
   cursor: pointer;
-  font-size: 18px;
-  margin-left: 8px;
+  height: 38px;
+  width: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  outline: none;
 }
 
-.edit-btn:hover {
-  color: #9b5a3a;
+.edit-btn:hover, .delete-btn:hover {
+  background-color: #fff4e6;
+  border-color: #e9b174;
 }
 
-.delete-btn:hover {
-  color: #c0392b;
+.restore-btn:hover {
+  background-color: #e6f4ea;
+  border-color: #27ae60;
 }
-.header-divider {
-  border: none;
-  height: 4px;           
-  background-color: #5f5d5d;
-  margin: 16px 0;         
-  border-radius: 2px;     
+
+@media (max-width: 1100px) {
+  .tables-container {
+    flex-direction: column;
+  }
 }

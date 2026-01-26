@@ -18,10 +18,12 @@
 
 .modal-footer-uniform {
   border-top: none;
-  display: flex;
-  justify-content: flex-end;
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: flex-end !important;
   gap: 10px;
   flex-wrap: nowrap;
+  padding: 1.5rem;
 }
 
 .uniform-btn {
@@ -31,10 +33,34 @@
   border: none;
   color: #fff;
   cursor: pointer;
-  box-shadow: none;
   height: 45px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   white-space: nowrap;
+  margin: 0 !important;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary.uniform-btn {
+  background-color: #6c757d;
+}
+
+.save-btn-style {
+  background-color: #e9b174 !important;
+}
+
+.uniform-btn:hover {
+  filter: brightness(90%);
+  transform: translateY(-1px);
+}
+
+.uniform-btn:active {
+  transform: translateY(0);
+}
+
+.uniform-field label {
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: #333;
 }
