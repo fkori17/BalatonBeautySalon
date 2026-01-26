@@ -38,15 +38,15 @@ body {
 .table-row {
   display: grid;
   grid-template-columns:
-    60px
-    160px
-    1.5fr
-    1fr
-    160px
-    150px;
+    60px      
+    1.5fr     
+    2fr       
+    120px     
+    140px     
+    160px     
+    120px;    
   align-items: center;
   column-gap: 16px;
-  min-width: 900px;
 }
 
 .table-header {
@@ -369,20 +369,7 @@ body {
   color: #777;
 }
 
-.table-header,
-.table-row {
-  display: grid;
-  grid-template-columns:
-    60px      
-    1.5fr     
-    2fr       
-    120px     
-    140px     
-    160px     
-    120px;    
-  align-items: center;
-  column-gap: 16px;
-}
+
 .actions {
   display: flex;
   gap: 8px;

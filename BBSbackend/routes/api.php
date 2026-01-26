@@ -7,6 +7,9 @@ use App\Http\Controllers\api\CustomerAuthController;
 use App\Http\Controllers\TreatmentController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\Api\PasswordResetController;
+use App\Http\Controllers\Admin\CustomerSelectController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\Admin\AdminTreatmentController;
 
 
 Route::post('/login', [CustomerAuthController::class, 'login']);
@@ -57,3 +60,15 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/admin/customers/{id}', [CustomerController::class, 'destroy']);
 });
+
+Route::middleware('auth:sanctum')
+    ->prefix('admin')
+    ->group(function () {
+
+        Route::get('/customers', [CustomerController::class, 'index']);
+        Route::get('/services', [ServiceController::class, 'index']);
+        Route::get('/treatments', [AdminTreatmentController::class, 'index']);
+        Route::post('/treatments', [AdminTreatmentController::class, 'store']);
+        Route::put('/treatments/{treatment}', [AdminTreatmentController::class, 'update']);
+        Route::delete('/treatments/{treatment}', [AdminTreatmentController::class, 'destroy']);
+    });

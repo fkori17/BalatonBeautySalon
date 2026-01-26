@@ -14,7 +14,9 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        //
+        return Service::select('id', 'name', 'price')
+            ->orderBy('name')
+            ->get();
     }
 
     /**

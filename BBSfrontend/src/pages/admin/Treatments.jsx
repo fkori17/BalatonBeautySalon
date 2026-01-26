@@ -1,195 +1,184 @@
-import { useState } from "react";
+import { useEffect, useCallback, useMemo, useState } from "react";
 import "../../components/style/AdminTreatments.css";
-import { Search, CalendarEvent } from "react-bootstrap-icons";
-import TreatmentModal from "../../components/TreatmentModal";
+import {
+  Search,
+  CalendarEvent,
+  Trash,
+  PencilSquare,
+  CheckCircle,
+  ExclamationTriangle,
+} from "react-bootstrap-icons";
+import api from "../../api/axios";
+import { Spinner, Toast, ToastContainer } from "react-bootstrap";
 
-const mockTreatments = [
-  {
-    date: "2026.01.21",
-    name: "Példa Kovács János",
-    service: "Manikűr",
-    price: "3000",
-    details: "Rövid leírás a kezelés részleteiről, otth...",
-  },
-  {
-    date: "2026.01.19",
-    name: "Példa Szabó Anna",
-    service: "Francia manikűr",
-    price: "4200",
-    details: "Rövid leírás a kezelés részleteiről, otth...",
-  },
-  {
-    date: "2026.01.18",
-    name: "Példa Nagy Péter",
-    service: "Géllakkozás",
-    price: "5200",
-    details: "Rövid leírás a kezelés részleteiről, otth...",
-  },
-  {
-    date: "2026.01.17",
-    name: "Példa Tóth Eszter",
-    service: "Japán manikűr",
-    price: "8500",
-    details: "Rövid leírás a kezelés részleteiről, otth...",
-  },
-  {
-    date: "2026.01.16",
-    name: "Példa Varga László",
-    service: "Pedikűr",
-    price: "6000",
-    details: "Rövid leírás a kezelés részleteiről, otth...",
-  },
-  {
-    date: "2026.01.15",
-    name: "Példa Horváth Réka",
-    service: "Erősített géllakk",
-    price: "7000",
-    details: "Rövid leírás a kezelés részleteiről, otth...",
-  },
-  {
-    date: "2026.01.14",
-    name: "Példa Kiss Bence",
-    service: "Lábápolás",
-    price: "3900",
-    details: "Rövid leírás a kezelés részleteiről, otth...",
-  },
-  {
-    date: "2026.01.13",
-    name: "Példa Molnár Zsófia",
-    service: "Kézápolás",
-    price: "2800",
-    details: "Rövid leírás a kezelés részleteiről, otth...",
-  },
-  {
-    date: "2026.01.12",
-    name: "Példa Farkas Gergő",
-    service: "Körömdíszítés",
-    price: "1500",
-    details: "Rövid leírás a kezelés részleteiről, otth...",
-  },
-  {
-    date: "2026.01.11",
-    name: "Példa Balogh Dóra",
-    service: "Spa manikűr",
-    price: "9000",
-    details: "Rövid leírás a kezelés részleteiről, otth...",
-  },
-];
+import TreatmentModal from "../../components/TreatmentModal";
+import EditTreatmentModal from "../../components/EditTreatmentModal";
+import DeleteTreatmentModal from "../../components/DeleteTreatmentModal";
 
 function Treatments() {
-  const [treatmentModal, setTreatmentModal] = useState(false);
+  const [treatments, setTreatments] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [search, setSearch] = useState("");
   const [serviceFilter, setServiceFilter] = useState("Összes");
   const [dateFilter, setDateFilter] = useState("");
 
-  const filteredTreatments = mockTreatments.filter((t) => {
-    const q = search.toLowerCase();
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-    const matchesSearch =
-      !q ||
-      t.name.toLowerCase().includes(q) ||
-      t.service.toLowerCase().includes(q);
+  const [activeTreatment, setActiveTreatment] = useState(null);
 
-    const matchesService =
-      serviceFilter === "Összes" || t.service === serviceFilter;
-
-    const matchesDate =
-      !dateFilter || t.date.replaceAll(".", "-") === dateFilter;
-
-    return matchesSearch && matchesService && matchesDate;
+  const [toast, setToast] = useState({
+    show: false,
+    message: "",
+    variant: "success",
   });
+
+  const showToast = (message, variant = "success") => {
+    setToast({ show: true, message, variant });
+  };
+
+  const fetchTreatments = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await api.get("/admin/treatments");
+      setTreatments(response.data);
+    } catch (error) {
+      showToast("Hiba a betöltéskor", "danger");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchTreatments();
+  }, [fetchTreatments]);
+
+  const filteredTreatments = useMemo(() => {
+    return treatments.filter((t) => {
+      const q = search.toLowerCase();
+      const serviceNames = t.services
+        .map((s) => s.name.toLowerCase())
+        .join(", ");
+      const matchesSearch =
+        !q || t.customer.toLowerCase().includes(q) || serviceNames.includes(q);
+      const matchesService =
+        serviceFilter === "Összes" ||
+        t.services.some((s) => s.name === serviceFilter);
+      const treatmentDate = new Date(t.date).toISOString().split("T")[0];
+      const matchesDate = !dateFilter || treatmentDate === dateFilter;
+      return matchesSearch && matchesService && matchesDate;
+    });
+  }, [treatments, search, serviceFilter, dateFilter]);
+
+  const handleSuccess = (msg) => {
+    showToast(msg);
+    fetchTreatments();
+  };
 
   return (
     <div className="treatments-page">
+      <ToastContainer position="top-end" className="p-3">
+        <Toast
+          onClose={() => setToast({ ...toast, show: false })}
+          show={toast.show}
+          delay={3000}
+          autohide
+          bg={toast.variant}
+        >
+          <Toast.Body className="text-white d-flex align-items-center gap-2">
+            {toast.variant === "success" ? (
+              <CheckCircle />
+            ) : (
+              <ExclamationTriangle />
+            )}
+            {toast.message}
+          </Toast.Body>
+        </Toast>
+      </ToastContainer>
+
       <div className="page-header">
         <h1 className="page-title">Kezelések</h1>
-        <div className="page-actions">
-          <button className="add-btn" onClick={() => setTreatmentModal(true)}>
-            Új kezelés rögzítése
-          </button>
-        </div>
+        <button className="add-btn" onClick={() => setShowAddModal(true)}>
+          Új kezelés rögzítése
+        </button>
       </div>
 
-      <div className="filters-row">
-        <div className="filter-group">
-          <label>Ügyfél</label>
-          <div className="input-with-icon">
-            <input
-              type="text"
-              placeholder="Keresés név alapján…"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <Search size={16} />
+      <div className="filters-row"></div>
+
+      {loading ? (
+        <div className="d-flex justify-content-center mt-5">
+          <Spinner animation="border" variant="warning" />
+        </div>
+      ) : (
+        <div className="treatments-table">
+          <div className="treatments-header">
+            <span>Dátum</span>
+            <span>Ügyfél</span>
+            <span>Szolgáltatások</span>
+            <span>Ár</span>
+            <span>Megjegyzés</span>
+            <span>Műveletek</span>
           </div>
+          {filteredTreatments.map((t) => (
+            <div className="treatments-row" key={t.id}>
+              <span>
+                {t.date ? new Date(t.date).toLocaleDateString("hu-HU") : "-"}
+              </span>
+              <span>{t.customer}</span>
+              <span title={t.services?.map((s) => s.name).join(", ")}>
+                {t.services?.map((s) => `${s.name} (${s.piece}x)`).join(", ") ||
+                  "Nincs szolgáltatás"}
+              </span>
+
+              <span>{(Number(t.realprice) || 0).toLocaleString()} Ft</span>
+
+              <span className="text-muted small">{t.description || "-"}</span>
+              <div className="action-buttons">
+                <button
+                  className="btn btn-sm btn-outline-success border-0"
+                  onClick={() => {
+                    setActiveTreatment(t);
+                    setShowEditModal(true);
+                  }}
+                >
+                  <PencilSquare size={18} />
+                </button>
+                <button
+                  className="btn btn-sm btn-outline-danger border-0"
+                  onClick={() => {
+                    setActiveTreatment(t);
+                    setShowDeleteModal(true);
+                  }}
+                >
+                  <Trash size={18} />
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
+      )}
 
-        <div className="filter-group">
-          <label>Szolgáltatás</label>
-          <select
-            value={serviceFilter}
-            onChange={(e) => setServiceFilter(e.target.value)}
-          >
-            <option>Összes</option>
-            <option>Manikűr</option>
-            <option>Francia manikűr</option>
-            <option>Pedikűr</option>
-            <option>Géllakkozás</option>
-            <option>Spa manikűr</option>
-          </select>
-        </div>
-
-        <div className="filter-group">
-          <label>Dátum</label>
-          <div className="input-with-icon calendar-input">
-            <input
-              type="date"
-              id="dateFilter"
-              value={dateFilter}
-              onChange={(e) => setDateFilter(e.target.value)}
-            />
-            <CalendarEvent
-              size={18}
-              className="calendar-icon"
-              onClick={() => {
-                const input = document.getElementById("dateFilter");
-                input?.showPicker ? input.showPicker() : input.focus();
-              }}
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="treatments-table">
-        <div className="treatments-header">
-          <span>Dátum</span>
-          <span>Ügyfél</span>
-          <span>Szolgáltatás</span>
-          <span>Ár</span>
-          <span>Részletek</span>
-          <span></span>
-        </div>
-
-        {filteredTreatments.map((c, i) => (
-          <div className="treatments-row" key={i}>
-            <span>{c.date}</span>
-            <span>{c.name}</span>
-            <span>{c.service}</span>
-            <span>{c.price} Ft</span>
-            <span>{c.details}</span>
-
-            <button className="icon-btn details-btn">
-              <Search size={18} />
-            </button>
-          </div>
-        ))}
-      </div>
       <TreatmentModal
-        show={treatmentModal}
-        onHide={() => setTreatmentModal(false)}
+        show={showAddModal}
+        onHide={() => setShowAddModal(false)}
+        onSuccess={() => handleSuccess("Sikeresen hozzáadva!")}
       />
 
+      <EditTreatmentModal
+        show={showEditModal}
+        treatment={activeTreatment}
+        onHide={() => setShowEditModal(false)}
+        onSuccess={(msg) => handleSuccess(msg)}
+      />
+
+      <DeleteTreatmentModal
+        show={showDeleteModal}
+        treatment={activeTreatment}
+        onHide={() => setShowDeleteModal(false)}
+        onSuccess={(msg) => handleSuccess(msg)}
+      />
     </div>
   );
 }

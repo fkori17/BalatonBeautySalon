@@ -51,7 +51,6 @@ function ServiceModal({ show, onHide }) {
 
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Modal.Body className="service-modal">
-
           <Form.Group className="uniform-field">
             <Form.Label>Szolgáltatás neve</Form.Label>
             <Form.Control
@@ -76,7 +75,6 @@ function ServiceModal({ show, onHide }) {
               min={0}
             />
           </Form.Group>
-
         </Modal.Body>
 
         <Modal.Footer className="modal-footer-uniform">

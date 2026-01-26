@@ -1,0 +1,61 @@
+.treatment-modal {
+  padding: 20px;
+}
+
+.treatment-modal-header {
+  padding: 16px 20px;
+}
+
+.modal-loading {
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdown-list {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  max-height: 180px;
+  overflow-y: auto;
+  margin-top: 4px;
+  background: #fff;
+}
+
+.dropdown-item {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.dropdown-item:hover,
+.dropdown-item.active {
+  background: #f6c28b;
+}
+
+.selected-service {
+  display: grid;
+  grid-template-columns: 1fr 70px 100px 100px;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+}
+
+.selected-service input {
+  width: 100%;
+  text-align: center;
+}
+
+.selected-service button {
+  border: none !important;
+  background: none !important;
+  font-size: 18px !important;
+  cursor: pointer !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+.modal-footer-uniform {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}

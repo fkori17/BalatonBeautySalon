@@ -33,7 +33,7 @@ function Treatments() {
   };
 
   return (
-    <div className="treatments-page">
+    <div className="treatments-page user-treatments-page">
       <h1 className="page-title">Kezeléseim</h1>
 
       <div className="treatments-table">

@@ -64,7 +64,7 @@ function Customers() {
   );
 
   return (
-    <div className="treatments-page">
+    <div className="treatments-page customers-page">
       <div className="page-header">
         <h1 className="page-title">Ügyfél profilok</h1>
 

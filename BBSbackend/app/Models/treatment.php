@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Treatment extends Model
 {
+    protected $fillable = ['customer_id', 'description', 'realprice'];
     function customer() {
         return $this->belongsTo(Customer::class, 'customer_id');
     }
