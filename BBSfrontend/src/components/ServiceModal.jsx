@@ -1,92 +1,101 @@
-import { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import api from "../api/axios"; 
-import "./style/ServiceModal.css";
+import { useEffect, useState } from "react";
+import api from "../api/axios";
 
-function ServiceModal({ show, onHide, onSuccess, serviceData }) {
-  const [formData, setFormData] = useState({ name: "", price: "" });
+function ServiceModal({ show, onHide, service, onSuccess }) {
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
   const [validated, setValidated] = useState(false);
+  const [loading, setLoading] = useState(false);
 
+  // Alaphelyzetbe állítás, amikor a Modal kinyílik/bezárul
   useEffect(() => {
-    if (serviceData) {
-      setFormData({
-        name: serviceData.name || "",
-        price: serviceData.price || "",
-      });
+    if (service) {
+      setName(service.name);
+      setPrice(service.price);
     } else {
-      setFormData({ name: "", price: "" });
+      setName("");
+      setPrice("");
     }
-    setValidated(false);
-  }, [serviceData, show]);
+    setValidated(false); // Validáció állapotának törlése minden nyitásnál
+  }, [service, show]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const form = e.currentTarget;
+  const handleSubmit = async (event) => {
+    const form = event.currentTarget;
+    event.preventDefault(); // Megállítjuk az oldal újratöltését
 
     if (form.checkValidity() === false) {
-      e.stopPropagation();
+      event.stopPropagation();
       setValidated(true);
       return;
     }
 
+    setLoading(true);
     try {
-      if (serviceData) {
-        await api.put(`/admin/services/${serviceData.id}`, formData);
+      const payload = { name, price: Number(price) };
+      
+      if (service) {
+        await api.put(`/admin/services/${service.id}`, payload);
       } else {
-        await api.post("/admin/services", formData);
+        await api.post("/admin/services", payload);
       }
-      onSuccess();
+      
       onHide();
-    } catch {
-      alert("Hiba történt!");
+      onSuccess();
+    } catch (error) {
+      console.error("Mentési hiba:", error);
+      // Itt érdemes lenne egy hibajelzést mutatni a felhasználónak
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <Modal show={show} onHide={onHide} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>
-          {serviceData ? "Szolgáltatás módosítása" : "Új szolgáltatás hozzáadása"}
-        </Modal.Title>
-      </Modal.Header>
-
+      {/* A Form körbeöleli a tartalamt, a noValidate kikapcsolja a böngésző alapértelmezett buborékait */}
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            {service ? "Szolgáltatás szerkesztése" : "Új szolgáltatás"}
+          </Modal.Title>
+        </Modal.Header>
+
         <Modal.Body>
-          <Form.Group className="mb-3">
+          <Form.Group className="mb-3" controlId="serviceName">
             <Form.Label>Szolgáltatás neve</Form.Label>
             <Form.Control
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
               required
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
+            <Form.Control.Feedback type="invalid">
+              Adj meg egy szolgáltatás nevet!
+            </Form.Control.Feedback>
           </Form.Group>
 
-          <Form.Group>
+          <Form.Group className="mb-3" controlId="servicePrice">
             <Form.Label>Ár (Ft)</Form.Label>
             <Form.Control
-              type="number"
-              name="price"
-              value={formData.price}
-              onChange={handleChange}
               required
-              min={0}
+              type="number"
+              min="1"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              placeholder="0"
             />
+            <Form.Control.Feedback type="invalid">
+              Kérlek adj meg egy érvényes árat (min. 1)!
+            </Form.Control.Feedback>
           </Form.Group>
         </Modal.Body>
 
-        <Modal.Footer className="modal-footer-uniform">
-          <Button variant="secondary" onClick={onHide} className="uniform-btn">
+        <Modal.Footer>
+          <Button variant="secondary" onClick={onHide} disabled={loading}>
             Mégse
           </Button>
-          <Button type="submit" className="uniform-btn save-btn-style">
-            {serviceData ? "Mentés" : "Létrehozás"}
+          <Button type="submit" variant="primary" disabled={loading}>
+            {loading ? "Folyamatban..." : "Mentés"}
           </Button>
         </Modal.Footer>
       </Form>

@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Service extends Model
 {
+    public $timestamps = false;
+    protected $fillable = ['name', 'price', 'active'];
+    protected $casts = [
+        'active' => 'boolean',
+    ];
+
     public function treatments()
     {
         return $this->belongsToMany(
@@ -15,5 +21,4 @@ class Service extends Model
             'treatment_id'
         )->withPivot('piece');
     }
-    //
 }

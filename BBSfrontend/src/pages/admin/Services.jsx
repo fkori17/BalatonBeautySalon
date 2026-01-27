@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
 import ServiceModal from "../../components/ServiceModal";
+import { PencilSquare, Trash, ArrowRepeat } from "react-bootstrap-icons";
+import { Toast, ToastContainer, Spinner } from "react-bootstrap";
 import "../../components/style/Services.css";
 
 function Services() {
   const [services, setServices] = useState([]);
-  const [showService, setShowService] = useState(false);
-  const [selectedService, setSelectedService] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editing, setEditing] = useState(null);
+  const [toast, setToast] = useState({ show: false, message: "", variant: "success" });
+
+  const showToast = (message, variant = "success") =>
+    setToast({ show: true, message, variant });
 
   const fetchServices = async () => {
     setLoading(true);
@@ -15,7 +21,7 @@ function Services() {
       const res = await api.get("/admin/services");
       setServices(res.data);
     } catch {
-      alert("Hiba történt a szolgáltatások betöltése során!");
+      showToast("Nem sikerült betölteni a szolgáltatásokat", "danger");
     } finally {
       setLoading(false);
     }
@@ -25,113 +31,120 @@ function Services() {
     fetchServices();
   }, []);
 
-  const handleEdit = (service) => {
-    setSelectedService(service);
-    setShowService(true);
+  const handleEditInitiate = (service) => {
+    setEditing(service);
+    setModalOpen(true);
   };
 
-  const handleAddNew = () => {
-    setSelectedService(null);
-    setShowService(true);
-  };
-
-  const toggleStatus = async (id) => {
-    setServices(prev => 
-      prev.map(s => 
-        s.id === id 
-          ? { ...s, status: s.status === "inactive" ? "active" : "inactive" } 
-          : s
-      )
-    );
-
+  const toggleService = async (service) => {
     try {
-      await api.delete(`/admin/services/${id}`);
-      fetchServices();
+      const res = await api.patch(`/admin/services/${service.id}/toggle`);
+      // Lokális state frissítése a szerver válasza alapján
+      setServices(prev => prev.map(s => 
+        s.id === service.id ? { ...s, active: res.data.active } : s
+      ));
+      showToast(res.data.active ? "Szolgáltatás aktiválva" : "Szolgáltatás deaktiválva");
     } catch {
-      alert("Hiba történt!");
-      fetchServices();
+      showToast("Művelet sikertelen", "danger");
     }
   };
 
-  const formatCurrency = (value) => {
-    return new Intl.NumberFormat("hu-HU").format(value);
-  };
+  const active = services.filter(s => s.active);
+  const inactive = services.filter(s => !s.active);
 
-  const activeServices = services.filter(s => s.status !== "inactive");
-  const inactiveServices = services.filter(s => s.status === "inactive");
+  if (loading) return (
+    <div className="d-flex justify-content-center mt-5">
+      <Spinner animation="border" />
+    </div>
+  );
 
   return (
     <div className="services-page">
       <div className="page-header">
-        <h1 className="page-title">Szolgáltatások</h1>
-        <button className="add-btn" onClick={handleAddNew}>+ Új szolgáltatás</button>
+        <h1>Szolgáltatások</h1>
+        <button className="add-btn" onClick={() => { setEditing(null); setModalOpen(true); }}>
+          + Új szolgáltatás
+        </button>
       </div>
 
       <div className="tables-container">
-        <div className="table-section">
-          <h3 className="section-title">Aktív szolgáltatások</h3>
-          <div className="services-table-wrapper">
-            <table className="services-table">
-              <thead>
-                <tr>
-                  <th>Név</th>
-                  <th>Ár</th>
-                  <th className="col-actions">Műveletek</th>
-                </tr>
-              </thead>
-              <tbody>
-                {!loading && activeServices.map((service) => (
-                  <tr key={service.id}>
-                    <td>{service.name}</td>
-                    <td>{formatCurrency(service.price)} Ft</td>
-                    <td className="col-actions">
-                      <div className="action-buttons-container">
-                        <button className="edit-btn" onClick={() => handleEdit(service)}>✏️</button>
-                        <button className="delete-btn" onClick={() => toggleStatus(service.id)}>❌</button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <ServiceTable
+          title="Aktív szolgáltatások"
+          services={active}
+          onEdit={handleEditInitiate}
+          onToggle={toggleService}
+          icon={<Trash />}
+        />
 
-        <div className="table-section inactive-section">
-          <h3 className="section-title">Deaktivált szolgáltatások</h3>
-          <div className="services-table-wrapper">
-            <table className="services-table">
-              <thead>
-                <tr>
-                  <th>Név</th>
-                  <th>Ár</th>
-                  <th className="col-actions">Visszaállítás</th>
-                </tr>
-              </thead>
-              <tbody>
-                {!loading && inactiveServices.map((service) => (
-                  <tr key={service.id}>
-                    <td>{service.name}</td>
-                    <td>{formatCurrency(service.price)} Ft</td>
-                    <td className="col-actions">
-                      <div className="action-buttons-container">
-                        <button className="restore-btn" onClick={() => toggleStatus(service.id)}>🔄</button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <ServiceTable
+          title="Inaktív szolgáltatások"
+          services={inactive}
+          onEdit={handleEditInitiate}
+          onToggle={toggleService}
+          icon={<ArrowRepeat />}
+        />
       </div>
 
-      <ServiceModal 
-        show={showService} 
-        onHide={() => setShowService(false)} 
-        onSuccess={fetchServices}
-        serviceData={selectedService}
+      <ServiceModal
+        show={modalOpen}
+        onHide={() => {
+          setModalOpen(false);
+          setEditing(null);
+        }}
+        service={editing}
+        onSuccess={() => {
+          fetchServices();
+          showToast(editing ? "Sikeres módosítás" : "Sikeres mentés");
+        }}
       />
+
+      <ToastContainer position="bottom-end" className="p-3">
+        <Toast
+          bg={toast.variant}
+          show={toast.show}
+          autohide
+          delay={3000}
+          onClose={() => setToast(t => ({ ...t, show: false }))}
+        >
+          <Toast.Body className="text-white">{toast.message}</Toast.Body>
+        </Toast>
+      </ToastContainer>
+    </div>
+  );
+}
+
+function ServiceTable({ title, services, onEdit, onToggle, icon }) {
+  return (
+    <div className="table-section">
+      <h3>{title}</h3>
+      <table className="services-table">
+        <thead>
+          <tr>
+            <th>Név</th>
+            <th>Ár</th>
+            <th>Művelet</th>
+          </tr>
+        </thead>
+        <tbody>
+          {services.map(s => (
+            <tr key={s.id}>
+              <td>{s.name}</td>
+              <td>{Number(s.price).toLocaleString()} Ft</td>
+              <td className="actions">
+                <button title="Szerkesztés" onClick={() => onEdit(s)}>
+                  <PencilSquare />
+                </button>
+                <button title={s.active ? "Deaktiválás" : "Aktiválás"} onClick={() => onToggle(s)}>
+                  {icon}
+                </button>
+              </td>
+            </tr>
+          ))}
+          {services.length === 0 && (
+            <tr><td colSpan="3" className="text-center">Nincs megjeleníthető adat</td></tr>
+          )}
+        </tbody>
+      </table>
     </div>
   );
 }

@@ -72,3 +72,14 @@ Route::middleware('auth:sanctum')
         Route::put('/treatments/{treatment}', [AdminTreatmentController::class, 'update']);
         Route::delete('/treatments/{treatment}', [AdminTreatmentController::class, 'destroy']);
     });
+
+
+Route::middleware('auth:sanctum')
+    ->prefix('admin')
+    ->group(function () {
+
+        Route::get('/services', [ServiceController::class, 'index']);
+        Route::post('/services', [ServiceController::class, 'store']);
+        Route::put('/services/{service}', [ServiceController::class, 'update']);
+        Route::patch('/services/{service}/toggle', [ServiceController::class, 'toggle']);
+    });
