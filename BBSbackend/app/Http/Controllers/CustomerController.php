@@ -66,30 +66,33 @@ class CustomerController extends Controller
     }
 
     public function changePassword(Request $request)
-        {
-            $request->validate([
-                'oldPassword' => ['required'],
-                'newPassword' => ['required', 'string', 'min:6'],
-            ]);
+{
+    $request->validate([
+        'oldPassword' => 'required|string',
+        'newPassword' => 'required|string|min:6',
+    ]);
 
-            /** @var \App\Models\Customer $customer */
-            $customer = $request->email();
+    $user = $request->user(); // sanctum customer
 
-            if (!Hash::check($request->oldPassword, $customer->password)) {
-                return response()->json([
-                    'message' => 'Hibás jelenlegi jelszó'
-                ], 422);
-            }
-
-        $customer->password = Hash::make($request->newPassword);
-        $customer->save();
-    
-        $customer->tokens()->delete();
-
+    if (!$user) {
         return response()->json([
-            'message' => 'Jelszó sikeresen módosítva. Kérlek jelentkezz be újra.'
-        ]);
+            'message' => 'Nem vagy bejelentkezve.'
+        ], 401);
     }
+
+    if (!Hash::check($request->oldPassword, $user->password)) {
+        return response()->json([
+            'message' => 'Hibás jelenlegi jelszó.'
+        ], 400);
+    }
+
+    $user->password = Hash::make($request->newPassword);
+    $user->save();
+
+    return response()->json([
+        'message' => 'Jelszó sikeresen módosítva.'
+    ]);
+}
 
 
     public function update(Request $request, Customer $customer)

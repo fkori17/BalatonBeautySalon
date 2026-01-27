@@ -64,6 +64,10 @@ body {
   border: 1px solid rgba(0, 0, 0, 0.15);
 }
 
+.user-treatments-page .table-row, .user-treatments-page .table-header {
+      grid-template-columns: 160px 1.5fr 2fr 60px !important;
+}
+
 .table-row:hover {
   background-color: #f3f3f3;
 }

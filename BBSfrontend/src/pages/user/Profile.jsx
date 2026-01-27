@@ -117,7 +117,7 @@ function Profile() {
 
         <div className="row">
           <label>Email cím</label>
-          <input value={user.user} disabled />
+          <input value={user.email} disabled />
         </div>
 
         <div className="row">
