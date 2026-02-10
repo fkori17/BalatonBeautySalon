@@ -127,11 +127,19 @@ function Treatments() {
                 {t.date ? new Date(t.date).toLocaleDateString("hu-HU") : "-"}
               </span>
               <span data-label="Ügyfél">{t.customer}</span>
-              <span data-label="Szolgáltatások" title={t.services?.map((s) => s.name).join(", ")}>
-                {t.services?.map((s) => `${s.name} (${s.piece}x)`).join(", ") || "Nincs szolgáltatás"}
+              <span
+                data-label="Szolgáltatások"
+                title={t.services?.map((s) => s.name).join(", ")}
+              >
+                {t.services?.map((s) => `${s.name} (${s.piece}x)`).join(", ") ||
+                  "Nincs szolgáltatás"}
               </span>
-              <span data-label="Ár">{(Number(t.realprice) || 0).toLocaleString()} Ft</span>
-              <span data-label="Megjegyzés" className="text-muted small">{t.description || "-"}</span>
+              <span data-label="Ár">
+                {(Number(t.realprice) || 0).toLocaleString()} Ft
+              </span>
+              <span data-label="Megjegyzés" className="text-muted small">
+                {t.description || "-"}
+              </span>
               <div className="action-buttons">
                 <button
                   className="icon-btn edit-btn"

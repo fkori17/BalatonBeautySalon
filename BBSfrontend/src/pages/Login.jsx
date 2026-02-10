@@ -70,15 +70,24 @@ function Login() {
     setResetLoading(true);
 
     try {
+      // A Laravel ide küldi a kérést
       await api.post("/forgot-password", {
         email: resetEmail,
       });
 
-      showToast("Jelszó-visszaállító email elküldve!", "success");
+      // Siker esetén értesítjük a felhasználót és bezárjuk a modalt
+      showToast(
+        "A jelszó-visszaállító linket elküldtük az e-mail címedre!",
+        "success",
+      );
       setShowForgot(false);
       setResetEmail("");
-    } catch {
-      showToast("Nincs ilyen email címmel regisztrált felhasználó", "danger");
+    } catch (error) {
+      // Ha a Laravel 422-őt küld (nincs ilyen email), azt itt kapjuk el
+      const message =
+        error.response?.data?.errors?.email?.[0] ||
+        "Hiba történt a küldés során.";
+      showToast(message, "danger");
     } finally {
       setResetLoading(false);
     }

@@ -53,7 +53,6 @@ class ServiceController extends Controller
             'active'  => $service->active,
         ]);
     } catch (\Exception $e) {
-        // Ez visszaadja a pontos hibaüzenetet a frontendnek a 500-as hiba mellé
         return response()->json(['error' => $e->getMessage()], 500);
     }
 }

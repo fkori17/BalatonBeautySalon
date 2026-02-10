@@ -93,7 +93,7 @@ function CustomerModal({ show, onHide, onSuccess }) {
                 required
                 type="password"
                 name="password"
-                minLength={6}
+                minLength={8}
                 value={formData.password}
                 onChange={handleChange}
               />

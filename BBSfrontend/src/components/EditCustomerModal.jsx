@@ -10,6 +10,7 @@ function EditCustomerModal({ show, onHide, customer, onSuccess }) {
     name: "",
     phone: "",
     loyal: false,
+    password: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -100,6 +101,21 @@ function EditCustomerModal({ show, onHide, customer, onSuccess }) {
                 value={formData.phone}
                 onChange={handleChange}
               />
+            </Form.Group>
+
+            <Form.Group className="mt-3">
+              <Form.Label>Új jelszó (csak ha módosítani akarod)</Form.Label>
+              <Form.Control
+                type="password"
+                name="password"
+                placeholder="Hagyd üresen, ha nem változik"
+                value={formData.password}
+                onChange={handleChange}
+                autoComplete="new-password"
+              />
+              <Form.Text className="text-muted">
+                Ha beírsz ide valamit, az ügyfél jelszava megváltozik.
+              </Form.Text>
             </Form.Group>
 
             <Form.Check

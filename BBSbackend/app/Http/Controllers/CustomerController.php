@@ -48,7 +48,7 @@ class CustomerController extends Controller
 
     $customer = Customer::create([
         'email' => $validated['email'],
-        'password' => Hash::make($validated['password']), // 🔒 HASH!
+        'password' => Hash::make($validated['password']),
         'name' => $validated['name'],
         'phone' => $validated['phone'],
         'loyal' => $validated['loyal'] ?? false,
@@ -72,7 +72,7 @@ class CustomerController extends Controller
         'newPassword' => 'required|string|min:6',
     ]);
 
-    $user = $request->user(); // sanctum customer
+    $user = $request->user();
 
     if (!$user) {
         return response()->json([
@@ -96,32 +96,40 @@ class CustomerController extends Controller
 
 
     public function update(Request $request, Customer $customer)
-{
-    $validator = Validator::make($request->all(), [
-        'email' => 'required|email|unique:customers,email,' . $customer->id,
-        'name'  => 'required|string|max:255',
-        'phone' => 'required|string|max:30',
-        'loyal' => 'boolean',
-    ]);
+    {
+        $validator = Validator::make($request->all(), [
+            'email'    => 'required|email|unique:customers,email,' . $customer->id,
+            'name'     => 'required|string|max:255',
+            'phone'    => 'required|string|max:30',
+            'loyal'    => 'boolean',
+            'password' => 'nullable|string|min:6', 
+        ]);
 
-    if ($validator->fails()) {
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        
+        $updateData = [
+            'email' => $request->email,
+            'name'  => $request->name,
+            'phone' => $request->phone,
+            'loyal' => $request->loyal ?? false,
+        ];
+        
+        if ($request->filled('password')) {
+            $updateData['password'] = Hash::make($request->password);
+        }
+
+        $customer->update($updateData);
+
         return response()->json([
-            'errors' => $validator->errors()
-        ], 422);
+            'message' => 'Ügyfél sikeresen frissítve',
+            'customer' => $customer
+        ]);
     }
-
-    $customer->update([
-        'email' => $request->email,
-        'name'  => $request->name,
-        'phone' => $request->phone,
-        'loyal' => $request->loyal ?? false,
-    ]);
-
-    return response()->json([
-        'message' => 'Ügyfél sikeresen frissítve',
-        'customer' => $customer
-    ]);
-}
 
     public function destroy($id)
     {
