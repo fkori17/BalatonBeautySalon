@@ -10,7 +10,7 @@ use App\Http\Controllers\Api\PasswordResetController;
 use App\Http\Controllers\Admin\CustomerSelectController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\Admin\AdminTreatmentController;
-
+use App\Http\Controllers\Api\StatisticsController;
 
 Route::post('/login', [CustomerAuthController::class, 'login']);
 Route::post('/admin/login', [AdminAuthController::class, 'login']);
@@ -73,6 +73,7 @@ Route::middleware('auth:sanctum')
         Route::delete('/treatments/{treatment}', [AdminTreatmentController::class, 'destroy']);
     });
 
+Route::get('/stats', [StatisticsController::class, 'index']);
 
 Route::middleware('auth:sanctum')
     ->prefix('admin')
