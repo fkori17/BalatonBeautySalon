@@ -89,7 +89,9 @@ Route::middleware('auth:sanctum')->group(function () {
     |--------------------------------------------------------------------------
     */
 
-    Route::prefix('admin/dashboard')->group(function () {
+    Route::middleware(['auth:sanctum','admin'])
+    ->prefix('admin/dashboard')
+    ->group(function () {
 
         Route::get('/stats', [TreatmentController::class, 'adminStats']);
         Route::get('/recent-treatments', [TreatmentController::class, 'adminRecentTreatments']);
@@ -107,6 +109,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware(['auth:sanctum','admin'])
         ->prefix('admin')
         ->group(function () {
+            Route::get('/stats', [StatisticsController::class, 'index']);
 
             Route::get('/customers', [CustomerController::class, 'index']);
             Route::post('/customers', [CustomerController::class, 'store']);
