@@ -70,26 +70,26 @@ class TreatmentController extends Controller
 
 
     public function adminRecentTreatments()
-{
-    $treatments = Treatment::with(['customer', 'serviceLinks.service'])
-        ->orderByDesc('created_at')
-        ->limit(5)
-        ->get()
-        ->map(function ($t) {
-            return [
-                'id' => $t->id,
-                'date' => $t->created_at,
-                'client' => $t->customer->name ?? '-',
-                'service' => $t->serviceLinks
-                    ->filter(fn ($l) => $l->service)
-                    ->map(fn ($l) => $l->service->name)
-                    ->implode(', '),
-                'price' => $t->realprice,
-            ];
-        });
+    {
+        $treatments = Treatment::with(['customer', 'serviceLinks.service'])
+            ->orderByDesc('created_at')
+            ->limit(5)
+            ->get()
+            ->map(function ($t) {
+                return [
+                    'id' => $t->id,
+                    'date' => $t->created_at,
+                    'client' => $t->customer->name ?? '-',
+                    'service' => $t->serviceLinks
+                        ->filter(fn ($l) => $l->service)
+                        ->map(fn ($l) => $l->service->name)
+                        ->implode(', '),
+                    'price' => $t->realprice,
+                ];
+            });
 
-    return response()->json($treatments);
-}
+        return response()->json($treatments);
+    }
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [

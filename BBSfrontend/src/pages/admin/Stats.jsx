@@ -43,7 +43,7 @@ function Stats() {
 
   const fetchStats = async () => {
     try {
-      const response = await api.get("/stats");
+      const response = await api.get("/admin/stats");
       setData(response.data);
     } catch (error) {
       console.error("Hiba a statisztikák betöltésekor:", error);

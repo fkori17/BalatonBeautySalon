@@ -14,13 +14,17 @@ class CustomerAuthController extends Controller
         $request->validate([
             'email' => 'required|email',
             'password' => 'required'
+        ], [
+            'email.required' => 'Az email cím megadása kötelező.',
+            'email.email' => 'Érvényes email címet adj meg.',
+            'password.required' => 'A jelszó megadása kötelező.'
         ]);
 
         $customer = Customer::where('email', $request->email)->first();
 
         if (!$customer || !Hash::check($request->password, $customer->password)) {
             return response()->json([
-                'message' => 'Hibás email vagy jelszó'
+                'message' => 'Hibás email vagy jelszó.'
             ], 401);
         }
 

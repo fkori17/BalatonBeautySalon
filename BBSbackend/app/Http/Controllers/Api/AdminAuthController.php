@@ -15,13 +15,17 @@ class AdminAuthController extends Controller
         $request->validate([
             'email' => 'required|email',
             'password' => 'required'
+        ], [
+            'email.required' => 'Az email cím megadása kötelező.',
+            'email.email' => 'Érvényes email címet adj meg.',
+            'password.required' => 'A jelszó megadása kötelező.'
         ]);
 
         $admin = Admin::where('email', $request->email)->first();
 
         if (!$admin || !Hash::check($request->password, $admin->password)) {
             return response()->json([
-                'message' => 'Hibás admin belépési adatok'
+                'message' => 'Hibás admin belépési adatok.'
             ], 401);
         }
 
