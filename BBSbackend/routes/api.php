@@ -104,28 +104,24 @@ Route::middleware('auth:sanctum')->group(function () {
     |--------------------------------------------------------------------------
     */
 
-    Route::prefix('admin')->group(function () {
+    Route::middleware(['auth:sanctum','admin'])
+        ->prefix('admin')
+        ->group(function () {
 
-        // Customers
-        Route::get('/customers', [CustomerController::class, 'index']);
-        Route::post('/customers', [CustomerController::class, 'store']);
-        Route::put('/customers/{customer}', [CustomerController::class, 'update']);
-        Route::delete('/customers/{id}', [CustomerController::class, 'destroy']);
+            Route::get('/customers', [CustomerController::class, 'index']);
+            Route::post('/customers', [CustomerController::class, 'store']);
+            Route::put('/customers/{customer}', [CustomerController::class, 'update']);
+            Route::delete('/customers/{id}', [CustomerController::class, 'destroy']);
 
-        // Services
-        Route::get('/services', [ServiceController::class, 'index']);
-        Route::post('/services', [ServiceController::class, 'store']);
-        Route::put('/services/{service}', [ServiceController::class, 'update']);
-        Route::patch('/services/{service}/toggle', [ServiceController::class, 'toggle']);
+            Route::get('/services', [ServiceController::class, 'index']);
+            Route::post('/services', [ServiceController::class, 'store']);
+            Route::put('/services/{service}', [ServiceController::class, 'update']);
+            Route::patch('/services/{service}/toggle', [ServiceController::class, 'toggle']);
 
-        // Treatments
-        Route::get('/treatments', [AdminTreatmentController::class, 'index']);
-        Route::post('/treatments', [AdminTreatmentController::class, 'store']);
-        Route::put('/treatments/{treatment}', [AdminTreatmentController::class, 'update']);
-        Route::delete('/treatments/{treatment}', [AdminTreatmentController::class, 'destroy']);
-
-        // Statistics
-        Route::get('/stats', [StatisticsController::class, 'index']);
+            Route::get('/treatments', [AdminTreatmentController::class, 'index']);
+            Route::post('/treatments', [AdminTreatmentController::class, 'store']);
+            Route::put('/treatments/{treatment}', [AdminTreatmentController::class, 'update']);
+            Route::delete('/treatments/{treatment}', [AdminTreatmentController::class, 'destroy']);
 
     });
 
