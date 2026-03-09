@@ -57,17 +57,16 @@ function Treatments() {
 
   const filteredTreatments = useMemo(() => {
     return treatments.filter((t) => {
-      const q = search.toLowerCase();
-      const serviceNames = t.services
-        .map((s) => s.name.toLowerCase())
-        .join(", ");
       const matchesSearch =
-        !q || t.customer.toLowerCase().includes(q) || serviceNames.includes(q);
+        t.customer && t.customer.toLowerCase().includes(search.toLowerCase());
+
       const matchesService =
         serviceFilter === "Összes" ||
         t.services.some((s) => s.name === serviceFilter);
+
       const treatmentDate = new Date(t.date).toISOString().split("T")[0];
       const matchesDate = !dateFilter || treatmentDate === dateFilter;
+
       return matchesSearch && matchesService && matchesDate;
     });
   }, [treatments, search, serviceFilter, dateFilter]);
@@ -100,9 +99,20 @@ function Treatments() {
 
       <div className="page-header">
         <h1 className="page-title">Kezelések</h1>
-        <button className="add-btn" onClick={() => setShowAddModal(true)}>
-          Új kezelés rögzítése
-        </button>
+
+        <div className="page-actions">
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Keresés ügyfél név alapján…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+
+          <button className="add-btn" onClick={() => setShowAddModal(true)}>
+            Új kezelés rögzítése
+          </button>
+        </div>
       </div>
 
       <div className="filters-row"></div>

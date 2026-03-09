@@ -43,9 +43,11 @@ function EditTreatmentModal({ show, onHide, onSuccess, treatment }) {
   }, [show, treatment]);
 
   const filteredServices = useMemo(() => {
-    return allServices.filter((s) =>
-      s.name.toLowerCase().includes(serviceSearch.toLowerCase()),
-    );
+    return allServices
+      .filter((s) => s.active)
+      .filter((s) =>
+        s.name.toLowerCase().includes(serviceSearch.toLowerCase()),
+      );
   }, [allServices, serviceSearch]);
 
   useEffect(() => {
