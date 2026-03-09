@@ -40,9 +40,11 @@ function TreatmentModal({ show, onHide, onSuccess }) {
   }, [customers, customerSearch]);
 
   const filteredServices = useMemo(() => {
-    return services.filter((s) =>
-      s.name.toLowerCase().includes(serviceSearch.toLowerCase()),
-    );
+    return services
+      .filter((s) => s.active)
+      .filter((s) =>
+        s.name.toLowerCase().includes(serviceSearch.toLowerCase()),
+      );
   }, [services, serviceSearch]);
 
   useEffect(() => {

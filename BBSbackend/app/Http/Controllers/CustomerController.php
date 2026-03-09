@@ -66,43 +66,58 @@ class CustomerController extends Controller
     }
 
     public function changePassword(Request $request)
-{
-    $request->validate([
-        'oldPassword' => 'required|string',
-        'newPassword' => 'required|string|min:6',
-    ]);
+    {
+        $request->validate([
+            'oldPassword' => 'required|string',
+            'newPassword' => 'required|string|min:6',
+        ], [
+            'oldPassword.required' => 'A jelenlegi jelszó megadása kötelező.',
+            'newPassword.required' => 'Az új jelszó megadása kötelező.',
+            'newPassword.min' => 'Az új jelszónak legalább 6 karakter hosszúnak kell lennie.'
+        ]);
 
-    $user = $request->user();
+        $user = $request->user();
 
-    if (!$user) {
+        if (!$user) {
+            return response()->json([
+                'message' => 'Nem vagy bejelentkezve.'
+            ], 401);
+        }
+
+        if (!Hash::check($request->oldPassword, $user->password)) {
+            return response()->json([
+                'message' => 'Hibás jelenlegi jelszó.'
+            ], 400);
+        }
+
+        $user->password = Hash::make($request->newPassword);
+        $user->save();
+
         return response()->json([
-            'message' => 'Nem vagy bejelentkezve.'
-        ], 401);
+            'message' => 'Jelszó sikeresen módosítva.'
+        ]);
     }
-
-    if (!Hash::check($request->oldPassword, $user->password)) {
-        return response()->json([
-            'message' => 'Hibás jelenlegi jelszó.'
-        ], 400);
-    }
-
-    $user->password = Hash::make($request->newPassword);
-    $user->save();
-
-    return response()->json([
-        'message' => 'Jelszó sikeresen módosítva.'
-    ]);
-}
 
 
     public function update(Request $request, Customer $customer)
     {
         $validator = Validator::make($request->all(), [
-            'email'    => 'required|email|unique:customers,email,' . $customer->id,
-            'name'     => 'required|string|max:255',
-            'phone'    => 'required|string|max:30',
-            'loyal'    => 'boolean',
-            'password' => 'nullable|string|min:6', 
+            'email'    => 'sometimes|email|unique:customers,email,' . $customer->id,
+            'name'     => 'sometimes|string|max:255',
+            'phone'    => 'sometimes|string|max:30',
+            'loyal'    => 'sometimes|boolean',
+            'password' => 'nullable|string|min:6',
+        ], [
+            'email.email' => 'Érvényes email cím szükséges.',
+            'email.unique' => 'Ez az email cím már használatban van.',
+
+            'name.max' => 'A név legfeljebb 255 karakter lehet.',
+
+            'phone.max' => 'A telefonszám legfeljebb 30 karakter lehet.',
+
+            'loyal.boolean' => 'A törzsvendég mező csak igaz vagy hamis lehet.',
+
+            'password.min' => 'A jelszónak legalább 6 karakter hosszúnak kell lennie.',
         ]);
 
         if ($validator->fails()) {
@@ -111,14 +126,24 @@ class CustomerController extends Controller
             ], 422);
         }
 
-        
-        $updateData = [
-            'email' => $request->email,
-            'name'  => $request->name,
-            'phone' => $request->phone,
-            'loyal' => $request->loyal ?? false,
-        ];
-        
+        $updateData = [];
+
+        if ($request->filled('email')) {
+            $updateData['email'] = $request->email;
+        }
+
+        if ($request->filled('name')) {
+            $updateData['name'] = $request->name;
+        }
+
+        if ($request->filled('phone')) {
+            $updateData['phone'] = $request->phone;
+        }
+
+        if ($request->has('loyal')) {
+            $updateData['loyal'] = $request->loyal;
+        }
+
         if ($request->filled('password')) {
             $updateData['password'] = Hash::make($request->password);
         }
@@ -133,14 +158,18 @@ class CustomerController extends Controller
 
     public function destroy($id)
     {
-        $customer = Customer::findOrFail($id);
+        try {
+            $customer = Customer::findOrFail($id);
 
-        $customer->delete();
+            $customer->delete();
 
-        return response()->json([
-            'message' => 'Ügyfél sikeresen törölve'
-        ]);
+            return response()->json([
+                'message' => 'Ügyfél sikeresen törölve.'
+            ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'A megadott ügyfél nem található.'
+            ], 404);
+        }
     }
-
-
 }

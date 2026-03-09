@@ -9,11 +9,10 @@ function ProtectedRoute({ allowedType, children }) {
   }
 
   if (allowedType && authType !== allowedType) {
-    return <Navigate to="/unauthorized" />;
+    return <Navigate to="/login" />;
   }
 
   return children;
 }
-
 
 export default ProtectedRoute;
