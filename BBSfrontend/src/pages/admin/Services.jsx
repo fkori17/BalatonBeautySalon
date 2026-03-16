@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import api from "../../api/axios";
 import ServiceModal from "../../components/ServiceModal";
 import { PencilSquare, Trash, ArrowRepeat } from "react-bootstrap-icons";

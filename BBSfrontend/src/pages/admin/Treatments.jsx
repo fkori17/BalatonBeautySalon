@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useMemo, useState } from "react";
+import React, { useEffect, useCallback, useMemo, useState } from "react";
 import "../../components/style/AdminTreatments.css";
 import {
   Search,
