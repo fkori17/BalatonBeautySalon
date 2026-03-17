@@ -1,3 +1,4 @@
+import React from "react";
 import { Modal, Button } from "react-bootstrap";
 
 function DeleteCustomerModal({ show, onHide, customer, onConfirm }) {

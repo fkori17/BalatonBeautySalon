@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useRef } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import { Modal, Button, Form, Spinner } from "react-bootstrap";
 import api from "../api/axios";
 import "./style/TreatmentModal.css";

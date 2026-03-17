@@ -9,7 +9,6 @@ function ServiceModal({ show, onHide, service, onSuccess }) {
   const [validated, setValidated] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Alaphelyzetbe állítás, amikor a Modal kinyílik/bezárul
   useEffect(() => {
     if (service) {
       setName(service.name);
@@ -18,12 +17,12 @@ function ServiceModal({ show, onHide, service, onSuccess }) {
       setName("");
       setPrice("");
     }
-    setValidated(false); // Validáció állapotának törlése minden nyitásnál
+    setValidated(false); 
   }, [service, show]);
 
   const handleSubmit = async (event) => {
     const form = event.currentTarget;
-    event.preventDefault(); // Megállítjuk az oldal újratöltését
+    event.preventDefault(); 
 
     if (form.checkValidity() === false) {
       event.stopPropagation();
@@ -45,7 +44,6 @@ function ServiceModal({ show, onHide, service, onSuccess }) {
       onSuccess();
     } catch (error) {
       console.error("Mentési hiba:", error);
-      // Itt érdemes lenne egy hibajelzést mutatni a felhasználónak
     } finally {
       setLoading(false);
     }
@@ -53,7 +51,6 @@ function ServiceModal({ show, onHide, service, onSuccess }) {
 
   return (
     <Modal show={show} onHide={onHide} centered>
-      {/* A Form körbeöleli a tartalamt, a noValidate kikapcsolja a böngésző alapértelmezett buborékait */}
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Modal.Header closeButton>
           <Modal.Title>
