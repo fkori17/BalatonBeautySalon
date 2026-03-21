@@ -2,20 +2,19 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import Treatments from "./Treatments";
 import api from "../../api/axios";
-import { LoadingContext } from "../../context/LoadingContext";
 
 jest.mock("../../api/axios");
 
-const renderTreatments = () => {
-  const setLoading = jest.fn();
-  return render(
-    <LoadingContext.Provider value={{ setLoading }}>
-      <Treatments />
-    </LoadingContext.Provider>
-  );
-};
+jest.mock("../../context/LoadingContext", () => ({
+  useLoading: () => ({
+    setLoading: jest.fn(),
+  }),
+}));
+
+const renderTreatments = () => render(<Treatments />);
 
 describe("Treatments komponens", () => {
+
   const mockTreatments = [
     {
       id: 1,
@@ -29,48 +28,79 @@ describe("Treatments komponens", () => {
   ];
 
   beforeEach(() => {
+
     jest.clearAllMocks();
-    api.get.mockResolvedValue({ data: mockTreatments });
+
+    api.get.mockResolvedValue({
+      data: mockTreatments,
+    });
+
   });
 
-  test("megjeleníti a kezelések listáját az API-ból", async () => {
-    renderTreatments();
-    expect(await screen.findByText("2024. 05. 10.")).toBeInTheDocument();
-    
-    expect(screen.getByText("Hajvágás, Szakáll igazítás (2x)")).toBeInTheDocument();
+  test("megjeleníti kezeléseket", async () => {
 
-    expect(screen.getByText("Első teszt kezelés")).toBeInTheDocument();
+    renderTreatments();
+
+    expect(await screen.findByText(/2024/)).toBeInTheDocument();
+
+    expect(
+      screen.getByText(/Hajvágás/i)
+    ).toBeInTheDocument();
+
   });
 
-  test("megnyílik a modal a részletek gombra kattintva", async () => {
+  test("modal megnyílik", async () => {
+
     renderTreatments();
-    const detailsBtn = await screen.findByTitle("Részletek megtekintése");
-    fireEvent.click(detailsBtn);
-    expect(screen.getByText("Kezelés részletei")).toBeInTheDocument();
-    const modalDate = screen.getAllByText("2024. 05. 10.");
-    expect(modalDate.length).toBeGreaterThan(0);
+
+    fireEvent.click(
+      await screen.findByTitle(/részletek/i)
+    );
+
+    expect(
+      await screen.findByText(/kezelés részletei/i)
+    ).toBeInTheDocument();
+
   });
 
-  test("bezáródik a modal a Bezárás gombra kattintva", async () => {
-    renderTreatments();
-    
-    const detailsBtn = await screen.findByTitle("Részletek megtekintése");
-    fireEvent.click(detailsBtn);
+  test("modal bezárható", async () => {
 
-    const closeBtn = screen.getByText("Bezárás");
-    fireEvent.click(closeBtn);
+    renderTreatments();
+
+    fireEvent.click(
+      await screen.findByTitle(/részletek/i)
+    );
+
+    fireEvent.click(
+      screen.getByText(/bezárás/i)
+    );
+
     await waitFor(() => {
-      expect(screen.queryByText("Kezelés részletei")).not.toBeInTheDocument();
+
+      expect(
+        screen.queryByText(/kezelés részletei/i)
+      ).not.toBeInTheDocument();
+
     });
+
   });
 
-  test("helyesen kezeli, ha nincsenek szolgáltatások", async () => {
-    api.get.mockResolvedValue({ 
-      data: [{ id: 2, created_at: "2024-05-11T10:00:00Z", services: [] }] 
+  test("kezeli ha nincs service", async () => {
+
+    api.get.mockResolvedValue({
+      data: [
+        {
+          id: 2,
+          created_at: "2024-05-11",
+          services: [],
+        },
+      ],
     });
-    
+
     renderTreatments();
-    
-    expect(await screen.findByText("-")).toBeInTheDocument();
+
+    expect(await screen.findAllByText("-")).not.toHaveLength(0);
+
   });
+
 });

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import api from "../../api/axios";
 import "../../components/style/UserProfile.css";
 import { useLoading } from "../../context/LoadingContext";

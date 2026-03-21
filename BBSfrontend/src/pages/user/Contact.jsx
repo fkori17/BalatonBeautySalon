@@ -1,3 +1,4 @@
+import React from "react";
 import "../../components/style/UserContact.css";
 
 function Contact() {

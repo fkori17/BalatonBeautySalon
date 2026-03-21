@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import { Form, Button, Container, Card, Alert } from "react-bootstrap";
@@ -12,7 +12,6 @@ function ResetPassword() {
   const [status, setStatus] = useState({ type: "", message: "" });
   const [loading, setLoading] = useState(false);
 
-  // Kiolvassuk a URL-ből a tokent és az emailt
   const token = searchParams.get("token");
   const email = searchParams.get("email");
 
