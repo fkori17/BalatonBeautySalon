@@ -170,7 +170,11 @@ function Profile() {
           </div>
         ))}
 
-        <button onClick={changePassword} disabled={saving}>
+        <button
+          onClick={changePassword}
+          className="profile-save-btn"
+          disabled={saving}
+        >
           {saving ? <Spinner size="sm" /> : "Jelszó mentése"}
         </button>
       </div>

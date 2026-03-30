@@ -52,7 +52,7 @@
   background: #fff !important;
   color: black;
 }
-/* Chrome autofill javítás */
+
 .login-page input:-webkit-autofill,
 .login-page input:-webkit-autofill:hover,
 .login-page input:-webkit-autofill:focus,
@@ -104,6 +104,7 @@
   color: white;
   font-size: 16px;
   cursor: pointer;
+  width: 100%;
 }
 
 .login-btn:hover {
@@ -151,18 +152,21 @@
   background: #84482d;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 860px) {
   .login-card.wide {
     flex-direction: column;
     width: 100%;
-    padding: 40px 20px;
+    padding: 40px 40px;
   }
-
+  .login-right {
+    margin-top: 30px;
+  }
   .divider {
     display: none;
   }
   .logo {
-    margin-top: 20px;
+    
+    display: none;
   }
 }
 

@@ -114,7 +114,7 @@ function Stats() {
   if (loading) {
     return (
       <div className="text-center mt-5">
-        <div className="spinner-border text-primary"></div>
+        <div className="spinner-border text-secondary"></div>
         <p>Statisztikák betöltése...</p>
       </div>
     );
@@ -131,7 +131,6 @@ function Stats() {
     <div className="stats-page">
       <h1 className="stats-title">Statisztikák</h1>
 
-      {/* --- ÜGYFÉL SZEKCIÓ --- */}
       <section className="stats-section">
         <h2 className="section-title">Ügyfél Statisztikák</h2>
         <div className="stats-cards">
@@ -161,7 +160,7 @@ function Stats() {
             <h2>Új ügyfelek havonta</h2>
             {renderBarChart(data.charts.new_customers, "#e9b174")}
           </div>
-          {/* Mivel a látogatások számát nem számoltuk ki külön, itt használhatjuk a kezelések számát proxyként, vagy az új ügyfelekét */}
+
           <div className="chart-container">
             <h2>Kezelések eloszlása (Látogatások)</h2>
             {renderBarChart(data.charts.treatments, "#fb8c00")}
@@ -169,7 +168,6 @@ function Stats() {
         </div>
       </section>
 
-      {/* --- PÉNZÜGYI SZEKCIÓ --- */}
       <section className="stats-section">
         <h2 className="section-title">Pénzügyi Statisztikák</h2>
         <div className="stats-cards">
@@ -206,7 +204,6 @@ function Stats() {
         </div>
       </section>
 
-      {/* --- KEZELÉS SZEKCIÓ --- */}
       <section className="stats-section">
         <h2 className="section-title">Kezelés Statisztikák</h2>
         <div className="stats-cards">
@@ -236,11 +233,7 @@ function Stats() {
             <h2>Kezelések száma havonta</h2>
             {renderBarChart(data.charts.treatments, "#8884d8")}
           </div>
-          {/* Itt újrahasználhatjuk a bevétel chartot vagy az avg chartot, de a kérés szerint ide a szolgáltatások száma kellene. 
-              Mivel a backend most kezeléseket küld, duplikáljuk a kezelést, de ideális esetben a StatisticsControllerben a 
-              getMonthlyData-t a 'treatment_service' táblára is meg lehetne hívni. 
-              Most az egyszerűség kedvéért az Új ügyfelek chartot rakom ide, vagy hagyom a kezelést. 
-              De legyen inkább a kezelések száma. */}
+
           <div className="chart-container">
             <h2>Kezelések dinamikája</h2>
             {renderBarChart(data.charts.treatments, "#9575cd")}

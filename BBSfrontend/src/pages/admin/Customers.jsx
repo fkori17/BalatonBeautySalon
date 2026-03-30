@@ -101,7 +101,9 @@ function Customers() {
           filteredCustomers.map((c) => (
             <div className="table-row" key={c.id}>
               <span>{c.id}</span>
-              <span className="ellipsis">{c.name}</span>
+              <span className="ellipsis">
+                <strong>{c.name}</strong>
+              </span>
               <span className="ellipsis">{c.email}</span>
 
               <span>

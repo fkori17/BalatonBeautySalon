@@ -46,8 +46,8 @@ function CustomerModal({ show, onHide, onSuccess }) {
       await api.post("/admin/customers", formData);
 
       showToast("Ügyfél sikeresen létrehozva!", "success");
-      onSuccess(); // lista frissítése
-      setTimeout(onHide, 800); // modal zárása
+      onSuccess();
+      setTimeout(onHide, 800);
 
       setFormData({
         email: "",
@@ -139,8 +139,6 @@ function CustomerModal({ show, onHide, onSuccess }) {
           </Modal.Footer>
         </Form>
       </Modal>
-
-      {/* Toast */}
       <ToastContainer position="bottom-end" className="p-3">
         <Toast
           bg={toast.variant}

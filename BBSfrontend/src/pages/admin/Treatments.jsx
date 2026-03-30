@@ -136,7 +136,9 @@ function Treatments() {
               <span data-label="Dátum">
                 {t.date ? new Date(t.date).toLocaleDateString("hu-HU") : "-"}
               </span>
-              <span data-label="Ügyfél">{t.customer}</span>
+              <span data-label="Ügyfél">
+                <strong>{t.customer}</strong>
+              </span>
               <span
                 data-label="Szolgáltatások"
                 title={t.services?.map((s) => s.name).join(", ")}

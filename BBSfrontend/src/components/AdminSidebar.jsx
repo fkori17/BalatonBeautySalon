@@ -3,7 +3,7 @@ import "./style/ResponsiveSidebar.css";
 import { useState } from "react";
 import { Navbar, Nav, Offcanvas, Button } from "react-bootstrap";
 import useLogout from "../hooks/useLogout";
-import { NavLink } from "react-router-dom"; 
+import { NavLink } from "react-router-dom";
 
 const AdminSidebar = ({ children }) => {
   const [show, setShow] = useState(false);
@@ -22,7 +22,7 @@ const AdminSidebar = ({ children }) => {
           <Offcanvas.Title>Admin felület</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <SidebarContent />
+          <SidebarContent onNavigate={() => setShow(false)} />
         </Offcanvas.Body>
       </Offcanvas>
 
@@ -40,36 +40,38 @@ const AdminSidebar = ({ children }) => {
   );
 };
 
-function SidebarContent() {
+function SidebarContent({ onNavigate }) {
   const logout = useLogout();
 
   return (
     <Nav className="flex-column h-100 px-3">
-      <Nav.Link as={NavLink} to="/admin" end>
+      <Nav.Link as={NavLink} to="/admin" end onClick={onNavigate}>
         <HomeIcon /> Kezdőlap
       </Nav.Link>
 
-      <Nav.Link as={NavLink} to="/admin/Treatments">
+      <Nav.Link as={NavLink} to="/admin/Treatments" onClick={onNavigate}>
         <ListIcon /> Kezelések
       </Nav.Link>
 
-      <Nav.Link as={NavLink} to="/admin/Customers">
+      <Nav.Link as={NavLink} to="/admin/Customers" onClick={onNavigate}>
         <UserIcon /> Ügyfelek
       </Nav.Link>
 
-      <Nav.Link as={NavLink} to="/admin/Services">
+      <Nav.Link as={NavLink} to="/admin/Services" onClick={onNavigate}>
         <ClipboardIcon /> Szolgáltatások
       </Nav.Link>
 
-      <Nav.Link as={NavLink} to="/admin/Stats">
+      <Nav.Link as={NavLink} to="/admin/Stats" onClick={onNavigate}>
         <ChartIcon /> Statisztikák
       </Nav.Link>
 
-      {/* alsó szekció */}
       <div className="mt-auto pt-3">
         <Nav.Link
           className="text-danger"
-          onClick={logout}
+          onClick={() => {
+            logout();
+            onNavigate();
+          }}
           style={{ cursor: "pointer" }}
         >
           <LogoutIcon /> Kijelentkezés

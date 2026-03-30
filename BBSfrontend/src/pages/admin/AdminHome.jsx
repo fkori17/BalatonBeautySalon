@@ -11,7 +11,12 @@ import TreatmentModal from "../../components/TreatmentModal";
 import CustomerModal from "../../components/CustomerModal";
 import ServiceModal from "../../components/ServiceModal";
 
-import { BsPeopleFill, BsPersonCheckFill, BsCashStack, BsCalendarCheck } from "react-icons/bs";
+import {
+  BsPeopleFill,
+  BsPersonCheckFill,
+  BsCashStack,
+  BsCalendarCheck,
+} from "react-icons/bs";
 
 function AdminHome() {
   const { setLoading } = useLoading();
@@ -44,73 +49,98 @@ function AdminHome() {
   }, [setLoading]);
 
   const formatDate = (date) => date.split("T")[0].replaceAll("-", ". ") + ".";
-  const formatCurrency = (value) => new Intl.NumberFormat("hu-HU").format(value);
+  const formatCurrency = (value) =>
+    new Intl.NumberFormat("hu-HU").format(value);
 
   if (!stats) return null;
 
   return (
     <div className="dash-main-only">
-      <div className="welcome-box">
+      <div className="home-welcome">
         <h1>Üdvözöljük, Admin!</h1>
       </div>
 
-      <div className="stats-grid">
-        <IconStatCard icon={BsPeopleFill} value={stats.totalClients} title="Összes ügyfél" />
-        <IconStatCard icon={BsPersonCheckFill} value={stats.activeClients} title="Aktív ügyfelek" />
-        <IconStatCard icon={BsCashStack} value={`${formatCurrency(stats.monthlyRevenue)} Ft`} title="Havi bevétel" />
-        <IconStatCard icon={BsCalendarCheck} value={stats.monthlyTreatments} title="Havi kezelések" />
+      <div className="home-stats-grid">
+        <IconStatCard
+          icon={BsPeopleFill}
+          value={stats.totalClients}
+          title="Összes ügyfél"
+        />
+        <IconStatCard
+          icon={BsPersonCheckFill}
+          value={stats.activeClients}
+          title="Aktív ügyfelek"
+        />
+        <IconStatCard
+          icon={BsCashStack}
+          value={`${formatCurrency(stats.monthlyRevenue)} Ft`}
+          title="Havi bevétel"
+        />
+        <IconStatCard
+          icon={BsCalendarCheck}
+          value={stats.monthlyTreatments}
+          title="Havi kezelések"
+        />
       </div>
 
-      <div className="bottom-grid">
-        <div className="recent-box">
-          <div className="recent-header">
+      <div className="home-bottom-grid">
+        {/* ===== RECENT ===== */}
+        <div className="home-recent-box">
+          <div className="home-recent-header">
             <h2>Legutóbbi kezelések</h2>
-            <button className="all-treatments-btn" onClick={() => navigate("/admin/treatments")}>
+            <button
+              className="home-all-btn"
+              onClick={() => navigate("/admin/treatments")}
+            >
               Összes kezelés
             </button>
           </div>
 
-          <div className="recent-table-wrapper">
-            <table className="recent-table">
-              <thead>
-                <tr>
-                  <th>Dátum</th>
-                  <th>Vendég</th>
-                  <th>Szolgáltatás</th>
-                  <th className="right">Bevétel</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recent.slice(0, 4).map((item) => (
-                  <tr key={item.id}>
-                    <td>{formatDate(item.date)}</td>
-                    <td>{item.client}</td>
-                    <td>{item.service}</td>
-                    <td className="right">{formatCurrency(item.price)} Ft</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="home-recent-table">
+            <div className="home-recent-head">
+              <span>Dátum</span>
+              <span>Vendég</span>
+              <span>Szolgáltatás</span>
+              <span>Bevétel</span>
+            </div>
+
+            {recent.slice(0, 4).map((item) => (
+              <div className="home-recent-row" key={item.id}>
+                <span>{formatDate(item.date)}</span>
+                <span>{item.client}</span>
+                <span>{item.service}</span>
+                <span>{formatCurrency(item.price)} Ft</span>
+              </div>
+            ))}
           </div>
         </div>
 
-        <div className="quick-box">
+        {/* ===== QUICK ===== */}
+        <div className="home-quick-box">
           <h2>Gyors műveletek</h2>
-          <button className="quick-btn" onClick={() => setShowTreatment(true)}>+ Új kezelés</button>
-          <button className="quick-btn" onClick={() => setShowCustomer(true)}>+ Új ügyfél</button>
-          <button className="quick-btn" onClick={() => setShowService(true)}>+ Új szolgáltatás</button>
+
+          <button
+            className="home-quick-btn"
+            onClick={() => setShowTreatment(true)}
+          >
+            + Új kezelés
+          </button>
+
+          <button
+            className="home-quick-btn"
+            onClick={() => setShowCustomer(true)}
+          >
+            + Új ügyfél
+          </button>
+
+          <button
+            className="home-quick-btn"
+            onClick={() => setShowService(true)}
+          >
+            + Új szolgáltatás
+          </button>
         </div>
       </div>
-
-      <TreatmentModal
-        show={showTreatment}
-        onHide={() => setShowTreatment(false)}
-      />
-      <CustomerModal
-        show={showCustomer}
-        onHide={() => setShowCustomer(false)}
-      />
-      <ServiceModal show={showService} onHide={() => setShowService(false)} />
     </div>
   );
 }

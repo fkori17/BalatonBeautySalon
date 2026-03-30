@@ -1,4 +1,4 @@
-/* ===== Modal body ===== */
+
 
 .new-client-modal {
   padding: 24px;
@@ -9,7 +9,6 @@
   gap: 14px;
 }
 
-/* ===== Inputs ===== */
 
 .new-client-modal .form-control {
   height: 45px;
@@ -22,7 +21,6 @@
   color: #999;
 }
 
-/* ===== Checkbox ===== */
 
 .uniform-checkbox {
   display: flex;
@@ -35,19 +33,17 @@
   margin-top: 0;
 }
 
-/* ===== Modal footer ===== */
 
 .modal-footer-uniform {
   border-top: none;
   display: flex;
-  flex-direction: row;          /* EZ A KULCS */
+  flex-direction: row;         
   justify-content: flex-end;
   align-items: center;
   gap: 12px;
   padding: 16px 24px;
 }
 
-/* ===== Buttons ===== */
 
 .uniform-btn {
   height: 44px;
@@ -62,7 +58,6 @@
   white-space: nowrap;
 }
 
-/* Bootstrap secondary felülírás finoman */
 .uniform-btn.btn-secondary {
   background: #dee2e6;
   color: #333;
@@ -72,7 +67,6 @@
   background: #ced4da;
 }
 
-/* Primary (Mentés) */
 .uniform-btn.btn-primary {
   background: #f6c28b;
   color: #000;
@@ -87,6 +81,7 @@
   justify-content: flex-end;
   gap: 12px;
   border-top: none;
+  flex-wrap: nowrap;
 }
 
 .modal-footer-uniform .btn {

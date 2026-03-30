@@ -2,6 +2,7 @@
   padding: 32px;
   max-width: 1400px;
   margin: 0 auto;
+  
 }
 
 .services-page button {
@@ -28,7 +29,7 @@
   border-radius: 10px;
   border: none;
   background-color: #e9b174;
-  color: #fff;
+  color: black;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -93,6 +94,7 @@
   color: #333;
 }
 
+
 .col-actions {
   text-align: center !important;
   width: 120px;
@@ -131,5 +133,62 @@
 @media (max-width: 1100px) {
   .tables-container {
     flex-direction: column;
+  }
+}
+@media (max-width: 800px) {
+
+  .services-table thead {
+    display: none;
+  }
+
+  .services-table,
+  .services-table tbody,
+  .services-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  .services-table tr {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  .services-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border: none;
+    font-size: 14px;
+  }
+  
+  .services-table td::before {
+    font-weight: 600;
+    color: #666;
+  }
+
+  .services-table td:nth-child(1)::before {
+    content: "Név";
+  }
+
+  .services-table td:nth-child(2)::before {
+    content: "Ár";
+  }
+
+
+
+  .services-table td:last-child {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+  }
+
+  .services-table .actions {
+    justify-content: flex-end;
+    gap: 12px;
+    width: 100%;
   }
 }

@@ -43,7 +43,6 @@ function Services() {
   const toggleService = async (service) => {
     try {
       const res = await api.patch(`/admin/services/${service.id}/toggle`);
-      // Lokális state frissítése a szerver válasza alapján
       setServices((prev) =>
         prev.map((s) =>
           s.id === service.id ? { ...s, active: res.data.active } : s,
@@ -70,7 +69,7 @@ function Services() {
   return (
     <div className="services-page">
       <div className="page-header">
-        <h1>Szolgáltatások</h1>
+        <h1 className="page-title">Szolgáltatások</h1>
         <button
           className="add-btn"
           onClick={() => {
@@ -144,7 +143,9 @@ function ServiceTable({ title, services, onEdit, onToggle, icon }) {
           {services.map((s) => (
             <tr key={s.id}>
               <td>{s.name}</td>
-              <td>{Number(s.price).toLocaleString()} Ft</td>
+              <td>
+                <strong>{Number(s.price).toLocaleString()} Ft</strong>
+              </td>
               <td className="actions">
                 <button title="Szerkesztés" onClick={() => onEdit(s)}>
                   <PencilSquare />
