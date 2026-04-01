@@ -1,35 +1,41 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 
 describe("ProtectedRoute", () => {
 
-  afterEach(() => {
+  beforeEach(() => {
     localStorage.clear();
   });
 
-  test("ha nincs token → loginra dob", () => {
+  const renderWithRoutes = (ui) =>
     render(
-      <MemoryRouter>
-        <ProtectedRoute>
-          <div>Védett tartalom</div>
-        </ProtectedRoute>
+      <MemoryRouter initialEntries={["/admin"]}>
+        <Routes>
+          <Route path="/admin" element={ui} />
+          <Route path="/login" element={<div>Login oldal</div>} />
+        </Routes>
       </MemoryRouter>
     );
 
-    expect(screen.queryByText("Védett tartalom")).not.toBeInTheDocument();
+  test("ha nincs token → loginra redirectel", () => {
+    renderWithRoutes(
+      <ProtectedRoute>
+        <div>Védett tartalom</div>
+      </ProtectedRoute>
+    );
+
+    expect(screen.getByText("Login oldal")).toBeInTheDocument();
   });
 
   test("ha van token → megjelenik a children", () => {
     localStorage.setItem("token", "123");
 
-    render(
-      <MemoryRouter>
-        <ProtectedRoute>
-          <div>Védett tartalom</div>
-        </ProtectedRoute>
-      </MemoryRouter>
+    renderWithRoutes(
+      <ProtectedRoute>
+        <div>Védett tartalom</div>
+      </ProtectedRoute>
     );
 
     expect(screen.getByText("Védett tartalom")).toBeInTheDocument();
@@ -39,15 +45,26 @@ describe("ProtectedRoute", () => {
     localStorage.setItem("token", "123");
     localStorage.setItem("authType", "user");
 
-    render(
-      <MemoryRouter>
-        <ProtectedRoute allowedType="admin">
-          <div>Védett tartalom</div>
-        </ProtectedRoute>
-      </MemoryRouter>
+    renderWithRoutes(
+      <ProtectedRoute allowedType="admin">
+        <div>Védett tartalom</div>
+      </ProtectedRoute>
     );
 
-    expect(screen.queryByText("Védett tartalom")).not.toBeInTheDocument();
+    expect(screen.getByText("Login oldal")).toBeInTheDocument();
+  });
+
+  test("ha jó authType → beengedi", () => {
+    localStorage.setItem("token", "123");
+    localStorage.setItem("authType", "admin");
+
+    renderWithRoutes(
+      <ProtectedRoute allowedType="admin">
+        <div>Védett tartalom</div>
+      </ProtectedRoute>
+    );
+
+    expect(screen.getByText("Védett tartalom")).toBeInTheDocument();
   });
 
 });

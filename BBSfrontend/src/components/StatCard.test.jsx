@@ -4,16 +4,17 @@ import StatCard from "./StatCard";
 
 describe("StatCard", () => {
 
-  test("megjelenik a title", () => {
+  test("megjeleníti a címet és az értéket", () => {
     render(<StatCard title="Összes kezelés" value="25" />);
 
     expect(screen.getByText("Összes kezelés")).toBeInTheDocument();
+    expect(screen.getByText("25")).toBeInTheDocument();
   });
 
-  test("megjelenik a value", () => {
-    render(<StatCard title="Teszt" value="99" />);
+  test("számként kapott value-t is kezeli", () => {
+    render(<StatCard title="Teszt" value={42} />);
 
-    expect(screen.getByText("99")).toBeInTheDocument();
+    expect(screen.getByText("42")).toBeInTheDocument();
   });
 
 });

@@ -1,5 +1,6 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import EditCustomerModal from "./EditCustomerModal";
 import api from "../api/axios";
 
@@ -15,14 +16,14 @@ describe("EditCustomerModal", () => {
     name: "Teszt Elek",
     phone: "+36301234567",
     loyal: true,
-    password: "password123"
+    password: "password123",
   };
 
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  test("megjelenik a modal", () => {
+  const renderModal = () =>
     render(
       <EditCustomerModal
         show={true}
@@ -32,18 +33,13 @@ describe("EditCustomerModal", () => {
       />
     );
 
+  test("megjelenik a modal", () => {
+    renderModal();
     expect(screen.getByText("Ügyfél szerkesztése")).toBeInTheDocument();
   });
 
   test("betölti a customer adatokat", () => {
-    render(
-      <EditCustomerModal
-        show={true}
-        onHide={onHide}
-        customer={customer}
-        onSuccess={onSuccess}
-      />
-    );
+    renderModal();
 
     expect(screen.getByDisplayValue("teszt@test.hu")).toBeInTheDocument();
     expect(screen.getByDisplayValue("Teszt Elek")).toBeInTheDocument();
@@ -51,45 +47,35 @@ describe("EditCustomerModal", () => {
   });
 
   test("validáció működik", async () => {
-    render(
-      <EditCustomerModal
-        show={true}
-        onHide={onHide}
-        customer={customer}
-        onSuccess={onSuccess}
-      />
-    );
+    renderModal();
 
-    fireEvent.change(screen.getByDisplayValue("Teszt Elek"), {
-      target: { value: "" },
-    });
+    const nameInput = screen.getByLabelText(/név/i);
 
-    fireEvent.click(screen.getByText("Mentés"));
+    await userEvent.clear(nameInput);
+    await userEvent.click(screen.getByRole("button", { name: /mentés/i }));
 
-    await waitFor(() => {
-      expect(screen.getByText("Ügyfél szerkesztése")).toBeInTheDocument();
-    });
+    expect(api.put).not.toHaveBeenCalled();
+    expect(screen.getByText(/kötelező/i)).toBeInTheDocument();
   });
 
   test("sikeres mentés működik", async () => {
     api.put.mockResolvedValue({});
 
-    render(
-      <EditCustomerModal
-        show={true}
-        onHide={onHide}
-        customer={customer}
-        onSuccess={onSuccess}
-      />
+    renderModal();
+
+    const nameInput = screen.getByLabelText(/név/i);
+
+    await userEvent.clear(nameInput);
+    await userEvent.type(nameInput, "Teszt Béla");
+
+    await userEvent.click(screen.getByRole("button", { name: /mentés/i }));
+
+    expect(api.put).toHaveBeenCalledWith(
+      expect.stringContaining("/1"),
+      expect.objectContaining({
+        name: "Teszt Béla",
+      })
     );
-
-    fireEvent.change(screen.getByDisplayValue("Teszt Elek"), {
-      target: { value: "Teszt Béla" },
-    });
-
-    fireEvent.click(screen.getByText("Mentés"));
-
-    await waitFor(() => expect(api.put).toHaveBeenCalled());
 
     expect(onSuccess).toHaveBeenCalled();
     expect(onHide).toHaveBeenCalled();
@@ -98,16 +84,9 @@ describe("EditCustomerModal", () => {
   test("hiba eset toast jelenik meg", async () => {
     api.put.mockRejectedValue({});
 
-    render(
-      <EditCustomerModal
-        show={true}
-        onHide={onHide}
-        customer={customer}
-        onSuccess={onSuccess}
-      />
-    );
+    renderModal();
 
-    fireEvent.click(screen.getByText("Mentés"));
+    await userEvent.click(screen.getByRole("button", { name: /mentés/i }));
 
     expect(
       await screen.findByText("Hiba történt a mentés során")

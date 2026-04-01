@@ -1,5 +1,6 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import DeleteCustomerModal from "./DeleteCustomerModal";
 
 describe("DeleteCustomerModal", () => {
@@ -16,15 +17,19 @@ describe("DeleteCustomerModal", () => {
     jest.clearAllMocks();
   });
 
-  test("megjelenik ha van customer", () => {
+  const renderModal = (props = {}) =>
     render(
       <DeleteCustomerModal
         show={true}
         onHide={onHide}
         customer={customer}
         onConfirm={onConfirm}
+        {...props}
       />
     );
+
+  test("megjelenik ha van customer", () => {
+    renderModal();
 
     expect(screen.getByText("Ügyfél törlése")).toBeInTheDocument();
     expect(screen.getByText("Teszt Elek")).toBeInTheDocument();
@@ -32,45 +37,25 @@ describe("DeleteCustomerModal", () => {
   });
 
   test("nem jelenik meg ha nincs customer", () => {
-    const { container } = render(
-      <DeleteCustomerModal
-        show={true}
-        onHide={onHide}
-        customer={null}
-        onConfirm={onConfirm}
-      />
-    );
+    renderModal({ customer: null });
 
-    expect(container.firstChild).toBeNull();
+    expect(screen.queryByText("Ügyfél törlése")).not.toBeInTheDocument();
   });
 
-  test("Mégse gomb működik", () => {
-    render(
-      <DeleteCustomerModal
-        show={true}
-        onHide={onHide}
-        customer={customer}
-        onConfirm={onConfirm}
-      />
-    );
+  test("Mégse gomb működik", async () => {
+    renderModal();
 
-    fireEvent.click(screen.getByText("Mégse"));
+    await userEvent.click(screen.getByRole("button", { name: /mégse/i }));
 
-    expect(onHide).toHaveBeenCalled();
+    expect(onHide).toHaveBeenCalledTimes(1);
   });
 
-  test("Törlés gomb meghívja onConfirm-ot", () => {
-    render(
-      <DeleteCustomerModal
-        show={true}
-        onHide={onHide}
-        customer={customer}
-        onConfirm={onConfirm}
-      />
-    );
+  test("Törlés gomb meghívja onConfirm-ot", async () => {
+    renderModal();
 
-    fireEvent.click(screen.getByText("Törlés"));
+    await userEvent.click(screen.getByRole("button", { name: /törlés/i }));
 
     expect(onConfirm).toHaveBeenCalledWith(1);
+    expect(onConfirm).toHaveBeenCalledTimes(1);
   });
 });

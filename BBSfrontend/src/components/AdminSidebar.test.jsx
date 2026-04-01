@@ -8,24 +8,26 @@ const mockLogout = jest.fn();
 
 jest.mock("../hooks/useLogout", () => () => mockLogout);
 
+const renderSidebar = (props = {}) =>
+  render(
+    <MemoryRouter>
+      <AdminSidebar {...props} />
+    </MemoryRouter>
+  );
+
+beforeEach(() => {
+  jest.clearAllMocks();
+});
+
 describe("AdminSidebar tesztek", () => {
 
   test("megjelenik az admin felület szöveg", () => {
-    render(
-      <MemoryRouter>
-        <AdminSidebar>TESZT</AdminSidebar>
-      </MemoryRouter>
-    );
-
-    expect(screen.getAllByText("Admin felület")[0]).toBeInTheDocument();
+    renderSidebar();
+    expect(screen.getByText("Admin felület")).toBeInTheDocument();
   });
 
   test("megjelennek a menüpontok", () => {
-    render(
-      <MemoryRouter>
-        <AdminSidebar />
-      </MemoryRouter>
-    );
+    renderSidebar();
 
     expect(screen.getByText("Kezdőlap")).toBeInTheDocument();
     expect(screen.getByText("Kezelések")).toBeInTheDocument();
@@ -35,30 +37,21 @@ describe("AdminSidebar tesztek", () => {
   });
 
   test("logout meghívódik kattintásra", async () => {
-    render(
-      <MemoryRouter>
-        <AdminSidebar />
-      </MemoryRouter>
-    );
+    renderSidebar();
 
-    const logoutBtn = screen.getByText("Kijelentkezés");
-    await userEvent.click(logoutBtn);
+    await userEvent.click(screen.getByText("Kijelentkezés"));
 
     expect(mockLogout).toHaveBeenCalledTimes(1);
   });
 
   test("hamburger menü megnyílik kattintásra", async () => {
-    render(
-      <MemoryRouter>
-        <AdminSidebar />
-      </MemoryRouter>
-    );
+    renderSidebar();
 
-    const button = screen.getByRole("button", { name: "☰" });
+    const button = screen.getByRole("button", { name: /menu|menü/i });
 
     await userEvent.click(button);
 
-    expect(screen.getAllByText("Admin felület")[1]).toBeInTheDocument();
+    expect(screen.getAllByText("Admin felület").length).toBeGreaterThan(1);
   });
 
 });

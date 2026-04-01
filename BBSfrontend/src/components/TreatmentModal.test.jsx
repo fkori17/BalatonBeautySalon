@@ -1,136 +1,105 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import TreatmentModal from "./TreatmentModal";
 import api from "../api/axios";
 
 jest.mock("../api/axios");
 
 describe("TreatmentModal", () => {
-    const onHide = jest.fn();
-    const onSuccess = jest.fn();
+  const onHide = jest.fn();
+  const onSuccess = jest.fn();
 
-    const customers = [
-        { id: 1, name: "Teszt Anna", email: "teszt@test.hu" },
-    ];
+  const customers = [
+    { id: 1, name: "Teszt Anna", email: "teszt@test.hu" },
+  ];
 
-    const services = [
-        { id: 1, name: "Géllakkozás", price: 3000, active: true },
-    ];
+  const services = [
+    { id: 1, name: "Géllakkozás", price: 3000, active: true },
+  ];
 
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
-    test("megjelenik a modal", async () => {
-        api.get
-            .mockResolvedValueOnce({ data: customers })
-            .mockResolvedValueOnce({ data: services });
+  const mockInitialData = () => {
+    api.get
+      .mockResolvedValueOnce({ data: customers })
+      .mockResolvedValueOnce({ data: services });
+  };
 
-        render(
-            <TreatmentModal
-                show={true}
-                onHide={onHide}
-                onSuccess={onSuccess}
-            />
-        );
+  const renderModal = () =>
+    render(
+      <TreatmentModal
+        show={true}
+        onHide={onHide}
+        onSuccess={onSuccess}
+      />
+    );
 
-        expect(await screen.findByText("Új kezelés hozzáadása")).toBeInTheDocument();
-    });
+  test("megjelenik a modal", async () => {
+    mockInitialData();
+    renderModal();
 
-    test("betölti az adatokat (customers + services)", async () => {
-        api.get
-            .mockResolvedValueOnce({ data: customers })
-            .mockResolvedValueOnce({ data: services });
+    expect(await screen.findByText("Új kezelés hozzáadása")).toBeInTheDocument();
+  });
 
-        render(
-            <TreatmentModal
-                show={true}
-                onHide={onHide}
-                onSuccess={onSuccess}
-            />
-        );
+  test("betölti az adatokat", async () => {
+    mockInitialData();
+    renderModal();
 
-        expect(await screen.findByText(/Teszt Anna/)).toBeInTheDocument();
-        expect(await screen.findByText(/Géllakkozás/)).toBeInTheDocument();
-    });
+    expect(await screen.findByText(/Teszt Anna/)).toBeInTheDocument();
+    expect(await screen.findByText(/Géllakkozás/)).toBeInTheDocument();
+  });
 
-    test("validáció működik (nincs customer + service)", async () => {
-        api.get
-            .mockResolvedValueOnce({ data: customers })
-            .mockResolvedValueOnce({ data: services });
+  test("validáció működik", async () => {
+    mockInitialData();
+    renderModal();
 
-        render(
-            <TreatmentModal
-                show={true}
-                onHide={onHide}
-                onSuccess={onSuccess}
-            />
-        );
+    await userEvent.click(await screen.findByRole("button", { name: /mentés/i }));
 
-        await screen.findByText(/Új kezelés hozzáadása/);
+    expect(
+      await screen.findByText("Ügyfél kiválasztása kötelező.")
+    ).toBeInTheDocument();
 
-        const submitBtn = await screen.findByRole("button", { name: /mentés/i });
-        fireEvent.click(submitBtn);
+    expect(api.post).not.toHaveBeenCalled();
+  });
 
-        expect(
-            await screen.findByText("Ügyfél kiválasztása kötelező.")
-        ).toBeInTheDocument();
-    });
+  test("service hozzáadás működik", async () => {
+    mockInitialData();
+    renderModal();
 
-    test("service hozzáadás működik", async () => {
-        api.get
-            .mockResolvedValueOnce({ data: customers })
-            .mockResolvedValueOnce({ data: services });
+    await userEvent.click(await screen.findByText(/Géllakkozás/));
 
-        render(
-            <TreatmentModal
-                show={true}
-                onHide={onHide}
-                onSuccess={onSuccess}
-            />
-        );
+    expect(await screen.findByText("3000 Ft")).toBeInTheDocument();
+  });
 
-        fireEvent.click(await screen.findByText(/Géllakkozás/));
+  test("sikeres mentés működik", async () => {
+    mockInitialData();
+    api.post.mockResolvedValue({});
 
-        expect(await screen.findByText("3000 Ft")).toBeInTheDocument();
-    });
+    renderModal();
 
-    test("sikeres mentés működik", async () => {
-        api.get
-            .mockResolvedValueOnce({ data: customers })
-            .mockResolvedValueOnce({ data: services });
+    await userEvent.click(await screen.findByText(/Teszt Anna/));
+    await userEvent.click(screen.getByText(/Géllakkozás/));
+    await userEvent.click(await screen.findByRole("button", { name: /mentés/i }));
 
-        api.post.mockResolvedValue({});
+    expect(api.post).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        customerId: 1,
+      })
+    );
 
-        render(
-            <TreatmentModal
-                show={true}
-                onHide={onHide}
-                onSuccess={onSuccess}
-            />
-        );
+    expect(onHide).toHaveBeenCalled();
+    expect(onSuccess).toHaveBeenCalled();
+  });
 
-        fireEvent.click(await screen.findByText(/Teszt Anna/));
+  test("loading spinner megjelenik", async () => {
+    api.get.mockImplementation(() => new Promise(() => {}));
 
-        fireEvent.click(screen.getByText(/Géllakkozás/));
+    renderModal();
 
-        fireEvent.click(await screen.findByRole("button", { name: /mentés/i }));
-
-        await waitFor(() => expect(api.post).toHaveBeenCalled());
-
-        expect(onHide).toHaveBeenCalled();
-        expect(onSuccess).toHaveBeenCalled();
-    });
-
-    test("loading spinner megjelenik", async () => {
-        api.get.mockImplementation(() => new Promise(() => { }));
-
-        render(<TreatmentModal show={true} onHide={onHide} onSuccess={onSuccess} />);
-
-        expect(
-            await screen.findByText((_, el) =>
-                el?.classList.contains("spinner-border")
-            )
-        ).toBeInTheDocument();
-    });
+    expect(await screen.findByRole("status")).toBeInTheDocument();
+  });
 });

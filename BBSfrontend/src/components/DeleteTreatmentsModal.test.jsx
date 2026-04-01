@@ -1,111 +1,86 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import DeleteTreatmentModal from "./DeleteTreatmentModal";
 import api from "../api/axios";
 
 jest.mock("../api/axios");
 
 describe("DeleteTreatmentModal", () => {
-    const onHide = jest.fn();
-    const onSuccess = jest.fn();
+  const onHide = jest.fn();
+  const onSuccess = jest.fn();
 
-    const treatment = {
-        id: 5,
-        customer: "Teszt Elek",
-        date: "2025-03-10",
-    };
+  const treatment = {
+    id: 5,
+    customer: "Teszt Elek",
+    date: "2025-03-10",
+  };
 
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
-    test("megjelenik", () => {
-        render(
-            <DeleteTreatmentModal
-                show={true}
-                onHide={onHide}
-                onSuccess={onSuccess}
-                treatment={treatment}
-            />
-        );
+  const renderModal = () =>
+    render(
+      <DeleteTreatmentModal
+        show={true}
+        onHide={onHide}
+        onSuccess={onSuccess}
+        treatment={treatment}
+      />
+    );
 
-        expect(screen.getByText("Kezelés törlése")).toBeInTheDocument();
-        expect(screen.getByText(/Teszt Elek/)).toBeInTheDocument();
-    });
+  test("megjelenik", () => {
+    renderModal();
 
-    test("Mégse működik", () => {
-        render(
-            <DeleteTreatmentModal
-                show={true}
-                onHide={onHide}
-                onSuccess={onSuccess}
-                treatment={treatment}
-            />
-        );
+    expect(screen.getByText("Kezelés törlése")).toBeInTheDocument();
+    expect(screen.getByText(/Teszt Elek/)).toBeInTheDocument();
+  });
 
-        fireEvent.click(screen.getByText("Mégse"));
+  test("Mégse működik", async () => {
+    renderModal();
 
-        expect(onHide).toHaveBeenCalled();
-    });
+    await userEvent.click(screen.getByRole("button", { name: /mégse/i }));
 
-    test("sikeres törlés működik", async () => {
-        api.delete.mockResolvedValue({});
+    expect(onHide).toHaveBeenCalledTimes(1);
+  });
 
-        render(
-            <DeleteTreatmentModal
-                show={true}
-                onHide={onHide}
-                onSuccess={onSuccess}
-                treatment={treatment}
-            />
-        );
+  test("sikeres törlés működik", async () => {
+    api.delete.mockResolvedValue({});
 
-        fireEvent.click(screen.getByText("Végleges törlés"));
+    renderModal();
 
-        await waitFor(() => expect(api.delete).toHaveBeenCalled());
+    await userEvent.click(
+      screen.getByRole("button", { name: /végleges törlés/i })
+    );
 
-        expect(onSuccess).toHaveBeenCalledWith("Kezelés sikeresen törölve!");
-        expect(onHide).toHaveBeenCalled();
-    });
+    expect(api.delete).toHaveBeenCalled();
+    expect(onSuccess).toHaveBeenCalledWith("Kezelés sikeresen törölve!");
+    expect(onHide).toHaveBeenCalled();
+  });
 
-    test("loading spinner megjelenik", async () => {
-        api.delete.mockImplementation(() => new Promise(() => { }));
+  test("loading spinner megjelenik", async () => {
+    api.delete.mockImplementation(() => new Promise(() => {}));
 
-        render(
-            <DeleteTreatmentModal
-                show={true}
-                onHide={onHide}
-                onSuccess={onSuccess}
-                treatment={treatment}
-            />
-        );
+    renderModal();
 
-        fireEvent.click(screen.getByText("Végleges törlés"));
+    await userEvent.click(
+      screen.getByRole("button", { name: /végleges törlés/i })
+    );
 
-        expect(
-            await screen.findByText((_, el) =>
-                el?.classList.contains("spinner-border")
-            )
-        ).toBeInTheDocument();
-    });
+    expect(await screen.findByRole("status")).toBeInTheDocument();
+  });
 
-    test("hiba eset alert", async () => {
-        window.alert = jest.fn();
-        api.delete.mockRejectedValue({});
+  test("hiba eset alert", async () => {
+    const alertSpy = jest.spyOn(window, "alert").mockImplementation(() => {});
+    api.delete.mockRejectedValue({});
 
-        render(
-            <DeleteTreatmentModal
-                show={true}
-                onHide={onHide}
-                onSuccess={onSuccess}
-                treatment={treatment}
-            />
-        );
+    renderModal();
 
-        fireEvent.click(screen.getByText("Végleges törlés"));
+    await userEvent.click(
+      screen.getByRole("button", { name: /végleges törlés/i })
+    );
 
-        await waitFor(() =>
-            expect(window.alert).toHaveBeenCalledWith("Hiba történt a törléskor.")
-        );
-    });
+    expect(alertSpy).toHaveBeenCalledWith("Hiba történt a törléskor.");
+  });
 });

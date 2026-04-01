@@ -1,5 +1,6 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import AdminLogin from "./AdminLogin";
 import api from "../api/axios";
 import { BrowserRouter } from "react-router-dom";
@@ -7,23 +8,29 @@ import { BrowserRouter } from "react-router-dom";
 jest.mock("../api/axios");
 
 const mockNavigate = jest.fn();
-
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useNavigate: () => mockNavigate,
 }));
 
 describe("AdminLogin", () => {
+  const user = userEvent.setup();
+
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.spyOn(Storage.prototype, "setItem");
+    jest.spyOn(window, "alert").mockImplementation(() => {});
   });
 
-  test("megjelenik az oldal", () => {
+  const renderLogin = () =>
     render(
       <BrowserRouter>
         <AdminLogin />
       </BrowserRouter>
     );
+
+  test("megjelenik az oldal", () => {
+    renderLogin();
 
     expect(screen.getByText("Balaton Beauty Salon")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("Email")).toBeInTheDocument();
@@ -31,64 +38,41 @@ describe("AdminLogin", () => {
   });
 
   test("validáció működik (üres submit)", async () => {
-    render(
-      <BrowserRouter>
-        <AdminLogin />
-      </BrowserRouter>
-    );
+    renderLogin();
 
-    fireEvent.click(screen.getByText("Bejelentkezés"));
+    await user.click(screen.getByText("Bejelentkezés"));
 
-    expect(await screen.findByText("Kérlek, add meg az email címed!")).toBeInTheDocument();
+    expect(
+      await screen.findByText("Kérlek, add meg az email címed!")
+    ).toBeInTheDocument();
   });
 
   test("sikeres login működik", async () => {
-    api.post.mockResolvedValue({
-      data: { token: "test-token" },
-    });
+    api.post.mockResolvedValue({ data: { token: "test-token" } });
 
-    render(
-      <BrowserRouter>
-        <AdminLogin />
-      </BrowserRouter>
-    );
+    renderLogin();
 
-    fireEvent.change(screen.getByPlaceholderText("Email"), {
-      target: { value: "admin@test.hu" },
-    });
+    await user.type(screen.getByPlaceholderText("Email"), "admin@test.hu");
+    await user.type(screen.getByPlaceholderText("Jelszó"), "12345678");
+    await user.click(screen.getByText("Bejelentkezés"));
 
-    fireEvent.change(screen.getByPlaceholderText("Jelszó"), {
-      target: { value: "12345678" },
-    });
+    await waitFor(() => expect(api.post).toHaveBeenCalledWith("/auth/login", {
+      email: "admin@test.hu",
+      password: "12345678",
+    }));
 
-    fireEvent.click(screen.getByText("Bejelentkezés"));
-
-    await waitFor(() => expect(api.post).toHaveBeenCalled());
-
-    expect(localStorage.getItem("token")).toBe("test-token");
+    expect(localStorage.setItem).toHaveBeenCalledWith("token", "test-token");
     expect(mockNavigate).toHaveBeenCalledWith("/admin");
   });
 
   test("hibás login alertet dob", async () => {
-    window.alert = jest.fn();
-
     api.post.mockRejectedValue({});
 
-    render(
-      <BrowserRouter>
-        <AdminLogin />
-      </BrowserRouter>
-    );
+    renderLogin();
 
-    fireEvent.change(screen.getByPlaceholderText("Email"), {
-      target: { value: "admin@test.hu" },
-    });
-
-    fireEvent.change(screen.getByPlaceholderText("Jelszó"), {
-      target: { value: "12345678" },
-    });
-
-    fireEvent.click(screen.getByText("Bejelentkezés"));
+    await user.type(screen.getByPlaceholderText("Email"), "admin@test.hu");
+    await user.type(screen.getByPlaceholderText("Jelszó"), "12345678");
+    await user.click(screen.getByText("Bejelentkezés"));
 
     await waitFor(() =>
       expect(window.alert).toHaveBeenCalledWith("Hibás belépési adatok")

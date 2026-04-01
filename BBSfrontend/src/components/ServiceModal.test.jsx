@@ -1,5 +1,6 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import ServiceModal from "./ServiceModal";
 import api from "../api/axios";
 
@@ -19,27 +20,23 @@ describe("ServiceModal", () => {
     jest.clearAllMocks();
   });
 
-  test("megjelenik új szolgáltatás módban", () => {
+  const renderModal = (props = {}) =>
     render(
       <ServiceModal
         show={true}
         onHide={onHide}
         onSuccess={onSuccess}
+        {...props}
       />
     );
 
+  test("megjelenik új szolgáltatás módban", () => {
+    renderModal();
     expect(screen.getByText("Új szolgáltatás")).toBeInTheDocument();
   });
 
   test("megjelenik szerkesztés módban", () => {
-    render(
-      <ServiceModal
-        show={true}
-        onHide={onHide}
-        service={service}
-        onSuccess={onSuccess}
-      />
-    );
+    renderModal({ service });
 
     expect(screen.getByText("Szolgáltatás szerkesztése")).toBeInTheDocument();
     expect(screen.getByDisplayValue("Hajvágás")).toBeInTheDocument();
@@ -47,43 +44,41 @@ describe("ServiceModal", () => {
   });
 
   test("validáció működik (üres submit)", async () => {
-    render(
-      <ServiceModal
-        show={true}
-        onHide={onHide}
-        onSuccess={onSuccess}
-      />
-    );
+    renderModal();
 
-    fireEvent.click(screen.getByText("Mentés"));
+    await userEvent.click(screen.getByRole("button", { name: /mentés/i }));
 
-    await waitFor(() => {
-      expect(screen.getByText("Adj meg egy szolgáltatás nevet!")).toBeInTheDocument();
-    });
+    expect(
+      await screen.findByText("Adj meg egy szolgáltatás nevet!")
+    ).toBeInTheDocument();
+
+    expect(api.post).not.toHaveBeenCalled();
   });
 
   test("új szolgáltatás mentése (POST)", async () => {
     api.post.mockResolvedValue({});
 
-    render(
-      <ServiceModal
-        show={true}
-        onHide={onHide}
-        onSuccess={onSuccess}
-      />
+    renderModal();
+
+    await userEvent.type(
+      screen.getByLabelText(/szolgáltatás neve/i),
+      "Festés"
     );
 
-    fireEvent.change(screen.getByLabelText("Szolgáltatás neve"), {
-      target: { value: "Festés" },
-    });
+    await userEvent.type(
+      screen.getByLabelText(/ár/i),
+      "5000"
+    );
 
-    fireEvent.change(screen.getByLabelText("Ár (Ft)"), {
-      target: { value: "5000" },
-    });
+    await userEvent.click(screen.getByRole("button", { name: /mentés/i }));
 
-    fireEvent.click(screen.getByText("Mentés"));
-
-    await waitFor(() => expect(api.post).toHaveBeenCalled());
+    expect(api.post).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        name: "Festés",
+        price: 5000,
+      })
+    );
 
     expect(onHide).toHaveBeenCalled();
     expect(onSuccess).toHaveBeenCalled();
@@ -92,22 +87,21 @@ describe("ServiceModal", () => {
   test("szerkesztés mentése (PUT)", async () => {
     api.put.mockResolvedValue({});
 
-    render(
-      <ServiceModal
-        show={true}
-        onHide={onHide}
-        service={service}
-        onSuccess={onSuccess}
-      />
+    renderModal({ service });
+
+    const nameInput = screen.getByLabelText(/szolgáltatás neve/i);
+
+    await userEvent.clear(nameInput);
+    await userEvent.type(nameInput, "Hajvágás PRO");
+
+    await userEvent.click(screen.getByRole("button", { name: /mentés/i }));
+
+    expect(api.put).toHaveBeenCalledWith(
+      expect.stringContaining("/1"),
+      expect.objectContaining({
+        name: "Hajvágás PRO",
+      })
     );
-
-    fireEvent.change(screen.getByDisplayValue("Hajvágás"), {
-      target: { value: "Hajvágás PRO" },
-    });
-
-    fireEvent.click(screen.getByText("Mentés"));
-
-    await waitFor(() => expect(api.put).toHaveBeenCalled());
 
     expect(onHide).toHaveBeenCalled();
     expect(onSuccess).toHaveBeenCalled();
@@ -116,23 +110,19 @@ describe("ServiceModal", () => {
   test("loading állapot megjelenik", async () => {
     api.post.mockImplementation(() => new Promise(() => {}));
 
-    render(
-      <ServiceModal
-        show={true}
-        onHide={onHide}
-        onSuccess={onSuccess}
-      />
+    renderModal();
+
+    await userEvent.type(
+      screen.getByLabelText(/szolgáltatás neve/i),
+      "Teszt"
     );
 
-    fireEvent.change(screen.getByLabelText("Szolgáltatás neve"), {
-      target: { value: "Teszt" },
-    });
+    await userEvent.type(
+      screen.getByLabelText(/ár/i),
+      "1000"
+    );
 
-    fireEvent.change(screen.getByLabelText("Ár (Ft)"), {
-      target: { value: "1000" },
-    });
-
-    fireEvent.click(screen.getByText("Mentés"));
+    await userEvent.click(screen.getByRole("button", { name: /mentés/i }));
 
     expect(await screen.findByText("Folyamatban...")).toBeInTheDocument();
   });

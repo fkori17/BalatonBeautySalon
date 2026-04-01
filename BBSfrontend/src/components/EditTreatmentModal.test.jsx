@@ -1,5 +1,6 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import EditTreatmentModal from "./EditTreatmentModal";
 import api from "../api/axios";
 
@@ -8,6 +9,7 @@ jest.mock("../api/axios");
 describe("EditTreatmentModal", () => {
     const onHide = jest.fn();
     const onSuccess = jest.fn();
+    const user = userEvent.setup();
 
     const treatment = {
         id: 1,
@@ -19,7 +21,8 @@ describe("EditTreatmentModal", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
-        jest.spyOn(console, "error").mockImplementation(() => { });
+        jest.spyOn(console, "error").mockImplementation(() => {});
+        window.alert = jest.fn();
     });
 
     test("megjelenik a modal", async () => {
@@ -56,7 +59,6 @@ describe("EditTreatmentModal", () => {
 
     test("validáció működik (nincs service)", async () => {
         api.get.mockResolvedValue({ data: [] });
-        window.alert = jest.fn();
 
         render(
             <EditTreatmentModal
@@ -68,12 +70,9 @@ describe("EditTreatmentModal", () => {
         );
 
         await screen.findByText("Kezelés szerkesztése");
+        await user.click(screen.getByRole("button", { name: /mentés/i }));
 
-        fireEvent.click(screen.getByRole("button", { name: /mentés/i }));
-
-        await waitFor(() => {
-            expect(window.alert).toHaveBeenCalled();
-        });
+        await waitFor(() => expect(window.alert).toHaveBeenCalled());
     });
 
     test("sikeres mentés működik", async () => {
@@ -90,8 +89,7 @@ describe("EditTreatmentModal", () => {
         );
 
         await screen.findByText("Kezelés szerkesztése");
-
-        fireEvent.click(screen.getByRole("button", { name: /mentés/i }));
+        await user.click(screen.getByRole("button", { name: /mentés/i }));
 
         await waitFor(() => expect(api.put).toHaveBeenCalled());
 
@@ -101,8 +99,7 @@ describe("EditTreatmentModal", () => {
 
     test("loading spinner megjelenik", async () => {
         api.get.mockResolvedValue({ data: [] });
-
-        api.put.mockImplementation(() => new Promise(() => { }));
+        api.put.mockImplementation(() => new Promise(() => {}));
 
         render(
             <EditTreatmentModal
@@ -114,20 +111,15 @@ describe("EditTreatmentModal", () => {
         );
 
         await screen.findByText("Kezelés szerkesztése");
+        await user.click(screen.getByRole("button", { name: /mentés/i }));
 
-        fireEvent.click(screen.getByRole("button", { name: /mentés/i }));
-
-        await waitFor(() => {
-            expect(document.querySelector(".spinner-border")).toBeInTheDocument();
-        });
+        expect(await screen.findByRole("status", { name: /loading/i })).toBeInTheDocument();
     });
 
     test("hiba eset alert", async () => {
         api.get.mockResolvedValue({ data: [] });
         api.put.mockRejectedValue({});
 
-        window.alert = jest.fn();
-
         render(
             <EditTreatmentModal
                 show={true}
@@ -138,11 +130,8 @@ describe("EditTreatmentModal", () => {
         );
 
         await screen.findByText("Kezelés szerkesztése");
+        await user.click(screen.getByRole("button", { name: /mentés/i }));
 
-        fireEvent.submit(document.querySelector("form"));
-
-        await waitFor(() => {
-            expect(window.alert).toHaveBeenCalled();
-        });
+        await waitFor(() => expect(window.alert).toHaveBeenCalled());
     });
 });
