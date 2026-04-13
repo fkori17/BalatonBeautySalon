@@ -30,3 +30,94 @@ main {
 h1, h2 { 
   font-family: Orienta;
 }
+.resetFooter {
+  display: flex;
+  justify-content: center;
+  button {
+    width: 70%;
+  }
+  .sendBtn {
+    background-color: #9b5a3a !important;
+  }
+  .backBtn {
+    background-color: rgb(173, 173, 173);
+    border: none;
+  }
+}
+.boldText {
+  font-weight: bolder;
+}
+.dashboard-container {
+.info-section h2 {
+  margin-bottom: 15px;
+}
+
+.service-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  border: none;
+}
+
+.service-stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #fff4ee;
+  transition: all 0.2s ease;
+  border: 1px solid #ffdcb7;
+}
+
+.service-stat-item:hover {
+  background: #fdece2;
+  border-color: #ffbc9b;
+  transform: translateY(-2px);
+}
+
+.service-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+.service-count {
+  margin-left: 10px;
+  min-width: 32px;
+  text-align: center;
+
+  background: #f6c28b;
+  color: white;
+  font-weight: 600;
+
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.no-data {
+  color: #888;
+  font-style: italic;
+}
+
+@media (min-width: 600px) {
+  .service-stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+  
+}
+.btn-primary {
+  color: black;
+}
+
+.btn-primary:hover {
+  color: black;
+}
+.btn-primary:focus {
+  color: rgb(75, 75, 75);
+  background-color: #f6c28b !important;
+}

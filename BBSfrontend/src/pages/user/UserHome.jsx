@@ -8,6 +8,7 @@ import { useLoading } from "../../context/LoadingContext";
 function UserHome() {
   const [lastTreatment, setLastTreatment] = useState(null);
   const [stats, setStats] = useState(null);
+  const [serviceStats, setServiceStats] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedTreatment, setSelectedTreatment] = useState(null);
   const { setLoading } = useLoading();
@@ -19,10 +20,12 @@ function UserHome() {
     Promise.all([
       api.get("/treatments/me/last"),
       api.get("/treatments/me/stats"),
+      api.get("/treatments/me/service-stats-3months"),
     ])
-      .then(([lastRes, statsRes]) => {
+      .then(([lastRes, statsRes, serviceStatsRes]) => {
         setLastTreatment(lastRes.data);
         setStats(statsRes.data);
+        setServiceStats(serviceStatsRes.data);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -81,18 +84,20 @@ function UserHome() {
         </div>
 
         <div className="card info-section">
-          <h2>Információk</h2>
-          <p>
-            <strong>Következő ajánlott időpont:</strong>{" "}
-            {stats?.next_visit || "-"}
-          </p>
-          <p>
-            <strong>Eddigi kezelések száma:</strong> {stats?.total_treatments}
-          </p>
-          <p>
-            <strong>Vendég mióta jár hozzánk:</strong>{" "}
-            {formatDate(stats?.member_since)}
-          </p>
+          <h2>Elmúlt 3 hónap</h2>
+
+          {serviceStats.length > 0 ? (
+            <div className="service-stats-grid">
+              {serviceStats.map((s, index) => (
+                <div key={index} className="service-stat-item">
+                  <span className="service-name">{s.name}</span>
+                  <span className="service-count">{s.count}</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="no-data">Nincs adat az elmúlt 3 hónapból.</p>
+          )}
         </div>
       </div>
 

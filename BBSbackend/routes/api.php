@@ -76,7 +76,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [TreatmentController::class, 'myTreatments']);
         Route::get('/last', [TreatmentController::class, 'last']);
         Route::get('/stats', [TreatmentController::class, 'stats']);
-
+        Route::get('/service-stats-3months', [TreatmentController::class, 'serviceStatsLast3Months']);
     });
 
     Route::post('/change-password', [CustomerController::class, 'changePassword']);

@@ -204,8 +204,12 @@ function Login() {
           />
         </Modal.Body>
 
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowForgot(false)}>
+        <Modal.Footer className="resetFooter">
+          <Button
+            className="backBtn"
+            variant="secondary"
+            onClick={() => setShowForgot(false)}
+          >
             Mégse
           </Button>
 
@@ -213,6 +217,7 @@ function Login() {
             variant="primary"
             onClick={sendResetLink}
             disabled={resetLoading}
+            className="sendBtn"
           >
             {resetLoading ? "Küldés..." : "Email küldése"}
           </Button>

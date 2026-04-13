@@ -12,7 +12,7 @@ class TreatmentController extends Controller
 {
     public function index()
     {
-        //
+        
     }
 
     public function last(Request $request)
@@ -40,10 +40,11 @@ class TreatmentController extends Controller
         return [
             'username' => $user->name,
             'total_treatments' => $treatments->count(),
-            'member_since' => $user->created_at->format('Y-m-d'),
-            'next_visit' => '4 hét múlva'
+            'member_since' => $user->created_at->format('Y-m-d')
         ];
     }
+    
+
     
     public function adminStats()
     {
@@ -151,22 +152,46 @@ class TreatmentController extends Controller
 
         return response()->json($treatments);
     }
-    public function show(treatment $treatment)
+    public function serviceStatsLast3Months(Request $request)
     {
-        //
-    }
+        $user = $request->user();
 
-    public function edit(treatment $treatment)
-    {
-        //
-    }
+        $threeMonthsAgo = Carbon::now()->subMonths(3);
 
-    public function update(Request $request, treatment $treatment)
-    {
-        //
-    }
-    public function destroy(treatment $treatment)
-    {
-        //
+        $treatments = Treatment::with(['services:id,name'])
+            ->where('customer_id', $user->id)
+            ->where('created_at', '>=', $threeMonthsAgo)
+            ->get();
+
+        $serviceCounts = [];
+
+        foreach ($treatments as $treatment) {
+
+            
+            $uniqueServices = $treatment->services->unique('id');
+
+            foreach ($uniqueServices as $service) {
+                $name = $service->name;
+
+                if (!isset($serviceCounts[$name])) {
+                    $serviceCounts[$name] = 0;
+                }
+
+                $serviceCounts[$name]++; 
+            }
+        }
+
+        
+        $result = collect($serviceCounts)
+            ->map(function ($count, $name) {
+                return [
+                    'name' => $name,
+                    'count' => $count
+                ];
+            })
+            ->sortByDesc('count')
+            ->values();
+
+        return response()->json($result);
     }
 }

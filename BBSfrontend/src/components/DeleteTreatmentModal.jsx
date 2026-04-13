@@ -31,7 +31,7 @@ function DeleteTreatmentModal({ show, onHide, onSuccess, treatment }) {
 
       <Modal.Body className="treatment-modal text-center py-4">
         <p>Biztosan törölni szeretnéd a következő kezelést?</p>
-        <div className="fw-bold my-2">
+        <div className="my-2 boldText">
           {treatment?.customer} -{" "}
           {new Date(treatment?.date).toLocaleDateString("hu-HU")}
         </div>
