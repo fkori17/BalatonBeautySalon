@@ -4,10 +4,10 @@ import ServiceModal from "../../components/ServiceModal";
 import { PencilSquare, Trash, ArrowRepeat } from "react-bootstrap-icons";
 import { Toast, ToastContainer, Spinner } from "react-bootstrap";
 import "../../components/style/Services.css";
-
+import { useLoading } from "../../context/LoadingContext";
 function Services() {
   const [services, setServices] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { setLoading } = useLoading();
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [toast, setToast] = useState({
@@ -27,7 +27,7 @@ function Services() {
     } catch {
       showToast("Nem sikerült betölteni a szolgáltatásokat", "danger");
     } finally {
-      setLoading(false);
+      setLoading(false); 
     }
   };
 
@@ -59,12 +59,6 @@ function Services() {
   const active = services.filter((s) => s.active);
   const inactive = services.filter((s) => !s.active);
 
-  if (loading)
-    return (
-      <div className="d-flex justify-content-center mt-5">
-        <Spinner animation="border" />
-      </div>
-    );
 
   return (
     <div className="services-page">

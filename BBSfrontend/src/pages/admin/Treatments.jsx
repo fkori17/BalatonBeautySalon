@@ -1,15 +1,14 @@
 import React, { useEffect, useCallback, useMemo, useState } from "react";
 import "../../components/style/AdminTreatments.css";
 import {
-  Search,
-  CalendarEvent,
   Trash,
   PencilSquare,
   CheckCircle,
   ExclamationTriangle,
 } from "react-bootstrap-icons";
 import api from "../../api/axios";
-import { Spinner, Toast, ToastContainer } from "react-bootstrap";
+import { useLoading } from "../../context/LoadingContext"; 
+import { Toast, ToastContainer } from "react-bootstrap";
 
 import TreatmentModal from "../../components/TreatmentModal";
 import EditTreatmentModal from "../../components/EditTreatmentModal";
@@ -17,11 +16,11 @@ import DeleteTreatmentModal from "../../components/DeleteTreatmentModal";
 
 function Treatments() {
   const [treatments, setTreatments] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { setLoading } = useLoading(); 
 
   const [search, setSearch] = useState("");
-  const [serviceFilter, setServiceFilter] = useState("Összes");
-  const [dateFilter, setDateFilter] = useState("");
+  const [serviceFilter] = useState("Összes");
+  const [dateFilter] = useState("");
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -40,16 +39,16 @@ function Treatments() {
   };
 
   const fetchTreatments = useCallback(async () => {
-    setLoading(true);
+    setLoading(true); 
     try {
       const response = await api.get("/admin/treatments");
       setTreatments(response.data);
     } catch (error) {
       showToast("Hiba a betöltéskor", "danger");
     } finally {
-      setLoading(false);
+      setLoading(false); 
     }
-  }, []);
+  }, [setLoading]);
 
   useEffect(() => {
     fetchTreatments();
@@ -64,7 +63,7 @@ function Treatments() {
         serviceFilter === "Összes" ||
         t.services.some((s) => s.name === serviceFilter);
 
-      const treatmentDate = new Date(t.date).toISOString().split("T")[0];
+      const treatmentDate = t.date ? new Date(t.date).toISOString().split("T")[0] : "";
       const matchesDate = !dateFilter || treatmentDate === dateFilter;
 
       return matchesSearch && matchesService && matchesDate;
@@ -87,11 +86,7 @@ function Treatments() {
           bg={toast.variant}
         >
           <Toast.Body className="text-white d-flex align-items-center gap-2">
-            {toast.variant === "success" ? (
-              <CheckCircle />
-            ) : (
-              <ExclamationTriangle />
-            )}
+            {toast.variant === "success" ? <CheckCircle /> : <ExclamationTriangle />}
             {toast.message}
           </Toast.Body>
         </Toast>
@@ -115,23 +110,18 @@ function Treatments() {
         </div>
       </div>
 
-      <div className="filters-row"></div>
-
-      {loading ? (
-        <div className="d-flex justify-content-center mt-5">
-          <Spinner animation="border" variant="warning" />
+      <div className="treatments-table">
+        <div className="treatments-header">
+          <span>Dátum</span>
+          <span>Ügyfél</span>
+          <span>Szolgáltatások</span>
+          <span>Ár</span>
+          <span>Megjegyzés</span>
+          <span>Műveletek</span>
         </div>
-      ) : (
-        <div className="treatments-table">
-          <div className="treatments-header">
-            <span>Dátum</span>
-            <span>Ügyfél</span>
-            <span>Szolgáltatások</span>
-            <span>Ár</span>
-            <span>Megjegyzés</span>
-            <span>Műveletek</span>
-          </div>
-          {filteredTreatments.map((t) => (
+
+        {filteredTreatments.length > 0 ? (
+          filteredTreatments.map((t) => (
             <div className="treatments-row" key={t.id}>
               <span data-label="Dátum">
                 {t.date ? new Date(t.date).toLocaleDateString("hu-HU") : "-"}
@@ -173,9 +163,13 @@ function Treatments() {
                 </button>
               </div>
             </div>
-          ))}
-        </div>
-      )}
+          ))
+        ) : (
+          <div className="text-center p-5 text-muted">
+            Nincs megjeleníthető kezelés.
+          </div>
+        )}
+      </div>
 
       <TreatmentModal
         show={showAddModal}

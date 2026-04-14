@@ -7,7 +7,7 @@ import DeleteCustomerModal from "../../components/DeleteCustomerModal";
 import "../../components/style/AdminCustomers.css";
 import { PencilSquare, Trash } from "react-bootstrap-icons";
 import { Toast, ToastContainer } from "react-bootstrap";
-
+import { useLoading } from "../../context/LoadingContext"; 
 function Customers() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [editCustomer, setEditCustomer] = useState(null);
@@ -15,15 +15,15 @@ function Customers() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [customers, setCustomers] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-
+  const { setLoading } = useLoading();
   const fetchCustomers = () => {
-    setLoading(true);
+    setLoading(true); 
     api
       .get("/admin/customers")
       .then((res) => setCustomers(res.data))
-      .finally(() => setLoading(false));
+      .catch(() => showToast("Hiba az adatok letöltésekor", "danger"))
+      .finally(() => setLoading(false)); // Loader leállítása
   };
 
   const [toast, setToast] = useState({
@@ -40,16 +40,16 @@ function Customers() {
     fetchCustomers();
   }, []);
 
-  const handleDelete = async () => {
+const handleDelete = async () => {
+    setLoading(true); // Törlés alatt is mutassuk a loadert
     try {
       await api.delete(`/admin/customers/${selectedCustomer.id}`);
-
       setCustomers((prev) => prev.filter((c) => c.id !== selectedCustomer.id));
-
       showToast("Ügyfél sikeresen törölve");
     } catch {
       showToast("Hiba történt a törlés során", "danger");
     } finally {
+      setLoading(false);
       setShowDeleteModal(false);
       setSelectedCustomer(null);
     }
@@ -95,51 +95,52 @@ function Customers() {
           <span>Művelet</span>
         </div>
 
-        {loading && <p>Betöltés...</p>}
+         {filteredCustomers.map((c) => (
+          <div className="table-row" key={c.id}>
+            <span>{c.id}</span>
+            <span className="ellipsis">
+              <strong>{c.name}</strong>
+            </span>
+            <span className="ellipsis">{c.email}</span>
 
-        {!loading &&
-          filteredCustomers.map((c) => (
-            <div className="table-row" key={c.id}>
-              <span>{c.id}</span>
-              <span className="ellipsis">
-                <strong>{c.name}</strong>
-              </span>
-              <span className="ellipsis">{c.email}</span>
+            <span>
+              {c.loyal ? (
+                <span className="badge badge-success">Igen</span>
+              ) : (
+                <span className="badge badge-muted">Nem</span>
+              )}
+            </span>
 
-              <span>
-                {c.loyal ? (
-                  <span className="badge badge-success">Igen</span>
-                ) : (
-                  <span className="badge badge-muted">Nem</span>
-                )}
-              </span>
+            <span className="ellipsis">{formatDate(c.created_at)}</span>
+            <span className="ellipsis">{c.phone}</span>
 
-              <span className="ellipsis">{formatDate(c.created_at)}</span>
-              <span className="ellipsis">{c.phone}</span>
+            <div className="actions">
+              <button
+                className="icon-btn edit-btn"
+                onClick={() => {
+                  setEditCustomer(c);
+                  setShowEditModal(true);
+                }}
+              >
+                <PencilSquare size={18} />
+              </button>
 
-              <div className="actions">
-                <button
-                  className="icon-btn edit-btn"
-                  onClick={() => {
-                    setEditCustomer(c);
-                    setShowEditModal(true);
-                  }}
-                >
-                  <PencilSquare size={18} />
-                </button>
-
-                <button
-                  className="icon-btn delete-btn"
-                  onClick={() => {
-                    setSelectedCustomer(c);
-                    setShowDeleteModal(true);
-                  }}
-                >
-                  <Trash size={18} />
-                </button>
-              </div>
+              <button
+                className="icon-btn delete-btn"
+                onClick={() => {
+                  setSelectedCustomer(c);
+                  setShowDeleteModal(true);
+                }}
+              >
+                <Trash size={18} />
+              </button>
             </div>
-          ))}
+          </div>
+        ))}
+        
+        {filteredCustomers.length === 0 && (
+          <div className="text-center p-4">Nincs találat.</div>
+        )}
       </div>
 
       <CustomerModal

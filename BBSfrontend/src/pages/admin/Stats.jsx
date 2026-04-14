@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../../api/axios"; // Feltételezem, van egy konfigurált axios példányod
 import IconStatCard from "../../components/IconStatCard";
+import { useLoading } from "../../context/LoadingContext";
 import {
   FaUserPlus,
   FaMoneyBillWave,
@@ -28,7 +29,7 @@ import "../../components/style/AdminStats.css";
 
 function Stats() {
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { setLoading } = useLoading();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
@@ -42,15 +43,16 @@ function Stats() {
   }, []);
 
   const fetchStats = async () => {
-    try {
-      const response = await api.get("/admin/stats");
-      setData(response.data);
-    } catch (error) {
-      console.error("Hiba a statisztikák betöltésekor:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  setLoading(true); 
+  try {
+    const response = await api.get("/admin/stats");
+    setData(response.data);
+  } catch (error) {
+    console.error("Hiba a statisztikák betöltésekor:", error);
+  } finally {
+    setLoading(false); 
+  }
+};
 
   const renderBarChart = (chartData, color, isCurrency = false) => (
     <ResponsiveContainer width="100%" height={isMobile ? 450 : 280}>
@@ -111,14 +113,6 @@ function Stats() {
     </ResponsiveContainer>
   );
 
-  if (loading) {
-    return (
-      <div className="text-center mt-5">
-        <div className="spinner-border text-secondary"></div>
-        <p>Statisztikák betöltése...</p>
-      </div>
-    );
-  }
 
   if (!data)
     return (
