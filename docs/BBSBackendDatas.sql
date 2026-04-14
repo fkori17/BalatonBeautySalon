@@ -56,7 +56,7 @@ INSERT INTO `customers` (`id`, `created_at`, `updated_at`, `email`, `password`, 
 (47, '2024-09-22 20:00:00', '2026-01-09 20:57:57', 'farkas.vivien@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Farkas Vivien', '+36205599886', 0),
 (48, '2024-09-26 20:00:00', '2026-01-09 20:57:57', 'molnar.noemi@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Molnár Noémi', '+36701233440', 1),
 (49, '2024-08-21 20:00:00', '2026-01-09 20:57:57', 'balogh.timi@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Balogh Tímea', '+36305511227', 0),
-(50, '2024-08-25 20:00:00', '2026-01-09 20:57:57', 'varga.petra@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Varga Petra', '+36207788992', 1);
+(50, '2024-08-25 20:00:00', '2026-01-09 20:57:57', 'varga.timea@example.com', '$2y$12$LHh9g4iwFcs3ILQms0bUXOn69wLpHUJAUDVt91IhtnWXd7pEDiuiG', 'Varga Tímea', '+36207788992', 1);
 
 INSERT INTO `services` (`id`, `name`, `price`, `active`) VALUES
 (1, 'Francia manikűr', 6100, 1),
