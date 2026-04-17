@@ -84,7 +84,6 @@ function AdminHome() {
       </div>
 
       <div className="home-bottom-grid">
-        {/* ===== RECENT ===== */}
         <div className="home-recent-box">
           <div className="home-recent-header">
             <h2>Legutóbbi kezelések</h2>
@@ -115,7 +114,6 @@ function AdminHome() {
           </div>
         </div>
 
-        {/* ===== QUICK ===== */}
         <div className="home-quick-box">
           <h2>Gyors műveletek</h2>
 
@@ -141,6 +139,23 @@ function AdminHome() {
           </button>
         </div>
       </div>
+      <TreatmentModal 
+        show={showTreatment} 
+        onHide={() => setShowTreatment(false)} 
+      />
+      
+      <CustomerModal 
+        show={showCustomer} 
+        onHide={() => setShowCustomer(false)}
+        onSuccess={() => {
+          setShowCustomer(false);
+        }}
+      />
+      
+      <ServiceModal 
+        show={showService} 
+        onHide={() => setShowService(false)} 
+      />
     </div>
   );
 }
